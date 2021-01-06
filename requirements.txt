@@ -1,0 +1,4 @@
+asyncio
+aiohttp
+flask
+git+https://github.com/HumanBrainProject/fairgraph.git
