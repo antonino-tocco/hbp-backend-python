@@ -19,3 +19,9 @@ class ElasticStorage(Storage):
             return self.es.get(index, id=identifier)
         except Exception as ex:
             print(ex)
+
+    def search(self, index, query='', hits_per_page=20):
+        try:
+            return self.es.search(index=index)
+        except Exception as ex:
+            raise ex
