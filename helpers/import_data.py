@@ -1,6 +1,13 @@
+import os
 from . import enabled_providers
+from . import ElasticStorage
+
+#es = ElasticStorage(host=os.getenv('ELASTIC_SEARCH_URL'))
+
 
 def import_data():
     for provider in enabled_providers:
-        provider.search(query_text='')
-        print(provider)
+        datasets = provider.search()
+        for dataset in datasets:
+            print(dataset['name'])
+            #es.store_object('dataset', dataset['identifier'], dataset)
