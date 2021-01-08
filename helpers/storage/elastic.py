@@ -1,9 +1,10 @@
-from . import Storage
+import os
 from elasticsearch import Elasticsearch
+from . import Storage
+
 
 class ElasticStorage(Storage):
-
-    def __init__(self, host=None):
+    def __init__(self, host=os.getenv('ELASTIC_SEARCH_URL')):
         assert(host is not None)
         super(ElasticStorage, self).__init__(self)
         self.es = Elasticsearch(hosts=[host])

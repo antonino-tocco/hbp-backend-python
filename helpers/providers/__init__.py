@@ -1,4 +1,4 @@
-from .provider import Provider
 from .knowledge import KnowledgeProvider
+from .neuro_morpho import NeuroMorphoProvider
 
-enabled_providers = [KnowledgeProvider()]
+enabled_providers = [KnowledgeProvider(), NeuroMorphoProvider()]
