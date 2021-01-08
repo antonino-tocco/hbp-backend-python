@@ -8,5 +8,5 @@ class Storage():
     def get_object(self, index, identifier):
         pass
 
-    def search(self, index, query='', hits_per_page=20):
+    def search(self, index, query='', start=0, hits_per_page=20):
         pass

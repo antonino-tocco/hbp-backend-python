@@ -49,31 +49,36 @@ class KnowledgeProvider(Provider):
         except Exception as ex:
             print(ex)
             logger.exception(ex)
+            return []
 
 
     def map_datasets(self, datasets=[]):
         try:
-            mapped_datasets = [self._map_dataset(x) for x in datasets]
+            mapped_datasets = [self.__map_dataset__(x) for x in datasets]
             return mapped_datasets
         except Exception as ex:
             print(ex)
             raise ex
 
     def __map_dataset__(self, dataset):
-        parts = urlparse(dataset.container_url)
-        query_dict = parse_qs(parts.query)
-        query_dict['format'] = "json"
-        url = parts._replace(query=urlencode(query_dict, True)).geturl()
-        response = self.session.get(url)
-        if response.status_code not in (200, 204):
-            raise IOError(
-                f"Unable to download dataset. Response code {response.status_code}")
-        contents = response.json()
+        #parts = urlparse(dataset.container_url)
+        #query_dict = parse_qs(parts.query)
+        #query_dict['format'] = "json"
+        #url = parts._replace(query=urlencode(query_dict, True)).geturl()
+        #response = self.session.get(url)
+        #if response.status_code not in (200, 204):
+        #    raise IOError(
+        #        f"Unable to download dataset. Response code {response.status_code}")
+        #contents = response.json()
         return {
             'id': dataset.identifier,
             'name': dataset.name,
+            'citation': dataset.citation,
+            'dataDescriptor': dataset.dataDescriptor.url,
+            'regions': dataset.region,
             'description': dataset.description,
             'modalities': [modality.resolve(self.client) for modality in dataset.modality],
+            'preparations': [dataset.preparations],
             'owners': dataset.owners.resolve(self.client),
             'contributors': [contributor.resolve(self.client) for contributor in dataset.contributors],
             'license': dataset.license,

@@ -1,6 +1,8 @@
 from flask import Flask
 from helpers import import_data
 
+from routes import routes_api
+
 
 class HBPBackend(Flask):
     def run(self, *args):
@@ -16,9 +18,11 @@ def create_app():
 
 app = create_app()
 
+app.register_blueprint(routes_api)
+
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return 'Server up!'
 
 
 if __name__ == '__main__':
