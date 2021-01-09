@@ -25,23 +25,24 @@ class KnowledgeProvider(Provider):
         })
         self.client = KGClient.by_single_token(os.getenv('HBP_AUTH_TOKEN'), "https://kg.humanbrainproject.eu/query").released()
 
-    def search(self, query_text='hippocampal', hits_per_page=20):
+    def search(self, start = 0, hits_per_page=20):
         #url = f"{BASE_URL}{ENPOINTS['search']('public')}"
         try:
             query = {
                 "path": "minds:subjects / minds:samples / minds:methods / schema:name / schema:modality",
                 "op": "eq",
-                "value": query_text
+                "value": 'hippocampal'
             }
             context = {
                 "schema": "http://schema.org/",
                 "minds": "https://schema.hbp.eu/minds/"
             }
             query = Hbp_datasetDataset(self.client)
-            all_data = query.fetch(size=20)
-            #while query.has_more_items():
-            #    data = query.next_page()
-            #    all_data.extend(data)
+            all_data = query.fetch(size=100)
+            while query.has_more_items():
+                print(f'Get items page')
+                data = query.next_page()
+                all_data.extend(data)
             return self.map_datasets(all_data)
         except Exception as ex:
             print(ex)
@@ -66,6 +67,12 @@ class KnowledgeProvider(Provider):
         #    raise IOError(
         #        f"Unable to download dataset. Response code {response.status_code}")
         #contents = response.json()
+        brain_region = 'hippocampal'
+        if hasattr(dataset, 'region'):
+            brain_region = dataset.region
+        secondary_region = ''
+        if hasattr(dataset, 'secondary_region'):
+            secondary_region = dataset.secondary_region
         return {
             'id': dataset.id,
             'name': dataset.name,
@@ -73,6 +80,9 @@ class KnowledgeProvider(Provider):
             'description': dataset.description,
             'modalities': [modality.name for modality in dataset.modality],
             'owners': [owner.name for owner in dataset.owners],
+            'brain_region': brain_region,
+            #'keywords': [protocol.name for protocol in dataset.protocols],
+            #'methods': [method.name for method in dataset.methods],
             'files': [{
                 'name': x.name,
                 'file_size': x.file_size,

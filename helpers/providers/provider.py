@@ -11,7 +11,7 @@ class Provider:
     def get_search_method(self):
         return ""
 
-    def search(self, query_text, hits_per_page):
+    def search(self, start, hits_per_page):
         return []
 
     def map_items(self):

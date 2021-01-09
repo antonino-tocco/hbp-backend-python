@@ -1,8 +1,10 @@
+requests
 aiohttp==3.7.3
 async-timeout==3.0.1
 asyncio==3.4.3
+nest-asyncio
 attrs==20.3.0
 elasticsearch==7.10.1
 fairgraph @ git+https://github.com/HumanBrainProject/fairgraph.git@af10db02a585e2521156e972b685e697eeaf56e1
 Flask==1.1.2
-hbp_dataset_dataset @ https://kg.humanbrainproject.eu/query/minds/core/dataset/v1.0.0/hbp_dataset/python/pip
+hbp_dataset_dataset @ https://kg.humanbrain project.eu/query/minds/core/dataset/v1.0.0/hbp_dataset/python/pip
