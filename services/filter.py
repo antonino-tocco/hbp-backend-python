@@ -2,11 +2,11 @@ from injector import inject
 from helpers import ElasticStorage
 
 fields = {
-    'dataset': [('secondary_region', 'keyword')]
+    'dataset': [('secondary_region', 'keyword'), ('cell_type', 'keyword'), ('species', 'keyword')]
 }
 
-class FilterService:
 
+class FilterService:
     @inject
     def __init__(self, storage: ElasticStorage):
         self.storage = storage

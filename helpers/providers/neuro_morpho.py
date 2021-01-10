@@ -88,10 +88,13 @@ class NeuroMorphoProvider(Provider):
         if len(cell_types) > 1:
             secondary_cell_type = cell_types[1]
 
+        original_format_ext = dataset['original_format'].split('.')[-1]
+
         return {
             'id': dataset['neuron_id'],
             'name': dataset['neuron_name'],
             'description': dataset['note'],
+            'archive': dataset['archive'],
             'region': brain_region,
             'secondary_region': secondary_region,
             'cell_type': primary_cell_type,
@@ -100,6 +103,8 @@ class NeuroMorphoProvider(Provider):
             'icon': dataset['png_url'],
             'link': dataset['_links']['self']['href'],
             'original_format': dataset['original_format'],
+            'download_original_format': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+            'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
             'protocol': dataset['protocol'],
             'morphologies': dataset['attributes'],
             'structural_domains': dataset['domain']

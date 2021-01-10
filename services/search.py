@@ -10,9 +10,9 @@ class SearchService:
         self.storage = storage
 
 
-    def search_in_index(self, index_name, start=0, hits_per_page=20,  query='', secondary_region=None) -> []:
+    def search_in_index(self, index_name, start=0, hits_per_page=20,  query='', secondary_region=None, cell_type=None, species=None) -> []:
         try:
-            return self.storage.search(index_name, start, hits_per_page, query, secondary_region)
+            return self.storage.search(index_name, start, hits_per_page, query, secondary_region, cell_type, species)
         except Exception as ex:
             print(ex)
             raise ex
