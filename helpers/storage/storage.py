@@ -11,5 +11,5 @@ class Storage:
         pass
 
     @abstractmethod
-    def search(self, index, query='', start=0, hits_per_page=20):
+    def search(self, index, start=0, hits_per_page=20, query='', ids=[], secondary_region=None, cell_type=None, species=None):
         pass

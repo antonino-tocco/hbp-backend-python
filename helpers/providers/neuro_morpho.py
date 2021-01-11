@@ -68,7 +68,7 @@ class NeuroMorphoProvider(Provider):
             mapped_datasets = [self.__map_dataset__(x) for x in datasets]
             return mapped_datasets
         except Exception as ex:
-            print(ex)
+            print(f"Exception on map datasets {ex}")
             raise ex
 
     def __map_dataset__(self, dataset):
@@ -90,22 +90,26 @@ class NeuroMorphoProvider(Provider):
 
         original_format_ext = dataset['original_format'].split('.')[-1]
 
-        return {
-            'id': dataset['neuron_id'],
-            'name': dataset['neuron_name'],
-            'description': dataset['note'],
-            'archive': dataset['archive'],
-            'region': brain_region,
-            'secondary_region': secondary_region,
-            'cell_type': primary_cell_type,
-            'secondary_cell_type': secondary_cell_type,
-            'species': dataset['species'],
-            'icon': dataset['png_url'],
-            'link': dataset['_links']['self']['href'],
-            'original_format': dataset['original_format'],
-            'download_original_format': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
-            'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
-            'protocol': dataset['protocol'],
-            'morphologies': dataset['attributes'],
-            'structural_domains': dataset['domain']
-        }
+        try:
+            return {
+                'id': dataset['neuron_id'],
+                'name': dataset['neuron_name'],
+                'description': dataset['note'],
+                'archive': dataset['archive'],
+                'region': brain_region,
+                'secondary_region': secondary_region,
+                'cell_type': primary_cell_type,
+                'secondary_cell_type': secondary_cell_type,
+                'species': dataset['species'],
+                'icon': dataset['png_url'],
+                'link': dataset['_links']['self']['href'],
+                'original_format': dataset['original_format'],
+                'download_original_format': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+                'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
+                'protocol': dataset['protocol'],
+                'morphologies': dataset['attributes'],
+                'structural_domains': dataset['domain'],
+                'source': 'Neuro Morpho'
+            }
+        except Exception as ex:
+            raise ex

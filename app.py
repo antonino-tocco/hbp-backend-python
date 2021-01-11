@@ -13,8 +13,8 @@ nest_asyncio.apply()
 
 
 class HBPBackend(Flask):
-    def run(self, *args):
-        super(HBPBackend, self).run(*args)
+    def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+        super(HBPBackend, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
 
 
 def create_app():

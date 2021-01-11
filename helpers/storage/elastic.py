@@ -15,7 +15,7 @@ class ElasticStorage(Storage):
         try:
             self.es.index(index, id=identifier, body=obj)
         except Exception as ex:
-            print(ex)
+            print(f"Exception storing object {ex}")
             
     def get_object(self, index, identifier):
         try:
@@ -36,7 +36,7 @@ class ElasticStorage(Storage):
             print(ex)
         return response
 
-    def search(self, index, start=0, hits_per_page=20, query='', secondary_region=None, cell_type=None, species=None):
+    def search(self, index, start=0, hits_per_page=20, query='', ids=[], secondary_region=None, cell_type=None, species=None):
         try:
             s = Search(using=self.es)
             s = s.index(index)
