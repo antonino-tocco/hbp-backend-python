@@ -13,4 +13,5 @@ RUN pip install -r requirements.txt
 COPY ./ .
 
 # command to run on container start
-CMD [ "python", "./app.py" ]
+RUN chmod +x wait_to_start.sh
+CMD ["./wait_to_start.sh"]

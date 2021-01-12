@@ -24,13 +24,9 @@ def create_app():
     async def run_on_start(*args, **argv):
         await import_data()
     try:
-        def run_with_delay():
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(run_on_start())
-
-        t = Timer(30.0, run_with_delay)
-        t.start()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(run_on_start())
     except Exception as ex:
         print(f'Run exception')
         print(ex)
