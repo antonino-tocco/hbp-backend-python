@@ -10,4 +10,3 @@ injector==0.18.4
 Flask==1.1.2
 Flask-Cors==3.0.10
 Flask-Injector==0.12.3
-hbp_dataset_dataset @ https://kg.humanbrainproject.eu/query/minds/core/dataset/v1.0.0/hbp_dataset/python/pip
