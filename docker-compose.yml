@@ -20,7 +20,7 @@ services:
     build: .
     container_name: hbp_backend_python
     environment:
-      - ELASTIC_SEARCH_URL=http://es01:9200
+      - ELASTIC_SEARCH_URL=http://localhost:9200
     ports:
       - 5000:5000
     depends_on:
