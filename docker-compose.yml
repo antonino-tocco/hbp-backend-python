@@ -6,7 +6,6 @@ services:
     container_name: es01
     environment:
       - node.name=es01
-      - cluster.name=es-docker-cluster
       - discovery.type=single-node
       - bootstrap.memory_lock=true
     volumes:
@@ -22,7 +21,6 @@ services:
     container_name: hbp_backend_python
     environment:
       - ELASTIC_SEARCH_URL=http://es01:9200
-      - HBP_AUTH_TOKEN=eyJhbGciOiJSUzI1NiIsImtpZCI6ImJicC1vaWRjIn0.eyJleHAiOjE2MTAxNjAxNTAsInN1YiI6IjMxMDEwNyIsImF1ZCI6WyJuZXh1cy13b3JrZXItaGlwcG9jYW1wdXNGYWNpbGl0eUh1YiJdLCJpc3MiOiJodHRwczpcL1wvc2VydmljZXMuaHVtYW5icmFpbnByb2plY3QuZXVcL29pZGNcLyIsImp0aSI6ImY1OWI1YTAwLTc5ZTMtNDliMC05ZjhiLTY1NmYzNDUyNmViNiIsImlhdCI6MTYxMDE0NTc1MCwiaGJwX2tleSI6ImU5NjRhOTgwMzY1NGYzNTU1MWE2MzRmZDRjNWZlMTVhMThjY2ZlNWQifQ.Xo1SfThptETaURZRK0lIz0U7OyBMNASPS5VzCjL3pd5ZZqcaOtnVS3O6oZbUKEig-q_MPKxz1J2f45vvjHJYv5rZNG8Boh-_L0Fqacy1WHwgno3xvrIK2r1PTr9bEC1soPJ1RuoeAXU02AE6bs4M_5YoNok4s_eJ-s9v7bN1e1w
     ports:
       - 5000:5000
     depends_on:
