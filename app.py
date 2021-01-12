@@ -22,12 +22,15 @@ def create_app():
     app = HBPBackend(__name__)
 
     async def run_on_start(*args, **argv):
-        t = Timer(30.0, lambda _ : await import_data())
-        t.start()
+        await import_data()
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(run_on_start())
+        def run_with_delay():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(run_on_start())
+
+        t = Timer(30.0, import_data)
+        t.start()
     except Exception as ex:
         print(f'Run exception')
         print(ex)
