@@ -6,7 +6,6 @@ nest-asyncio
 attrs==20.3.0
 elasticsearch==7.10.1
 elasticsearch_dsl==7.3.0
-fairgraph @ git+https://github.com/HumanBrainProject/fairgraph.git@af10db02a585e2521156e972b685e697eeaf56e1
 injector==0.18.4
 Flask==1.1.2
 Flask-Cors==3.0.10
