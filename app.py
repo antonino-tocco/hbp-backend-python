@@ -5,6 +5,7 @@ from flask import Flask
 from flask_cors import CORS, cross_origin
 from flask_injector import FlaskInjector
 from helpers import import_data
+from threading import Timer
 
 from routes import routes_api
 from dependency import injector
@@ -21,7 +22,8 @@ def create_app():
     app = HBPBackend(__name__)
 
     async def run_on_start(*args, **argv):
-        await import_data()
+        t = Timer(30.0, lambda _ : await import_data())
+        t.start()
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
