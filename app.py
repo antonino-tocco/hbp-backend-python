@@ -41,4 +41,9 @@ FlaskInjector(app=app, injector=injector)
 app.register_blueprint(routes_api)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    try:
+        app.run(host='0.0.0.0', port=5000)
+    except Exception as ex:
+        print(f'*******************')
+        print(f'RUN EXCEPTION {ex}')
+        print(f'*******************')
