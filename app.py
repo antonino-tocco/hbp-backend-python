@@ -29,7 +29,7 @@ def create_app():
             asyncio.set_event_loop(loop)
             loop.run_until_complete(run_on_start())
 
-        t = Timer(30.0, import_data)
+        t = Timer(30.0, run_with_delay)
         t.start()
     except Exception as ex:
         print(f'Run exception')
