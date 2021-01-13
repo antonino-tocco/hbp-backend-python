@@ -32,7 +32,7 @@ services:
       ELASTICSEARCH_HOSTS: http://es01:9200
     logging:
       driver: "none"
-  backend:
+  hbp_backend:
     build: .
     container_name: hbp_backend
     restart: on-failure
