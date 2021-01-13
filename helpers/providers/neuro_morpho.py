@@ -37,7 +37,7 @@ class NeuroMorphoProvider(Provider):
                     data = response.json()
                     all_values.extend(data['fields'])
                 except Exception as ex:
-                    print("exception retrieving values")
+                    print(f"exception retrieving values {ex}")
             num_page = num_page + 1
             fetched = True
         return all_values
@@ -64,12 +64,15 @@ class NeuroMorphoProvider(Provider):
                 response = requests.post(url=url, json=params)
                 print(f'Response status for url {url} {response.status_code}')
                 if response is not None and response.status_code == 200:
-                    data = response.json()
-                    items = self.map_datasets(data['_embedded']['neuronResources'])
-                    all_items.extend(items)
-                    total_pages = data['page']['totalPages']
-                    num_page = num_page + 1
-                    fetched = True
+                    try:
+                        data = response.json()
+                        items = self.map_datasets(data['_embedded']['neuronResources'])
+                        all_items.extend(items)
+                        total_pages = data['page']['totalPages']
+                        num_page = num_page + 1
+                        fetched = True
+                    except Exception as ex:
+                        print(f"exception retrieving values {ex}")
             return all_items
         except Exception as ex:
             raise ex
