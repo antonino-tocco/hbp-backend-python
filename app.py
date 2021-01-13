@@ -54,9 +54,8 @@ try:
     print(f'*******************')
     print(f'RUN APP')
     print(f'*******************')
-    app.run(host='0.0.0.0', port=5000)
-    #http_server = WSGIServer(('', 5000), app)
-    #http_server.serve_forever()
+    http_server = WSGIServer(('', 5000), app)
+    http_server.serve_forever()
 
 except Exception as ex:
     print(f'*******************')
