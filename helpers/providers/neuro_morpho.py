@@ -2,7 +2,6 @@ import aiohttp
 from time import sleep
 from functools import reduce
 
-import requests
 import math
 from .provider import Provider
 
@@ -71,7 +70,8 @@ class NeuroMorphoProvider(Provider):
             all_items = []
             while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
-                items, total_pages = self.__make_search_request__(url, params)
+                items, total_pages = await self.__make_search_request__(url, params)
+                all_items.extend(items)
                 num_page = num_page + 1
                 fetched = True
             return all_items
@@ -86,7 +86,7 @@ class NeuroMorphoProvider(Provider):
             print(f"Exception on map datasets {ex}")
             raise ex
 
-    def __make_search_request__(self, url, params, num_retry = 0):
+    async def __make_search_request__(self, url, params, num_retry = 0):
         try:
             async with aiohttp.ClientSession() as session:
                 print(f'Fetch url {url} Retry {num_retry}')
@@ -101,7 +101,7 @@ class NeuroMorphoProvider(Provider):
             print(f"exception retrieving values {ex}")
             if num_retry < MAX_REQUEST_RETRY:
                 sleep(5)
-                return self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
+                return await self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
             else:
                 raise ex
 
