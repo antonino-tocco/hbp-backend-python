@@ -1,6 +1,7 @@
 class Provider:
     def __init__(self):
         super(Provider, self).__init__()
+        self.source = 'Provider'
 
     def get_config(self):
         return ""

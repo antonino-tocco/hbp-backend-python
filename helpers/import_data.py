@@ -11,6 +11,7 @@ def import_data():
     print(f"*****************")
     try:
         for provider in enabled_providers:
+            print(f"RUN SEARCH FROM PROVIDER {provider.source}")
             datasets = provider.search()
             for dataset in datasets:
                 print(dataset['name'])

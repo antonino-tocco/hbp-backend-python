@@ -17,6 +17,7 @@ class NeuroMorphoProvider(Provider):
     def __init__(self):
         super(NeuroMorphoProvider, self).__init__()
         self.session = requests.session()
+        self.source = 'Neuro Morpho'
         
     def get_all_field_value(self, field_name):
         url = lambda field_name, page, size: f"{BASE_URL}/neuron/fields/{field_name}?page={page}&size={size}"
@@ -112,7 +113,7 @@ class NeuroMorphoProvider(Provider):
                 'protocol': dataset['protocol'],
                 'morphologies': dataset['attributes'],
                 'structural_domains': dataset['domain'],
-                'source': 'Neuro Morpho'
+                'source': self.source
             }
         except Exception as ex:
             raise ex
