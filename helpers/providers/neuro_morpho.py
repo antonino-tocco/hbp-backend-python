@@ -1,4 +1,5 @@
 import aiohttp
+from time import sleep
 from functools import reduce
 
 import requests
@@ -6,6 +7,7 @@ import math
 from .provider import Provider
 
 BASE_URL = "http://neuromorpho.org/api"
+MAX_REQUEST_RETRY = 5
 
 
 def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
@@ -20,7 +22,7 @@ class NeuroMorphoProvider(Provider):
         super(NeuroMorphoProvider, self).__init__()
         self.source = 'Neuro Morpho'
 
-    async def get_all_field_value(self, field_name):
+    async def get_all_field_value(self, field_name, num_retry = 0):
         num_page = 0
         size = 100
         fetched = False
@@ -28,7 +30,7 @@ class NeuroMorphoProvider(Provider):
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
-            print(f'Fetch url {url}')
+            print(f'Fetch url {url} Retry {num_retry}')
             try:
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url, allow_redirects=True, timeout=30) as response:
@@ -38,6 +40,9 @@ class NeuroMorphoProvider(Provider):
                             all_values.extend(data['fields'])
             except Exception as ex:
                 print(f"Exception retrieving field values {ex}")
+                if num_retry < MAX_REQUEST_RETRY:
+                    sleep(5)
+                    return self.get_all_field_value(field_name, num_retry=num_retry + 1)
             num_page = num_page + 1
             fetched = True
         return all_values
@@ -66,18 +71,7 @@ class NeuroMorphoProvider(Provider):
             all_items = []
             while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
-                print(f'Fetch url {url}')
-                try:
-                    async with aiohttp.ClientSession() as session:
-                        async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
-                            print(f'Response status for url {url} {response.status}')
-                            if response is not None and response.status == 200:
-                                data = await response.json()
-                                items = self.map_datasets(data['_embedded']['neuronResources'])
-                                all_items.extend(items)
-                                total_pages = data['page']['totalPages']
-                except Exception as ex:
-                    print(f"exception retrieving values {ex}")
+                items, total_pages = self.__make_search_request__(url, params)
                 num_page = num_page + 1
                 fetched = True
             return all_items
@@ -91,6 +85,25 @@ class NeuroMorphoProvider(Provider):
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
             raise ex
+
+    def __make_search_request__(self, url, params, num_retry = 0):
+        try:
+            async with aiohttp.ClientSession() as session:
+                print(f'Fetch url {url} Retry {num_retry}')
+                async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
+                    print(f'Response status for url {url} {response.status}')
+                    if response is not None and response.status == 200:
+                        data = await response.json()
+                        items = self.map_datasets(data['_embedded']['neuronResources'])
+                        total_pages = data['page']['totalPages']
+                        return (items, total_pages)
+        except Exception as ex:
+            print(f"exception retrieving values {ex}")
+            if num_retry < MAX_REQUEST_RETRY:
+                sleep(5)
+                return self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
+            else:
+                raise ex
 
     def __map_dataset__(self, dataset):
         regions = dataset['brain_region']
