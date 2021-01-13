@@ -30,17 +30,17 @@ class NeuroMorphoProvider(Provider):
         while num_page <= (total_pages - 1) or fetched is False:
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             print(f'Fetch url {url}')
-            response = self.session.get(url)
-            print(f'Response status for url {url} {response.status_code}')
-            if response is not None and response.status_code == 200:
-                try:
+            try:
+                response = self.session.get(url, timeout=20)
+                print(f'Response status for url {url} {response.status_code}')
+                if response is not None and response.status_code == 200:
                     data = response.json()
                     all_values.extend(data['fields'])
-                except Exception as ex:
-                    print(f"exception retrieving values {ex}")
-                num_page = num_page + 1
-                fetched = True
-                sleep(1)
+            except requests.exceptions.Timeout as err:
+                print(f"Timeout reached {err}")
+                return []
+            num_page = num_page + 1
+            fetched = True
         return all_values
 
     def search(self, start=0, hits_per_page=50):
