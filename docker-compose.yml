@@ -63,6 +63,8 @@ services:
       driver: "none"
     depends_on:
       - hbp_backend
+    links:
+      - hbp_backend
   certbot:
     image: certbot/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
