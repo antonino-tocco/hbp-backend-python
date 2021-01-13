@@ -39,6 +39,8 @@ class NeuroMorphoProvider(Provider):
             except requests.exceptions.Timeout as err:
                 print(f"Timeout reached {err}")
                 return []
+            except Exception as ex:
+                print(f"Exception retrieving field values {ex}")
             num_page = num_page + 1
             fetched = True
         return all_values
@@ -68,19 +70,20 @@ class NeuroMorphoProvider(Provider):
             while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 print(f'Fetch url {url}')
-                response = self.session.post(url=url, json=params)
-                print(f'Response status for url {url} {response.status_code}')
-                if response is not None and response.status_code == 200:
-                    try:
+                try:
+                    response = self.session.post(url=url, json=params, timeout=30)
+                    print(f'Response status for url {url} {response.status_code}')
+                    if response is not None and response.status_code == 200:
                         data = response.json()
                         items = self.map_datasets(data['_embedded']['neuronResources'])
                         all_items.extend(items)
                         total_pages = data['page']['totalPages']
-                    except Exception as ex:
-                        print(f"exception retrieving values {ex}")
-                    num_page = num_page + 1
-                    fetched = True
-                    sleep(1)
+                except requests.exceptions.Timeout as err:
+                    print(f"Timeout reached {err}")
+                except Exception as ex:
+                    print(f"exception retrieving values {ex}")
+                num_page = num_page + 1
+                fetched = True
             return all_items
         except Exception as ex:
             raise ex
