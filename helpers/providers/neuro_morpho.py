@@ -26,6 +26,7 @@ class NeuroMorphoProvider(Provider):
         total_pages = 1
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
+            print(f'Num page {num_page} - {total_pages} - fetched {fetched}')
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             print(f'Fetch url {url}')
             response = requests.get(url)
