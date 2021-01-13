@@ -18,15 +18,16 @@ class NeuroMorphoProvider(Provider):
         super(NeuroMorphoProvider, self).__init__()
         self.session = requests.session()
         self.source = 'Neuro Morpho'
-        
-    def get_all_field_value(self, field_name):
+
+    @staticmethod
+    def get_all_field_value(field_name):
         num_page = 0
         size = 100
         fetched = False
         total_pages = 1
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
-            print(f'Num page {num_page} - {total_pages} - fetched {fetched}')
+            print(f'Start Num page {num_page} - {total_pages} - fetched {fetched}')
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             print(f'Fetch url {url}')
             response = requests.get(url)
@@ -41,6 +42,7 @@ class NeuroMorphoProvider(Provider):
                     print(f"exception retrieving values {ex}")
                 num_page = num_page + 1
                 fetched = True
+                print(f'End Num page {num_page} - {total_pages} - fetched {fetched}')
         return all_values
 
     def search(self, start=0, hits_per_page=50):
