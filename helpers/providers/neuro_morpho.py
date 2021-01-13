@@ -47,12 +47,12 @@ class NeuroMorphoProvider(Provider):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
         domain_allowed_values = filter_values(self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'], ['no axon'])
-        original_format_allowed_values = filter_values(self.get_all_field_value('original_format'), ['.asc'])
+        #original_format_allowed_values = filter_values(self.get_all_field_value('original_format'), ['.asc'])
         attributes_allowed_values = filter_values(self.get_all_field_value('attributes'), ['diameter', '3d', 'angles'], ['no angles'])
         params = {
             'brain_region': ['hippocampus'],
             'domain': domain_allowed_values,
-            'original_format': original_format_allowed_values,
+            #'original_format': original_format_allowed_values,
             'attributes': attributes_allowed_values
         }
         try:
