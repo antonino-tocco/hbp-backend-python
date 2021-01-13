@@ -52,7 +52,9 @@ class NeuroMorphoProvider(Provider):
             all_items = []
             while num_page < (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
+                print(f'Fetch url {url}')
                 response = self.session.post(url=url, json=params)
+                print(f'Response status for url {url} {response.status_code}')
                 if response is not None and response.status_code == 200:
                     data = response.json()
                     items = self.map_datasets(data['_embedded']['neuronResources'])
