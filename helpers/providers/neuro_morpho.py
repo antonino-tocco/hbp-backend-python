@@ -35,6 +35,7 @@ class NeuroMorphoProvider(Provider):
                 try:
                     print(f"STATUS OK")
                     data = response.json()
+                    print("DATA")
                     all_values.extend(data['fields'])
                 except Exception as ex:
                     print(f"exception retrieving values {ex}")
