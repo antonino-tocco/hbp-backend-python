@@ -39,7 +39,7 @@ services:
     environment:
       - ELASTIC_SEARCH_URL=http://es01:9200
       - WAIT_COMMAND=[ $$(curl --write-out %{http_code} --silent --output /dev/null http://es01:9200/_cat/health?h=st) = 200 ]
-      - WAIT_START_CMD=uwsgi uwsgi.ini --enable-threads
+      - WAIT_START_CMD=python app.py
       - WAIT_SLEEP=10
       - WAIT_LOOPS=50
     ports:
