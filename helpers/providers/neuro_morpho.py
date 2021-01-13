@@ -31,7 +31,7 @@ class NeuroMorphoProvider(Provider):
             print(f'Fetch url {url}')
             try:
                 async with aiohttp.ClientSession() as session:
-                    async with session.get(url) as response:
+                    async with session.get(url, allow_redirects=True, timeout=30) as response:
                         print(f'Response status for url {url} {response.status}')
                         if response is not None and response.status == 200:
                             data = await response.json()
@@ -69,7 +69,7 @@ class NeuroMorphoProvider(Provider):
                 print(f'Fetch url {url}')
                 try:
                     async with aiohttp.ClientSession() as session:
-                        async with session.post(url, json=params) as response:
+                        async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
                             print(f'Response status for url {url} {response.status}')
                             if response is not None and response.status == 200:
                                 data = await response.json()
