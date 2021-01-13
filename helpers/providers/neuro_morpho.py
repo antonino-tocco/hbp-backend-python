@@ -9,11 +9,11 @@ BASE_URL = "http://neuromorpho.org/api"
 def filter_values(values, allowed_values=[], not_allowed_values=[]):
     return list(filter(lambda value: (
             reduce(lambda a, b: (a and b), [allowed in value.lower() for allowed in allowed_values], True) and
-            reduce(lambda a,b : (a and b), [not_allowed not in value.lower() for not_allowed in not_allowed_values], True)
+            reduce(lambda a, b: (a and b), [not_allowed not in value.lower() for not_allowed in not_allowed_values], True)
     ), values))
 
-class NeuroMorphoProvider(Provider):
 
+class NeuroMorphoProvider(Provider):
     def __init__(self):
         super(NeuroMorphoProvider, self).__init__()
         self.session = requests.session()
@@ -35,7 +35,7 @@ class NeuroMorphoProvider(Provider):
         return all_values
 
     def search(self, start=0, hits_per_page=50):
-        url = lambda page, size: f"{BASE_URL}/neuron/select?page={page}&ssize={size}"
+        url = lambda page, size: f"{BASE_URL}/neuron/select?page={page}&size={size}"
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
         domain_allowed_values = filter_values(self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'], ['no axon'])
@@ -55,7 +55,8 @@ class NeuroMorphoProvider(Provider):
                 response = self.session.post(url(num_page, size), json=params)
                 if response is not None and response.status_code == 200:
                     data = response.json()
-                    all_items.extend(self.map_datasets(data['_embedded']['neuronResources']))
+                    items = self.map_datasets(data['_embedded']['neuronResources'])
+                    all_items.extend(items)
                     total_pages = data['page']['totalPages']
                     num_page = num_page + 1
                     fetched = True

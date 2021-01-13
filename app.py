@@ -1,11 +1,10 @@
 import asyncio
 import nest_asyncio
-import concurrent
+from time import sleep
 from flask import Flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask_injector import FlaskInjector
 from helpers import import_data
-from threading import Timer
 
 from routes import routes_api
 from dependency import injector
@@ -20,9 +19,18 @@ class HBPBackend(Flask):
 
 def create_app():
     app = HBPBackend(__name__)
+    num_retry = 0
+    max_retry = 5
 
     async def run_on_start(*args, **argv):
-        await import_data()
+        try:
+            await import_data()
+        except Exception as ex:
+            print(f"Exception importing data")
+            if num_retry < max_retry:
+                sleep(10)
+                await run_on_start()
+
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
@@ -32,6 +40,7 @@ def create_app():
         print(ex)
     return app
 
+
 app = create_app()
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -40,10 +49,12 @@ FlaskInjector(app=app, injector=injector)
 
 app.register_blueprint(routes_api)
 
-if __name__ == '__main__':
-    try:
-        app.run(host='0.0.0.0', port=5000)
-    except Exception as ex:
-        print(f'*******************')
-        print(f'RUN EXCEPTION {ex}')
-        print(f'*******************')
+try:
+    print(f'*******************')
+    print(f'RUN APP')
+    print(f'*******************')
+    app.run(host='0.0.0.0', port=5000)
+except Exception as ex:
+    print(f'*******************')
+    print(f'RUN EXCEPTION {ex}')
+    print(f'*******************')
