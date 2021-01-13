@@ -41,7 +41,7 @@ class NeuroMorphoProvider(Provider):
                 print(f"Exception retrieving field values {ex}")
                 if num_retry < MAX_REQUEST_RETRY:
                     sleep(5)
-                    return self.get_all_field_value(field_name, num_retry=num_retry + 1)
+                    return await self.get_all_field_value(field_name, num_retry=num_retry + 1)
             num_page = num_page + 1
             fetched = True
         return all_values
@@ -103,7 +103,7 @@ class NeuroMorphoProvider(Provider):
                 sleep(5)
                 return await self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
             else:
-                raise ex
+                return ([], 1)
 
     def __map_dataset__(self, dataset):
         regions = dataset['brain_region']
