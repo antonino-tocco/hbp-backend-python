@@ -18,6 +18,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    logging:
+      driver: "none"
   kib01:
     image: docker.elastic.co/kibana/kibana:7.8.1
     container_name: kib01
@@ -28,6 +30,8 @@ services:
     environment:
       ELASTICSEARCH_URL: http://es01:9200
       ELASTICSEARCH_HOSTS: http://es01:9200
+    logging:
+      driver: "none"
   backend:
     build: .
     container_name: hbp_backend_python
