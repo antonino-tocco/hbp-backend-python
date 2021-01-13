@@ -34,7 +34,7 @@ services:
       driver: "none"
   backend:
     build: .
-    container_name: hbp_backend_python
+    container_name: hbp_backend
     restart: on-failure
     environment:
       - ELASTIC_SEARCH_URL=http://es01:9200
