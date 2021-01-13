@@ -27,22 +27,18 @@ class NeuroMorphoProvider(Provider):
         total_pages = 1
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
-            print(f'Start Num page {num_page} - {total_pages} - fetched {fetched}')
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             print(f'Fetch url {url}')
             response = requests.get(url)
             print(f'Response status for url {url} {response.status_code}')
             if response is not None and response.status_code == 200:
                 try:
-                    print(f"STATUS OK")
                     data = response.json()
-                    print(f"DATA {len(data['fields'])}")
                     all_values.extend(data['fields'])
                 except Exception as ex:
                     print(f"exception retrieving values {ex}")
                 num_page = num_page + 1
                 fetched = True
-                print(f'End Num page {num_page} - {total_pages} - fetched {fetched}')
         return all_values
 
     def search(self, start=0, hits_per_page=50):
