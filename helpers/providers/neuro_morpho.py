@@ -1,4 +1,3 @@
-import aiohttp
 from time import sleep
 from functools import reduce
 
@@ -22,8 +21,7 @@ class NeuroMorphoProvider(Provider):
         self.session = requests.session()
         self.source = 'Neuro Morpho'
 
-    @staticmethod
-    def get_all_field_value(field_name):
+    def get_all_field_value(self, field_name):
         num_page = 0
         size = 100
         fetched = False
@@ -32,7 +30,7 @@ class NeuroMorphoProvider(Provider):
         while num_page <= (total_pages - 1) or fetched is False:
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             print(f'Fetch url {url}')
-            response = requests.get(url)
+            response = self.session.get(url)
             print(f'Response status for url {url} {response.status_code}')
             if response is not None and response.status_code == 200:
                 try:
@@ -70,7 +68,7 @@ class NeuroMorphoProvider(Provider):
             while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 print(f'Fetch url {url}')
-                response = requests.post(url=url, json=params)
+                response = self.session.post(url=url, json=params)
                 print(f'Response status for url {url} {response.status_code}')
                 if response is not None and response.status_code == 200:
                     try:
