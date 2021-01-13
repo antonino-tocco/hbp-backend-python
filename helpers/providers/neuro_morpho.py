@@ -20,14 +20,16 @@ class NeuroMorphoProvider(Provider):
         self.source = 'Neuro Morpho'
         
     def get_all_field_value(self, field_name):
-        url = lambda field_name, page, size: f"{BASE_URL}/neuron/fields/{field_name}?page={page}&size={size}"
         num_page = 0
         size = 100
         fetched = False
         total_pages = 1
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
-            response = self.session.get(url(field_name, num_page, size))
+            url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
+            print(f'Fetch url {url}')
+            response = requests.get(url)
+            print(f'Response status for url {url} {response.status_code}')
             if response is not None and response.status_code == 200:
                 data = response.json()
                 all_values.extend(data['fields'])
@@ -54,7 +56,7 @@ class NeuroMorphoProvider(Provider):
             while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 print(f'Fetch url {url}')
-                response = self.session.post(url=url, json=params)
+                response = requests.post(url=url, json=params)
                 print(f'Response status for url {url} {response.status_code}')
                 if response is not None and response.status_code == 200:
                     data = response.json()
