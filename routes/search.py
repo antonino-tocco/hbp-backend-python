@@ -19,7 +19,7 @@ def search(index_name, page=0, hits_per_page=20):
         region = data['region']
         cell_type = data['cell_type']
         species = data['species']
-        result = search_service.search_in_index(index_name, start, hits_per_page, query, region, cell_type, species)
+        result = search_service.search_in_index(index_name, start, hits_per_page, query, [], region, cell_type, species)
         total_items = result['hits']['total']['value']
         total_page = math.ceil(total_items / hits_per_page)
         response = {

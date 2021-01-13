@@ -21,7 +21,7 @@ class NeuroMorphoProvider(Provider):
         super(NeuroMorphoProvider, self).__init__()
         self.source = 'Neuro Morpho'
 
-    async def get_all_field_value(self, field_name, num_retry = 0):
+    async def get_all_field_value(self, field_name, num_retry=0):
         num_page = 0
         size = 100
         fetched = False
@@ -138,7 +138,7 @@ class NeuroMorphoProvider(Provider):
                 'icon': dataset['png_url'],
                 'link': dataset['_links']['self']['href'],
                 'original_format': dataset['original_format'],
-                'download_original_format': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+                'download_original_format': f"http://neuromorpho.org/dableFiles/{dataset['archive']}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
                 'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
                 'protocol': dataset['protocol'],
                 'morphologies': dataset['attributes'],
