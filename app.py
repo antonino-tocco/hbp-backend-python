@@ -26,7 +26,7 @@ def create_app():
         try:
             await import_data()
         except Exception as ex:
-            print(f"Exception importing data")
+            print(f"Exception importing data {ex}")
             if num_retry < max_retry:
                 sleep(10)
                 await run_on_start()
@@ -34,7 +34,7 @@ def create_app():
     try:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(run_on_start())
+        loop.create_task(run_on_start())
     except Exception as ex:
         print(f'Run exception')
         print(ex)

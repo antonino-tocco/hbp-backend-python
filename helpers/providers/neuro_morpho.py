@@ -35,7 +35,6 @@ class NeuroMorphoProvider(Provider):
         return all_values
 
     def search(self, start=0, hits_per_page=50):
-        url = lambda page, size: f"{BASE_URL}/neuron/select?page={page}&size={size}"
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
         domain_allowed_values = filter_values(self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'], ['no axon'])
@@ -52,7 +51,8 @@ class NeuroMorphoProvider(Provider):
             total_pages = 1
             all_items = []
             while num_page < (total_pages - 1) or fetched is False:
-                response = self.session.post(url(num_page, size), json=params)
+                url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
+                response = self.session.post(url=url, json=params)
                 if response is not None and response.status_code == 200:
                     data = response.json()
                     items = self.map_datasets(data['_embedded']['neuronResources'])
