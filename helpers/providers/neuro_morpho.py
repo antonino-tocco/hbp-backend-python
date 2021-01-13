@@ -38,8 +38,8 @@ class NeuroMorphoProvider(Provider):
                     all_values.extend(data['fields'])
                 except Exception as ex:
                     print(f"exception retrieving values {ex}")
-            num_page = num_page + 1
-            fetched = True
+                num_page = num_page + 1
+                fetched = True
         return all_values
 
     def search(self, start=0, hits_per_page=50):
@@ -69,10 +69,10 @@ class NeuroMorphoProvider(Provider):
                         items = self.map_datasets(data['_embedded']['neuronResources'])
                         all_items.extend(items)
                         total_pages = data['page']['totalPages']
-                        num_page = num_page + 1
-                        fetched = True
                     except Exception as ex:
                         print(f"exception retrieving values {ex}")
+                    num_page = num_page + 1
+                    fetched = True
             return all_items
         except Exception as ex:
             raise ex
