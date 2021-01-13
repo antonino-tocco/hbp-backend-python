@@ -1,3 +1,4 @@
+import aiohttp
 from time import sleep
 from functools import reduce
 
@@ -7,10 +8,11 @@ from .provider import Provider
 
 BASE_URL = "http://neuromorpho.org/api"
 
-def filter_values(values, allowed_values=[], not_allowed_values=[]):
+
+def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
     return list(filter(lambda value: (
-            reduce(lambda a, b: (a and b), [allowed in value.lower() for allowed in allowed_values], True) and
-            reduce(lambda a, b: (a and b), [not_allowed not in value.lower() for not_allowed in not_allowed_values], True)
+            reduce(lambda a, b: (a and b), [allowed in list(map(lambda x: x.strip().lower(), value.split(','))) for allowed in allowed_values] if exact else [allowed in value for allowed in allowed_values], True) and
+            reduce(lambda a, b: (a and b), [not_allowed not in list(map(lambda x: x.strip().lower(), value.split(','))) for not_allowed in not_allowed_values] if exact else [not_allowed not in value for not_allowed in not_allowed_values], True)
     ), values))
 
 
@@ -46,14 +48,20 @@ class NeuroMorphoProvider(Provider):
     def search(self, start=0, hits_per_page=50):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
-        domain_allowed_values = filter_values(self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'], ['no axon'])
-        #original_format_allowed_values = filter_values(self.get_all_field_value('original_format'), ['.asc'])
-        attributes_allowed_values = filter_values(self.get_all_field_value('attributes'), ['diameter', '3d', 'angles'], ['no angles'])
+        domain_allowed_values = filter_values(self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
+        original_format_allowed_values = filter_values(self.get_all_field_value('original_format'), ['.asc'], exact=False)
+        attributes_allowed_values = filter_values(self.get_all_field_value('attributes'), ['diameter', '3d', 'angles'])
+        physical_integrity_values = filter_values(self.get_all_field_value('Physical_Integrity'), ['dendrites complete'], ['no axon'])
+        print(f"Domains {domain_allowed_values}")
+        print(f"Original format {original_format_allowed_values}")
+        print(f"Attributes {attributes_allowed_values}")
+        print(f"Physical Integrity {physical_integrity_values}")
         params = {
             'brain_region': ['hippocampus'],
             'domain': domain_allowed_values,
-            #'original_format': original_format_allowed_values,
-            'attributes': attributes_allowed_values
+            'original_format': original_format_allowed_values,
+            'attributes': attributes_allowed_values,
+            'Physical_Integrity': physical_integrity_values
         }
         try:
             fetched = False
