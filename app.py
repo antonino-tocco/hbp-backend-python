@@ -26,7 +26,9 @@ def create_app():
 
     def run_on_start(*args, **argv):
         try:
-            import_data()
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(import_data())
         except Exception as ex:
             print(f"Exception importing data {ex}")
             if num_retry < max_retry:

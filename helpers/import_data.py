@@ -5,14 +5,14 @@ from . import ElasticStorage
 es = ElasticStorage(host=os.getenv('ELASTIC_SEARCH_URL'))
 
 
-def import_data():
+async def import_data():
     print(f"*****************")
     print(f"IMPORT DATA")
     print(f"*****************")
     try:
         for provider in enabled_providers:
             print(f"RUN SEARCH FROM PROVIDER {provider.source}")
-            datasets = provider.search()
+            datasets = await provider.search()
             for dataset in datasets:
                 print(dataset['name'])
                 es.store_object('dataset', dataset['id'], dataset)

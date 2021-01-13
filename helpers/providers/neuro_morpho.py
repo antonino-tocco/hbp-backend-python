@@ -1,4 +1,4 @@
-from time import sleep
+import aiohttp
 from functools import reduce
 
 import requests
@@ -18,10 +18,9 @@ def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
 class NeuroMorphoProvider(Provider):
     def __init__(self):
         super(NeuroMorphoProvider, self).__init__()
-        self.session = requests.session()
         self.source = 'Neuro Morpho'
 
-    def get_all_field_value(self, field_name):
+    async def get_all_field_value(self, field_name):
         num_page = 0
         size = 100
         fetched = False
@@ -31,27 +30,25 @@ class NeuroMorphoProvider(Provider):
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             print(f'Fetch url {url}')
             try:
-                response = self.session.get(url, timeout=20)
-                print(f'Response status for url {url} {response.status_code}')
-                if response is not None and response.status_code == 200:
-                    data = response.json()
-                    all_values.extend(data['fields'])
-            except requests.exceptions.Timeout as err:
-                print(f"Timeout reached {err}")
-                return []
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(url) as response:
+                        print(f'Response status for url {url} {response.status}')
+                        if response is not None and response.status == 200:
+                            data = await response.json()
+                            all_values.extend(data['fields'])
             except Exception as ex:
                 print(f"Exception retrieving field values {ex}")
             num_page = num_page + 1
             fetched = True
         return all_values
 
-    def search(self, start=0, hits_per_page=50):
+    async def search(self, start=0, hits_per_page=50):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
-        domain_allowed_values = filter_values(self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
-        original_format_allowed_values = filter_values(self.get_all_field_value('original_format'), ['.asc'], exact=False)
-        attributes_allowed_values = filter_values(self.get_all_field_value('attributes'), ['diameter', '3d', 'angles'])
-        physical_integrity_values = filter_values(self.get_all_field_value('Physical_Integrity'), ['dendrites complete'], ['no axon'])
+        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
+        original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'], exact=False)
+        attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'), ['diameter', '3d', 'angles'])
+        physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'), ['dendrites complete'], ['no axon'])
         print(f"Domains {domain_allowed_values}")
         print(f"Original format {original_format_allowed_values}")
         print(f"Attributes {attributes_allowed_values}")
@@ -71,15 +68,14 @@ class NeuroMorphoProvider(Provider):
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 print(f'Fetch url {url}')
                 try:
-                    response = self.session.post(url=url, json=params, timeout=30)
-                    print(f'Response status for url {url} {response.status_code}')
-                    if response is not None and response.status_code == 200:
-                        data = response.json()
-                        items = self.map_datasets(data['_embedded']['neuronResources'])
-                        all_items.extend(items)
-                        total_pages = data['page']['totalPages']
-                except requests.exceptions.Timeout as err:
-                    print(f"Timeout reached {err}")
+                    async with aiohttp.ClientSession() as session:
+                        async with session.post(url, json=params) as response:
+                            print(f'Response status for url {url} {response.status}')
+                            if response is not None and response.status == 200:
+                                data = await response.json()
+                                items = self.map_datasets(data['_embedded']['neuronResources'])
+                                all_items.extend(items)
+                                total_pages = data['page']['totalPages']
                 except Exception as ex:
                     print(f"exception retrieving values {ex}")
                 num_page = num_page + 1
