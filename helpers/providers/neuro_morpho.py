@@ -32,8 +32,12 @@ class NeuroMorphoProvider(Provider):
             response = requests.get(url)
             print(f'Response status for url {url} {response.status_code}')
             if response is not None and response.status_code == 200:
-                data = response.json()
-                all_values.extend(data['fields'])
+                try:
+                    print(f"STATUS OK")
+                    data = response.json()
+                    all_values.extend(data['fields'])
+                except Exception as ex:
+                    print("exception retrieving values")
             num_page = num_page + 1
             fetched = True
         return all_values
