@@ -26,7 +26,7 @@ class NeuroMorphoProvider(Provider):
         fetched = False
         total_pages = 1
         all_values = []
-        while num_page < (total_pages - 1) or fetched is False:
+        while num_page <= (total_pages - 1) or fetched is False:
             response = self.session.get(url(field_name, num_page, size))
             if response is not None and response.status_code == 200:
                 data = response.json()
@@ -51,7 +51,7 @@ class NeuroMorphoProvider(Provider):
             fetched = False
             total_pages = 1
             all_items = []
-            while num_page < (total_pages - 1) or fetched is False:
+            while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 print(f'Fetch url {url}')
                 response = self.session.post(url=url, json=params)
