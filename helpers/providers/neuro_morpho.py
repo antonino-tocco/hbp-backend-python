@@ -1,3 +1,4 @@
+from time import sleep
 from functools import reduce
 
 import requests
@@ -39,6 +40,7 @@ class NeuroMorphoProvider(Provider):
                     print(f"exception retrieving values {ex}")
                 num_page = num_page + 1
                 fetched = True
+                sleep(1)
         return all_values
 
     def search(self, start=0, hits_per_page=50):
@@ -72,6 +74,7 @@ class NeuroMorphoProvider(Provider):
                         print(f"exception retrieving values {ex}")
                     num_page = num_page + 1
                     fetched = True
+                    sleep(1)
             return all_items
         except Exception as ex:
             raise ex
