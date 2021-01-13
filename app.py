@@ -1,5 +1,6 @@
 import asyncio
 import nest_asyncio
+import threading
 from time import sleep
 from flask import Flask
 from flask_cors import CORS
@@ -22,19 +23,18 @@ def create_app():
     num_retry = 0
     max_retry = 5
 
-    async def run_on_start(*args, **argv):
+    def run_on_start(*args, **argv):
         try:
-            await import_data()
+            import_data()
         except Exception as ex:
             print(f"Exception importing data {ex}")
             if num_retry < max_retry:
                 sleep(10)
-                await run_on_start()
+                run_on_start()
 
     try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.create_task(run_on_start())
+        thread = threading.Thread(target=run_on_start)
+        thread.start()
     except Exception as ex:
         print(f'Run exception')
         print(ex)

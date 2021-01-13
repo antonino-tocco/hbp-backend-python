@@ -5,7 +5,7 @@ from . import ElasticStorage
 es = ElasticStorage(host=os.getenv('ELASTIC_SEARCH_URL'))
 
 
-async def import_data():
+def import_data():
     print(f"*****************")
     print(f"IMPORT DATA")
     print(f"*****************")
