@@ -6,3 +6,4 @@ from .search import *
 from .filters import *
 from .main import *
 from .proxy import *
+from .download import *

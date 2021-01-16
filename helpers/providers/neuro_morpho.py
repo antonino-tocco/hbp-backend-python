@@ -11,8 +11,13 @@ MAX_REQUEST_RETRY = 5
 
 def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
     return list(filter(lambda value: (
-            reduce(lambda a, b: (a and b), [allowed in list(map(lambda x: x.strip().lower(), value.split(','))) for allowed in allowed_values] if exact else [allowed in value for allowed in allowed_values], True) and
-            reduce(lambda a, b: (a and b), [not_allowed not in list(map(lambda x: x.strip().lower(), value.split(','))) for not_allowed in not_allowed_values] if exact else [not_allowed not in value for not_allowed in not_allowed_values], True)
+            reduce(lambda a, b: (a and b),
+                   [allowed in list(map(lambda x: x.strip().lower(), value.split(','))) for allowed in
+                    allowed_values] if exact else [allowed in value for allowed in allowed_values], True) and
+            reduce(lambda a, b: (a and b),
+                   [not_allowed not in list(map(lambda x: x.strip().lower(), value.split(','))) for not_allowed in
+                    not_allowed_values] if exact else [not_allowed not in value for not_allowed in not_allowed_values],
+                   True)
     ), values))
 
 
@@ -38,6 +43,7 @@ class NeuroMorphoProvider(Provider):
                         if response is not None and response.status == 200:
                             data = await response.json()
                             all_values.extend(data['fields'])
+                            await session.close()
             except Exception as ex:
                 print(f"Exception retrieving field values {ex}")
                 if num_retry < MAX_REQUEST_RETRY:
@@ -51,9 +57,12 @@ class NeuroMorphoProvider(Provider):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
         domain_allowed_values = filter_values(await self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
-        original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'], exact=False)
-        attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'), ['diameter', '3d', 'angles'])
-        physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'), ['dendrites complete'], ['no axon'])
+        original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'],
+                                                       exact=False)
+        attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'),
+                                                  ['diameter', '3d', 'angles'])
+        physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
+                                                  ['dendrites complete'], ['no axon'])
         print(f"Domains {domain_allowed_values}")
         print(f"Original format {original_format_allowed_values}")
         print(f"Attributes {attributes_allowed_values}")
@@ -81,13 +90,13 @@ class NeuroMorphoProvider(Provider):
 
     def map_items(self, items=[]):
         try:
-            mapped_datasets = [self.__map_dataset__(x) for x in items]
+            mapped_datasets = [self.__map_item__(x) for x in items]
             return mapped_datasets
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
             raise ex
 
-    async def __make_search_request__(self, url, params, num_retry = 0):
+    async def __make_search_request__(self, url, params, num_retry=0):
         try:
             async with aiohttp.ClientSession() as session:
                 print(f'Fetch url {url} Retry {num_retry}')
@@ -95,9 +104,10 @@ class NeuroMorphoProvider(Provider):
                     print(f'Response status for url {url} {response.status}')
                     if response is not None and response.status == 200:
                         data = await response.json()
-                        items = self.map_datasets(data['_embedded']['neuronResources'])
-                        items = self.__filter_items__(items)
+                        items = self.map_items(data['_embedded']['neuronResources'])
+                        items = await self.__filter_items__(items)
                         total_pages = data['page']['totalPages']
+                        await session.close()
                         return (items, total_pages)
         except Exception as ex:
             print(f"exception retrieving values {ex}")
@@ -107,7 +117,7 @@ class NeuroMorphoProvider(Provider):
             else:
                 return ([], 1)
 
-    def __map_dataset__(self, dataset):
+    def __map_item__(self, dataset):
         regions = dataset['brain_region']
         cell_types = dataset['cell_type']
         brain_region = ''
@@ -129,26 +139,30 @@ class NeuroMorphoProvider(Provider):
         storage_identfier = f"{self.id_prefix}-{dataset['neuron_id']}"
 
         try:
-            return (storage_identfier, {
-                'id': dataset['neuron_id'],
-                'name': dataset['neuron_name'],
-                'description': dataset['note'],
-                'archive': dataset['archive'],
-                'region': brain_region,
-                'secondary_region': secondary_region,
-                'cell_type': primary_cell_type,
-                'secondary_cell_type': secondary_cell_type,
-                'species': dataset['species'],
-                'icon': dataset['png_url'],
-                'link': dataset['_links']['self']['href'],
-                'original_format': dataset['original_format'],
-                'download_original_format': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
-                'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
-                'protocol': dataset['protocol'],
-                'morphologies': dataset['attributes'],
-                'structural_domains': dataset['domain'],
-                'source': self.source
-            })
+            return {
+                'identifier': storage_identfier,
+                'source': {
+                    'source_id': storage_identfier,
+                    'id': dataset['neuron_id'],
+                    'name': dataset['neuron_name'],
+                    'description': dataset['note'],
+                    'archive': dataset['archive'],
+                    'region': brain_region,
+                    'secondary_region': secondary_region,
+                    'cell_type': primary_cell_type,
+                    'secondary_cell_type': secondary_cell_type,
+                    'species': dataset['species'],
+                    'icon': dataset['png_url'],
+                    'link': dataset['_links']['self']['href'],
+                    'original_format': dataset['original_format'],
+                    'download_link': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+                    'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
+                    'protocol': dataset['protocol'],
+                    'morphologies': dataset['attributes'],
+                    'structural_domains': dataset['domain'],
+                    'source': self.source
+                }
+            }
         except Exception as ex:
             raise ex
 
@@ -157,16 +171,22 @@ class NeuroMorphoProvider(Provider):
             return []
         filtered_items = []
         for item in items:
-            file_exists = await self.__check_if_file_exists__(item['download_original_format'])
-            if file_exists:
-                filtered_items.append(item)
+            try:
+                file_exists = await self.__check_if_file_exists__(item['source']['download_link'])
+                if file_exists:
+                    filtered_items.append(item)
+            except Exception as ex:
+                print(f"Exception {ex}")
+                raise ex
         return filtered_items
 
     async def __check_if_file_exists__(self, url=None) -> bool:
-        assert(url is not None)
+        assert (url is not None)
         try:
             async with aiohttp.ClientSession() as session:
                 response = await session.get(url)
-                return response.status == 200
+                file_existed = response.status == 200
+                await session.close()
+                return file_existed
         except Exception as ex:
             return False

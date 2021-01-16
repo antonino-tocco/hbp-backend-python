@@ -17,7 +17,7 @@ class SearchService:
             total_pages = 1
             fetched = False
             all_items = []
-            while num_page < (total_pages - 1) and fetched is False:
+            while num_page < (total_pages - 1) or fetched is False:
                 start = num_page * hits_per_page
                 results = self.storage.search(index_name, start, hits_per_page, query, ids, secondary_region, cell_type, species)
                 total_items = results['hits']['total']['value']
