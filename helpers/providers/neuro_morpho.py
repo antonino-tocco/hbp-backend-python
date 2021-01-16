@@ -20,6 +20,7 @@ class NeuroMorphoProvider(Provider):
     def __init__(self):
         super(NeuroMorphoProvider, self).__init__()
         self.source = 'Neuro Morpho'
+        self.id_prefix = 'neuromorpho'
 
     async def get_all_field_value(self, field_name, num_retry=0):
         num_page = 0
@@ -78,9 +79,9 @@ class NeuroMorphoProvider(Provider):
         except Exception as ex:
             raise ex
 
-    def map_datasets(self, datasets=[]):
+    def map_items(self, items=[]):
         try:
-            mapped_datasets = [self.__map_dataset__(x) for x in datasets]
+            mapped_datasets = [self.__map_dataset__(x) for x in items]
             return mapped_datasets
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
@@ -95,6 +96,7 @@ class NeuroMorphoProvider(Provider):
                     if response is not None and response.status == 200:
                         data = await response.json()
                         items = self.map_datasets(data['_embedded']['neuronResources'])
+                        items = self.__filter_items__(items)
                         total_pages = data['page']['totalPages']
                         return (items, total_pages)
         except Exception as ex:
@@ -124,8 +126,10 @@ class NeuroMorphoProvider(Provider):
 
         original_format_ext = dataset['original_format'].split('.')[-1]
 
+        storage_identfier = f"{self.id_prefix}-{dataset['neuron_id']}"
+
         try:
-            return {
+            return (storage_identfier, {
                 'id': dataset['neuron_id'],
                 'name': dataset['neuron_name'],
                 'description': dataset['note'],
@@ -144,6 +148,25 @@ class NeuroMorphoProvider(Provider):
                 'morphologies': dataset['attributes'],
                 'structural_domains': dataset['domain'],
                 'source': self.source
-            }
+            })
         except Exception as ex:
             raise ex
+
+    async def __filter_items__(self, items=[]):
+        if items is None or len(items) == 0:
+            return []
+        filtered_items = []
+        for item in items:
+            file_exists = await self.__check_if_file_exists__(item['download_original_format'])
+            if file_exists:
+                filtered_items.append(item)
+        return filtered_items
+
+    async def __check_if_file_exists__(self, url=None) -> bool:
+        assert(url is not None)
+        try:
+            async with aiohttp.ClientSession() as session:
+                response = await session.get(url)
+                return response.status == 200
+        except Exception as ex:
+            return False

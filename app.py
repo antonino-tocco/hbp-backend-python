@@ -6,7 +6,6 @@ from time import sleep
 from flask import Flask
 from flask_cors import CORS
 from flask_injector import FlaskInjector
-from helpers import import_data
 
 from routes import routes_api
 from dependency import injector
@@ -26,9 +25,8 @@ def create_app():
 
     def run_on_start(*args, **argv):
         try:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(import_data())
+            import_service = injector.provide_import_service()
+            import_service.run_import_task()
         except Exception as ex:
             print(f"Exception importing data {ex}")
             if num_retry < max_retry:
