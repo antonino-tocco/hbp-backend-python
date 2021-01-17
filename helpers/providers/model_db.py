@@ -20,8 +20,11 @@ class ModelDbProvider(Provider):
                 if response is not None and response.status == 200:
                     data = await response.json()
                     for model_id in data:
-                        model = await self.__get_single_item__(model_id)
-                        items.append(self.__map__item__(model))
+                        try:
+                            model = await self.__get_single_item__(model_id)
+                            items.append(self.__map__item__(model))
+                        except Exception as ex:
+                            print(f"Exception with model {model_id} {ex}")
                     await session.close()
             return items
         except Exception as ex:
@@ -56,7 +59,7 @@ class ModelDbProvider(Provider):
                 'name': item['name'],
                 'class_id': item['class_id'],
                 'description': item['notes']['value'],
-                'neurons': item['neurons'],
+                'neurons': neurons,
                 'model_type': list(map(lambda x: x['object_name'], model_type['value'])) if model_type is not None and 'value' in model_type else [],
                 'model_concept': list(map(lambda x: x['object_name'], model_concept['value'])) if model_concept is not None and 'value' in model_concept else [],
                 'modeling_application': list(map(lambda x: x['object_name'], modeling_application['value'])) if modeling_application is not None and 'value' in modeling_application else [],
