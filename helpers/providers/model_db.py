@@ -33,6 +33,21 @@ class ModelDbProvider(Provider):
     def __map__item__(self, item):
         assert (item is not None)
         storage_identfier = f"{self.id_prefix}-{item['id']}"
+        neurons = []
+        model_type = {}
+        model_concept = {}
+        modeling_application = {}
+        papers = {}
+        if 'neurons' in item:
+            neurons = item['neurons']
+        if 'model_type' in item:
+            model_type = item['model_type']
+        if 'model_concept' in item:
+            model_concept = item['model_concept']
+        if 'modeling_application' in item:
+            modeling_application = item['modeling_application']
+        if 'papers' in item:
+            papers = item['papers']
         return {
             'identifier': storage_identfier,
             'source': {
@@ -42,10 +57,10 @@ class ModelDbProvider(Provider):
                 'class_id': item['class_id'],
                 'description': item['notes']['value'],
                 'neurons': item['neurons'],
-                'model_type': list(map(lambda x: x['object_name'], item['model_type']['value'])),
-                'model_concept': list(map(lambda x: x['object_name'], item['model_concept']['value'])),
-                'modeling_application': list(map(lambda x: x['object_name'], item['modeling_application']['value'])),
-                'papers': list(map(lambda x: x['object_name'], item['model_paper']['value'])),
+                'model_type': list(map(lambda x: x['object_name'], model_type['value'])) if model_type is not None and 'value' in model_type else [],
+                'model_concept': list(map(lambda x: x['object_name'], model_concept['value'])) if model_concept is not None and 'value' in model_concept else [],
+                'modeling_application': list(map(lambda x: x['object_name'], modeling_application['value'])) if modeling_application is not None and 'value' in modeling_application else [],
+                'papers': list(map(lambda x: x['object_name'], papers['value'])) if papers is not None and 'value' in papers else [],
                 'source': self.source
             }
         }
