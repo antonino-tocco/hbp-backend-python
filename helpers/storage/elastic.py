@@ -41,19 +41,18 @@ class ElasticStorage(Storage):
         try:
             s = Search(using=self.es)
             s = s.index(index)
-            s = s[start:start + hits_per_page]
-            if secondary_region is not None and secondary_region != '':
-                s = s.filter('term', **{'secondary_region.keyword': secondary_region})
-            if cell_type is not None and cell_type != '':
-                s = s.filter('term', **{'cell_type.keyword': cell_type})
-            if species is not None and species != '':
-                s = s.filter('term', **{'species.keyword': species})
-            if query is not None and query != '':
-                s = s.query('multi_match', query=query, fields=['name', 'description'])
             if ids is not None and len(ids) > 0:
-                queries = [Q('match', source_id=value) for value in ids]
-                query = Q('bool', should=queries, minimum_should_match=1)
-                s = s.query(query)
+                s = s.query('ids', values=ids)
+            else:
+                s = s[start:start + hits_per_page]
+                if secondary_region is not None and secondary_region != '':
+                    s = s.filter('term', **{'secondary_region.keyword': secondary_region})
+                if cell_type is not None and cell_type != '':
+                    s = s.filter('term', **{'cell_type.keyword': cell_type})
+                if species is not None and species != '':
+                    s = s.filter('term', **{'species.keyword': species})
+                if query is not None and query != '':
+                    s = s.query('multi_match', query=query, fields=['name', 'description'])
             return s.execute()
         except Exception as ex:
             raise ex

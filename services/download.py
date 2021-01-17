@@ -18,7 +18,7 @@ class DownloadService:
                     with open(tmp_file_name, 'wb') as f:
                         f.write(file_content)
                         f.close()
-                    zip_file.write(tmp_file_name)
+                    zip_file.write(tmp_file_name, file_name)
             return zip_file
         except Exception as ex:
             raise ex
