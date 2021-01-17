@@ -1,7 +1,8 @@
 import os
+from functools import reduce
 from injector import singleton
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search, A
+from elasticsearch_dsl import Search, A, Q
 from . import Storage
 
 
@@ -49,7 +50,10 @@ class ElasticStorage(Storage):
                 s = s.filter('term', **{'species.keyword': species})
             if query is not None and query != '':
                 s = s.query('multi_match', query=query, fields=['name', 'description'])
-            #self.es_search(index=index, from_=start, size=hits_per_page)
+            if ids is not None and len(ids) > 0:
+                queries = [Q('match', source_id=value) for value in ids]
+                query = Q('bool', should=queries, minimum_should_match=1)
+                s = s.query(query)
             return s.execute()
         except Exception as ex:
             raise ex
