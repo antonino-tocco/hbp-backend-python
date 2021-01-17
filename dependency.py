@@ -1,7 +1,7 @@
 from injector import Module, Injector, singleton, provider
 from helpers import ElasticStorage
 from services import SearchService, FilterService, ImportService, DownloadService
-from helpers import enabled_providers
+from helpers import enabled_dataset_providers, enabled_model_providers
 
 class AppModule(Module):
     @singleton
@@ -12,7 +12,7 @@ class AppModule(Module):
     @singleton
     @provider
     def provide_import_service(self) -> ImportService:
-        return ImportService(self.provide_storage(), enabled_providers=enabled_providers)
+        return ImportService(self.provide_storage(), enabled_dataset_providers=enabled_dataset_providers, enabled_model_providers=enabled_model_providers)
 
     @singleton
     @provider
