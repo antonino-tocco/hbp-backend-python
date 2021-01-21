@@ -12,3 +12,4 @@ Flask-Cors==3.0.10
 Flask-Injector==0.12.3
 gevent==20.12.1
 zipstream-new==1.1.8
+icecream==2.0.0
