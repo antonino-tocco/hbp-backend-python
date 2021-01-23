@@ -150,7 +150,9 @@ class ModelDbProvider(Provider):
                     page = await response.read()
                     parsed_page = BeautifulSoup(page, features='html.parser')
                     element = parsed_page.find(id=resource_id)
+                    await session.close()
                     return element
         except Exception as ex:
             print(f'Exception on scraping {ex}')
+        await session.close()
         return None

@@ -43,7 +43,7 @@ class NeuroMorphoProvider(Provider):
                         if response is not None and response.status == 200:
                             data = await response.json()
                             all_values.extend(data['fields'])
-                            await session.close()
+                        await session.close()
             except Exception as ex:
                 print(f"Exception retrieving field values {ex}")
                 if num_retry < MAX_REQUEST_RETRY:
