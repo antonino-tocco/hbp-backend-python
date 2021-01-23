@@ -144,7 +144,7 @@ class ModelDbProvider(Provider):
         assert (url is not None)
         assert (resource_id is not None)
         try:
-            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     page = await response.read()
