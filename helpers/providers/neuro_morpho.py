@@ -24,7 +24,7 @@ def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
 class NeuroMorphoProvider(Provider):
     def __init__(self):
         super(NeuroMorphoProvider, self).__init__()
-        self.source = 'Neuro Morpho'
+        self.source = 'neuromorpho'
         self.id_prefix = 'neuromorpho'
 
     async def get_all_field_value(self, field_name, num_retry=0):

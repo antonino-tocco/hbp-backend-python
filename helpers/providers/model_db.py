@@ -13,7 +13,7 @@ class ModelDbProvider(Provider):
     def __init__(self):
         super(ModelDbProvider, self).__init__()
         self.id_prefix = 'model_db'
-        self.source = 'Model DB'
+        self.source = 'ModelDB'
 
     async def search(self, start=0, hits_per_page=50):
         url = f"{BASE_URL}/models?modeling_application=NEURON"
