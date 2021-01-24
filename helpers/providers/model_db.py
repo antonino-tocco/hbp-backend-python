@@ -15,7 +15,7 @@ class ModelDbProvider(Provider):
         self.id_prefix = 'model_db'
         self.source = 'ModelDB'
 
-    async def search(self, start=0, hits_per_page=50):
+    async def search_models(self, start=0, hits_per_page=50):
         url = f"{BASE_URL}/models?modeling_application=NEURON"
         print(f"Fetch url {url}")
         try:
@@ -45,7 +45,7 @@ class ModelDbProvider(Provider):
         except Exception as ex:
             print(ex)
 
-    def map_items(self, items=[]):
+    def map_models(self, items=[]):
         pass
 
     def __map__item__(self, item):

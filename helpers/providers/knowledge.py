@@ -2,8 +2,10 @@ import os
 import logging
 import requests
 from .provider import Provider
+from hbp_validation_framework import ModelCatalog
 from hbp_dataset_dataset.hbp_dataset_dataset import Hbp_datasetDataset
 from kgquery.queryApi import KGClient
+from icecream import ic
 
 BASE_URL = "https://search.kg.ebrains.eu"
 ENPOINTS = {
@@ -23,63 +25,64 @@ class KnowledgeProvider(Provider):
         self.session.headers.update({
             'Authorization': f'Bearer {self.token}'
         })
+        self.model_catalog = ModelCatalog(token=self.token)
         self.client = KGClient.by_single_token(os.getenv('HBP_AUTH_TOKEN'), "https://kg.humanbrainproject.eu/query").released()
+        self.id_prefix = 'knowledge'
+        self.source = 'Knowledge'
 
-    def search(self, start = 0, hits_per_page=20):
-        #url = f"{BASE_URL}{ENPOINTS['search']('public')}"
+    async def search_datasets(self, start=0, hits_per_page=50):
         try:
-            query = {
-                "path": "minds:subjects / minds:samples / minds:methods / schema:name / schema:modality",
-                "op": "eq",
-                "value": 'hippocampal'
-            }
-            context = {
-                "schema": "http://schema.org/",
-                "minds": "https://schema.hbp.eu/minds/"
-            }
             query = Hbp_datasetDataset(self.client)
             all_data = query.fetch(size=100)
+            if all_data is None:
+                all_data = []
             while query.has_more_items():
                 print(f'Get items page')
                 data = query.next_page()
                 all_data.extend(data)
             return self.map_datasets(all_data)
         except Exception as ex:
-            print(ex)
-            logger.exception(ex)
+            ic(f"Exception searching datasets {ex}")
             return []
 
-    def map_datasets(self, datasets=[]):
+    async def search_models(self, start=0, hits_per_page=50):
         try:
-            mapped_datasets = [self.__map_dataset__(x) for x in datasets]
+            models = self.model_catalog.list_models(brain_region='hippocampus')
+            return self.map_models(models)
+        except Exception as ex:
+            ic(f"Exception searching models {ex}")
+            return []
+
+    def map_datasets(self, items=[]):
+        try:
+            mapped_datasets = [self.__map_dataset__(x) for x in items]
             return mapped_datasets
         except Exception as ex:
-            print(ex)
+            ic(ex)
             raise ex
 
-    def __map_dataset__(self, dataset):
-        #parts = urlparse(dataset.container_url)
-        #query_dict = parse_qs(parts.query)
-        #query_dict['format'] = "json"
-        #url = parts._replace(query=urlencode(query_dict, True)).geturl()
-        #response = self.session.get(url)
-        #if response.status_code not in (200, 204):
-        #    raise IOError(
-        #        f"Unable to download dataset. Response code {response.status_code}")
-        #contents = response.json()
+    def map_models(self, items=[]):
+        try:
+            mapped_models = [self.__map_model__(x) for x in items]
+            return mapped_models
+        except Exception as ex:
+            ic(ex)
+            raise ex
+
+    def __map_dataset__(self, item):
         brain_region = 'hippocampal'
-        if hasattr(dataset, 'region'):
-            brain_region = dataset.region
+        if hasattr(item, 'region'):
+            brain_region = item.region
         secondary_region = ''
-        if hasattr(dataset, 'secondary_region'):
-            secondary_region = dataset.secondary_region
+        if hasattr(item, 'secondary_region'):
+            secondary_region = item.secondary_region
         return {
-            'id': dataset.id,
-            'name': dataset.name,
-            'data_descriptor': dataset.data_descriptor,
-            'description': dataset.description,
-            'modalities': [modality.name for modality in dataset.modality],
-            'owners': [owner.name for owner in dataset.owners],
+            'id': item.id,
+            'name': item.name,
+            'data_descriptor': item.data_descriptor,
+            'description': item.description,
+            'modalities': [modality.name for modality in item.modality],
+            'owners': [owner.name for owner in item.owners],
             'brain_region': brain_region,
             #'keywords': [protocol.name for protocol in dataset.protocols],
             #'methods': [method.name for method in dataset.methods],
@@ -87,8 +90,42 @@ class KnowledgeProvider(Provider):
                 'name': x.name,
                 'file_size': x.file_size,
                 'url': x.url
-            } for x in dataset.files]
+            } for x in item.files]
         }
+
+
+    def __map_model__(self, item):
+        assert(item is not None)
+        try:
+            storage_identifier = f"{self.id_prefix}-{item['id']}"
+            cell_types = []
+            species = []
+            model_scopes = []
+            if 'cell_type' in item and item['cell_type'] is not None:
+                cell_types = [item['cell_type']]
+            if 'species' in item and item['species'] is not None:
+                species = item['species'].split(',')
+            if 'model_scope' in item and item['model_scope'] is not None:
+                model_scopes = item['model_scope'].split(',')
+
+            return {
+                'identifier': storage_identifier,
+                'source': {
+                    'source_id': storage_identifier,
+                    'id': item['id'],
+                    'name': item['name'],
+                    'cell_types': cell_types,
+                    'brain_region': item['brain_region'],
+                    'species': species,
+                    'page_link': '',
+                    'download_link': '',
+                    'model_scope': model_scopes,
+                    'source': self.source
+                }
+            }
+        except Exception as ex:
+            ic(ex)
+            raise ex
 
 
 

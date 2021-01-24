@@ -24,7 +24,7 @@ def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
 class NeuroMorphoProvider(Provider):
     def __init__(self):
         super(NeuroMorphoProvider, self).__init__()
-        self.source = 'neuromorpho'
+        self.source = 'Neuromorpho'
         self.id_prefix = 'neuromorpho'
 
     async def get_all_field_value(self, field_name, num_retry=0):
@@ -53,7 +53,7 @@ class NeuroMorphoProvider(Provider):
             fetched = True
         return all_values
 
-    async def search(self, start=0, hits_per_page=50):
+    async def search_datasets(self, start=0, hits_per_page=50):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
         domain_allowed_values = filter_values(await self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
@@ -88,9 +88,9 @@ class NeuroMorphoProvider(Provider):
         except Exception as ex:
             raise ex
 
-    def map_items(self, items=[]):
+    def map_datasets(self, items=[]):
         try:
-            mapped_datasets = [self.__map_item__(x) for x in items]
+            mapped_datasets = [self.__map_dataset__(x) for x in items]
             return mapped_datasets
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
@@ -104,7 +104,7 @@ class NeuroMorphoProvider(Provider):
                     print(f'Response status for url {url} {response.status}')
                     if response is not None and response.status == 200:
                         data = await response.json()
-                        items = self.map_items(data['_embedded']['neuronResources'])
+                        items = self.map_datasets(data['_embedded']['neuronResources'])
                         items = await self.__filter_items__(items)
                         total_pages = data['page']['totalPages']
                         await session.close()
@@ -117,7 +117,7 @@ class NeuroMorphoProvider(Provider):
             else:
                 return ([], 1)
 
-    def __map_item__(self, dataset):
+    def __map_dataset__(self, dataset):
         regions = dataset['brain_region']
         cell_types = dataset['cell_type']
         brain_region = ''

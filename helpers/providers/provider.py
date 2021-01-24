@@ -3,10 +3,15 @@ class Provider:
         super(Provider, self).__init__()
         self.source = 'Provider'
 
-
-    def search(self, start=0, hits_per_page=50):
+    def search_datasets(self, start=0, hits_per_page=50):
         return []
 
-    def map_items(self, items=[]):
+    def search_models(self, start=0, hits_per_page=50):
+        return []
+
+    def map_datasets(self, items=[]):
+        return []
+
+    def map_models(self, items=[]):
         return []
 
