@@ -14,5 +14,5 @@ gevent==20.12.1
 zipstream-new==1.1.8
 icecream==2.0.0
 beautifulsoup4==4.9.3
--e git+https://github.com/HumanBrainProject/openid_http_client.git#egg=openid_http_client&subdirectory=openid_http_client
+git+https://github.com/HumanBrainProject/openid_http_client.git#egg=openid_http_client&subdirectory=openid_http_client
 hbp-validation-framework==0.6.2
