@@ -78,7 +78,7 @@ class ModelDbProvider(Provider):
                 'identifier': storage_identifier,
                 'source': {
                     'source_id': storage_identifier,
-                    'id': item['id'],
+                    'id': str(item['id']),
                     'name': item['name'],
                     'class_id': item['class_id'],
                     'description': description,

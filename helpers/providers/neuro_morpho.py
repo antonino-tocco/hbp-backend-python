@@ -143,7 +143,7 @@ class NeuroMorphoProvider(Provider):
                 'identifier': storage_identfier,
                 'source': {
                     'source_id': storage_identfier,
-                    'id': dataset['neuron_id'],
+                    'id': str(dataset['neuron_id']),
                     'name': dataset['neuron_name'],
                     'description': dataset['note'],
                     'archive': dataset['archive'],
