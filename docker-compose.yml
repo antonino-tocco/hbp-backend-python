@@ -36,6 +36,8 @@ services:
     build: .
     container_name: hbp_backend
     restart: on-failure
+    env_file:
+      - .env
     ports:
       - 17895:5000
     depends_on:
