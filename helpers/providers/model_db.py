@@ -1,6 +1,7 @@
 import aiohttp
 from .provider import Provider
 from icecream import ic
+from functools import reduce
 from bs4 import BeautifulSoup
 
 BASE_URL = "http://modeldb.science/api/v1"
@@ -155,6 +156,23 @@ class ModelDbProvider(Provider):
                                 return readme_link if readme_link.startswith('http') \
                                     else 'https://senselab.med.yale.edu' + readme_link
         return None
+
+    @staticmethod
+    async def __get_model_files(id=None):
+        assert(id is not None)
+        url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
+        file_tree_table = await ModelDbProvider.__scrape_model_page__(url, 'filetreetable')
+        results = []
+        if file_tree_table is not None:
+            link_children = file_tree_table.findChildren('a', recursive=True)
+            if link_children is not None and len(link_children) > 0:
+                for link in link_children:
+                    if link.contents is not None:
+                        contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
+                        is_mod_file = reduce(lambda x, y: x or y, list(map(lambda x: '.mod' in x.lower() if isinstance(x, str) else False, contents)), False)
+                        if is_mod_file:
+                            pass
+        return results
 
     @staticmethod
     async def __scrape_model_page__(url=None, resource_id=None):
