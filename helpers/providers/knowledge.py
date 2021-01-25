@@ -80,7 +80,7 @@ class KnowledgeProvider(Provider):
                 model['description'] = None
                 if 'instances' is not model and model['instances'] is not None and len(model['instances']) > 0:
                     links = [x['source'] for x in model['instances']]
-                f.write(f"<p>{model['name']} <br/><br /> {json.dumps(model)} <br/><br/>")
+                f.write(f"<p>{model['name']} <br/><br /> {json.dumps(model, indent=4, sort_keys=True)} <br/><br/>")
                 for link in links:
                     f.write(f"Link to model: <a href='{link}'>{link}</a>")
                 f.write("</p>")
