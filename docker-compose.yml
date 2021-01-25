@@ -38,7 +38,7 @@ services:
     restart: on-failure
     environment:
       - ELASTIC_SEARCH_URL=http://es01:9200
-      - HBP_TOKEN eyJhbGciOiJSUzI1NiIsImtpZCI6ImJicC1vaWRjIn0.eyJleHAiOjE2MTAyMzYzNTEsInN1YiI6IjMxMDEwNyIsImF1ZCI6WyJuZXh1cy13b3JrZXItaGlwcG9jYW1wdXNGYWNpbGl0eUh1YiJdLCJpc3MiOiJodHRwczpcL1wvc2VydmljZXMuaHVtYW5icmFpbnByb2plY3QuZXVcL29pZGNcLyIsImp0aSI6IjIxYmZiNjJiLWI1OGMtNDQ4Ni05YjU0LTgzNDM1NjBhNzYzNiIsImlhdCI6MTYxMDIyMTk1MSwiaGJwX2tleSI6ImU5NjRhOTgwMzY1NGYzNTU1MWE2MzRmZDRjNWZlMTVhMThjY2ZlNWQifQ.D34jloGeZWpdo6cqYdsvKF_wr5f6DWk1ub4rpfu4XvxSyVDawV2l2t-hno5GF8Qu85kuOTatnrFXl6-XAF09kjSmyhqFoR2wgolb5NwdhZa7AbMeaWyePgiLJK_VwD9wZEQYkZz20SofdfcYJn8Ndh_3SAKzXlQDSmo3B1-q3nw
+      - HBP_TOKEN=eyJhbGciOiJSUzI1NiIsImtpZCI6ImJicC1vaWRjIn0.eyJleHAiOjE2MTAyMzYzNTEsInN1YiI6IjMxMDEwNyIsImF1ZCI6WyJuZXh1cy13b3JrZXItaGlwcG9jYW1wdXNGYWNpbGl0eUh1YiJdLCJpc3MiOiJodHRwczpcL1wvc2VydmljZXMuaHVtYW5icmFpbnByb2plY3QuZXVcL29pZGNcLyIsImp0aSI6IjIxYmZiNjJiLWI1OGMtNDQ4Ni05YjU0LTgzNDM1NjBhNzYzNiIsImlhdCI6MTYxMDIyMTk1MSwiaGJwX2tleSI6ImU5NjRhOTgwMzY1NGYzNTU1MWE2MzRmZDRjNWZlMTVhMThjY2ZlNWQifQ.D34jloGeZWpdo6cqYdsvKF_wr5f6DWk1ub4rpfu4XvxSyVDawV2l2t-hno5GF8Qu85kuOTatnrFXl6-XAF09kjSmyhqFoR2wgolb5NwdhZa7AbMeaWyePgiLJK_VwD9wZEQYkZz20SofdfcYJn8Ndh_3SAKzXlQDSmo3B1-q3nw
       - WAIT_COMMAND=[ $$(curl --write-out %{http_code} --silent --output /dev/null http://es01:9200/_cat/health?h=st) = 200 ]
       - WAIT_START_CMD=uwsgi uwsgi.ini --enable-threads
       - WAIT_SLEEP=10
