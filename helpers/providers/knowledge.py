@@ -6,6 +6,7 @@ from hbp_validation_framework import ModelCatalog
 #from hbp_dataset_dataset.hbp_dataset_dataset import Hbp_datasetDataset
 #from kgquery.queryApi import KGClient
 from icecream import ic
+import json
 
 BASE_URL = "https://search.kg.ebrains.eu"
 ENPOINTS = {
@@ -48,6 +49,7 @@ class KnowledgeProvider(Provider):
     async def search_models(self, start=0, hits_per_page=50):
         try:
             models = self.model_catalog.list_models(brain_region='hippocampus')
+            #self.__generate_html_report__(models)
             return self.map_models(models)
         except Exception as ex:
             ic(f"Exception searching models {ex}")
@@ -68,6 +70,22 @@ class KnowledgeProvider(Provider):
         except Exception as ex:
             ic(ex)
             raise ex
+
+    def __generate_html_report__(self, models=[]):
+        with open('knowledge.html', 'w') as f:
+            f.write('<html><head></head><body>')
+            f.write('<h1>Knowledge Results</h1>')
+            for model in models:
+                links = []
+                model['description'] = None
+                if 'instances' is not model and model['instances'] is not None and len(model['instances']) > 0:
+                    links = [x['source'] for x in model['instances']]
+                f.write(f"<p>{model['name']} <br/><br /> {json.dumps(model)} <br/><br/>")
+                for link in links:
+                    f.write(f"Link to model: <a href='{link}'>{link}</a>")
+                f.write("</p>")
+            f.write('</body></html>')
+            f.close()
 
     def __map_dataset__(self, item):
         brain_region = 'hippocampal'

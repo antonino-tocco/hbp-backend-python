@@ -108,36 +108,53 @@ class ModelDbProvider(Provider):
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
-                    additional_data = await ModelDbProvider.__get_download_link__(id)
+                    additional_data = await ModelDbProvider.__get_additional_data__(id)
                     return {**data, **additional_data}
             return None
         except Exception as ex:
             print(ex)
 
     @staticmethod
+    async def __get_additional_data__(id=None):
+        assert (id is not None)
+        result = {}
+        try:
+            download_link = await ModelDbProvider.__get_download_link__(id)
+            readme_link = await ModelDbProvider.__get_readme__(id)
+            result['download_link'] = download_link
+            result['readme_link'] = readme_link
+        except Exception as ex:
+            ic(f"exception scrape page {ex}")
+        return result
+
+    @staticmethod
     async def __get_download_link__(id=None):
         assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
         download_link_anchor = await ModelDbProvider.__scrape_model_page__(url, 'downloadmodelzip')
-        result = {}
         if download_link_anchor is not None:
             download_link = download_link_anchor['href']
-            result['download_link'] = download_link if download_link.startswith('http') \
+            return download_link if download_link.startswith('http') \
                 else 'https://senselab.med.yale.edu' + download_link
-        return result
+        return None
 
     @staticmethod
-    async def __get_readme(id=None):
+    async def __get_readme__(id=None):
+        assert(id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
         file_tree_table = await ModelDbProvider.__scrape_model_page__(url, 'filetreetable')
-        result = {}
         if file_tree_table is not None:
-            download_link = file_tree_table['href']
-            result['download_link'] = download_link if download_link.startswith('http') \
-                else 'https://senselab.med.yale.edu' + download_link
-        return result
-
-
+            link_children = file_tree_table.findChildren('a', recursive=True)
+            if link_children is not None and len(link_children) > 0:
+                for link in link_children:
+                    if link.contents is not None:
+                        contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
+                        if 'readme' in contents:
+                            readme_link = link.attrs['href']
+                            if readme_link is not None:
+                                return readme_link if readme_link.startswith('http') \
+                                    else 'https://senselab.med.yale.edu' + readme_link
+        return None
 
     @staticmethod
     async def __scrape_model_page__(url=None, resource_id=None):
