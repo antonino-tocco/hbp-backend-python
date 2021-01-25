@@ -3,8 +3,8 @@ import logging
 import requests
 from .provider import Provider
 from hbp_validation_framework import ModelCatalog
-from hbp_dataset_dataset.hbp_dataset_dataset import Hbp_datasetDataset
-from kgquery.queryApi import KGClient
+#from hbp_dataset_dataset.hbp_dataset_dataset import Hbp_datasetDataset
+#from kgquery.queryApi import KGClient
 from icecream import ic
 
 BASE_URL = "https://search.kg.ebrains.eu"
@@ -26,24 +26,24 @@ class KnowledgeProvider(Provider):
             'Authorization': f'Bearer {self.token}'
         })
         self.model_catalog = ModelCatalog(token=self.token)
-        self.client = KGClient.by_single_token(os.getenv('HBP_AUTH_TOKEN'), "https://kg.humanbrainproject.eu/query").released()
+        #self.client = KGClient.by_single_token(os.getenv('HBP_AUTH_TOKEN'), "https://kg.humanbrainproject.eu/query").released()
         self.id_prefix = 'knowledge'
         self.source = 'Knowledge'
 
-    async def search_datasets(self, start=0, hits_per_page=50):
-        try:
-            query = Hbp_datasetDataset(self.client)
-            all_data = query.fetch(size=100)
-            if all_data is None:
-                all_data = []
-            while query.has_more_items():
-                print(f'Get items page')
-                data = query.next_page()
-                all_data.extend(data)
-            return self.map_datasets(all_data)
-        except Exception as ex:
-            ic(f"Exception searching datasets {ex}")
-            return []
+    # async def search_datasets(self, start=0, hits_per_page=50):
+    #     try:
+    #         query = Hbp_datasetDataset(self.client)
+    #         all_data = query.fetch(size=100)
+    #         if all_data is None:
+    #             all_data = []
+    #         while query.has_more_items():
+    #             print(f'Get items page')
+    #             data = query.next_page()
+    #             all_data.extend(data)
+    #         return self.map_datasets(all_data)
+    #     except Exception as ex:
+    #         ic(f"Exception searching datasets {ex}")
+    #         return []
 
     async def search_models(self, start=0, hits_per_page=50):
         try:
