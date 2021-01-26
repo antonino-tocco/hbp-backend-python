@@ -91,6 +91,8 @@ class ModelDbProvider(Provider):
                     'model_concepts': model_concepts,
                     'modeling_application': modeling_applications,
                     'papers': papers,
+                    'readme_link': item['readme_link'] if 'readme_link' in item else None,
+                    'model_files': item['model_files'] if 'model_files' in item else None,
                     'source': self.source
                 }
             }

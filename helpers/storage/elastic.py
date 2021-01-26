@@ -37,7 +37,7 @@ class ElasticStorage(Storage):
             print(ex)
         return response
 
-    def search(self, index, start=0, hits_per_page=20, query='', ids=[], secondary_region=None, cell_type=None, species=None):
+    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=[], secondary_region=None, cell_type=None, species=None):
         try:
             s = Search(using=self.es)
             s = s.index(index)
@@ -45,6 +45,8 @@ class ElasticStorage(Storage):
                 s = s.query('ids', values=ids)
             else:
                 s = s[start:start + hits_per_page]
+                if data_type is not None:
+                    s = s.filter('term', **{'type.keyword': data_type})
                 if secondary_region is not None and secondary_region != '':
                     s = s.filter('term', **{'secondary_region.keyword': secondary_region})
                 if cell_type is not None and cell_type != '':
