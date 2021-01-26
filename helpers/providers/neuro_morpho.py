@@ -104,10 +104,13 @@ class NeuroMorphoProvider(Provider):
                     print(f'Response status for url {url} {response.status}')
                     if response is not None and response.status == 200:
                         data = await response.json()
-                        items = self.map_datasets(data['_embedded']['neuronResources'])
-                        items = await self.__filter_items__(items)
-                        total_pages = data['page']['totalPages']
-                        await session.close()
+                        items = []
+                        total_pages = 1
+                        if data is not None and '_embedded' in data:
+                            items = self.map_datasets(data['_embedded']['neuronResources'])
+                            items = await self.__filter_items__(items)
+                            total_pages = data['page']['totalPages']
+                            await session.close()
                         return (items, total_pages)
         except Exception as ex:
             print(f"exception retrieving values {ex}")

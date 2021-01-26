@@ -122,8 +122,10 @@ class ModelDbProvider(Provider):
         try:
             download_link = await ModelDbProvider.__get_download_link__(id)
             readme_link = await ModelDbProvider.__get_readme__(id)
+            model_files = await ModelDbProvider.__get_model_files__(id)
             result['download_link'] = download_link
             result['readme_link'] = readme_link
+            result['model_files'] = model_files
         except Exception as ex:
             ic(f"exception scrape page {ex}")
         return result
@@ -158,7 +160,7 @@ class ModelDbProvider(Provider):
         return None
 
     @staticmethod
-    async def __get_model_files(id=None):
+    async def __get_model_files__(id=None):
         assert(id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
         file_tree_table = await ModelDbProvider.__scrape_model_page__(url, 'filetreetable')
@@ -169,10 +171,29 @@ class ModelDbProvider(Provider):
                 for link in link_children:
                     if link.contents is not None:
                         contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
-                        is_mod_file = reduce(lambda x, y: x or y, list(map(lambda x: '.mod' in x.lower() if isinstance(x, str) else False, contents)), False)
-                        if is_mod_file:
-                            pass
+                        labels = list(filter(lambda x: isinstance(x, str), contents))
+                        if labels is not None and len(labels) >= 1:
+                            label = labels[0]
+                            is_mod_file = '.mod' in label
+                            if is_mod_file:
+                                download_link_page = link.attrs['href'] if link.attrs['href'].startswith('http') else 'https://senselab.med.yale.edu' + link.attrs['href']
+                                link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
+                                if link_url is not None:
+                                    results.append({
+                                        'label': label,
+                                        'url': link_url
+                                    })
+
         return results
+
+    @staticmethod
+    async def __get_model_download_link__(url):
+        assert(url is not None)
+        download_button = await ModelDbProvider.__scrape_model_page__(url, 'downloadzip2')
+        if download_button is not None:
+            return download_button.attrs['href'] if download_button.attrs['href'].startswith('http') \
+                else 'https://senselab.med.yale.edu' + download_button.attrs['href']
+        return None
 
     @staticmethod
     async def __scrape_model_page__(url=None, resource_id=None):
