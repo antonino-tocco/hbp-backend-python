@@ -56,7 +56,7 @@ class ElasticStorage(Storage):
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
                 if sort_fields:
-                    s = s.sort(sort_fields)
+                    s = s.sort(item for item in sort_fields)
             return s.execute()
         except Exception as ex:
             raise ex
