@@ -13,6 +13,7 @@ def get_all(index_name):
     try:
         ids = []
         data = {}
+        response = {}
         if request.method == 'POST':
             data = request.get_json()
         else:
@@ -22,9 +23,10 @@ def get_all(index_name):
         ids = data['ids'] if data['ids'] else []
         search_service = Injector(AppModule).get(SearchService)
         result = search_service.get_all_in_index(index_name, ids=ids)
-        response = {
-            'items': [item['source'].to_dict() for item in result['hits']['hits']]
-        }
+        if result and 'hits' in result and 'hits' in result['hits']:
+            response = {
+                'items': [item['source'].to_dict() for item in result['hits']['hits']]
+            }
         return response
     except Exception as ex:
         ic(f'Exception retrieving all from {index_name}')
