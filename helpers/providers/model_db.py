@@ -86,7 +86,7 @@ class ModelDbProvider(Provider):
                     'channels': channels,
                     'cell_types': cell_types,
                     'page_link': f"https://senselab.med.yale.edu/modeldb/ShowModel?model={item['id']}#tabs-1",
-                    'download_link': item['download_link'],
+                    'download_link': item['download_link'] if 'download_link' in item else None,
                     'model_types': model_types,
                     'model_concepts': model_concepts,
                     'modeling_application': modeling_applications,
@@ -176,16 +176,23 @@ class ModelDbProvider(Provider):
                         labels = list(filter(lambda x: isinstance(x, str), contents))
                         if labels is not None and len(labels) >= 1:
                             label = labels[0]
-                            is_mod_file = '.mod' in label
-                            ic(f'is mod file label - {is_mod_file} ')
-                            if is_mod_file:
-                                download_link_page = link.attrs['href'] if link.attrs['href'].startswith('http') else 'https://senselab.med.yale.edu' + link.attrs['href']
-                                link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
-                                if link_url is not None:
-                                    results.append({
-                                        'label': label,
-                                        'url': link_url
-                                    })
+                            url = link.attrs['href'] if 'href' in link.attrs else None
+                            if url is not None:
+                                url_splitted = url.split('.')
+                                is_mod_file = '.mod' in label or 'mod' in url_splitted[-1]
+                                ic(f'is mod file {label} - {url} - {is_mod_file} ')
+                                if is_mod_file:
+                                    try:
+                                        download_link_page = url if url.startswith('http') else 'https://senselab.med.yale.edu' + url
+                                        link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
+                                        if link_url is not None:
+                                            results.append({
+                                                'label': label,
+                                                'url': link_url
+                                            })
+                                    except Exception as ex:
+                                        ic(f"Exception on get model files {ex}")
+                                        return results
 
         return results
 
