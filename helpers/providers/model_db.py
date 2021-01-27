@@ -177,6 +177,7 @@ class ModelDbProvider(Provider):
                         if labels is not None and len(labels) >= 1:
                             label = labels[0]
                             is_mod_file = '.mod' in label
+                            ic(f'is mod file label - {is_mod_file} ')
                             if is_mod_file:
                                 download_link_page = link.attrs['href'] if link.attrs['href'].startswith('http') else 'https://senselab.med.yale.edu' + link.attrs['href']
                                 link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
