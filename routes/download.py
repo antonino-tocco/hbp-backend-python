@@ -36,8 +36,10 @@ def download(index_name):
             data = request.get_json()
         else:
             data = request.args.to_dict()
-            if isinstance(data['ids'], str):
-                data['ids'] = data['ids'].split(',')
+        if 'ids' in data and isinstance(data['ids'], str):
+            data['ids'] = data['ids'].split(',')
+        else:
+            data['ids'] = []
         search_service = Injector(AppModule).get(SearchService)
         ids = data['ids']
         results = search_service.get_all_in_index(index_name, ids=ids)

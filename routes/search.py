@@ -18,8 +18,10 @@ def get_all(index_name):
             data = request.get_json()
         else:
             data = request.args.to_dict()
-        if isinstance(data['ids'], str):
+        if 'ids' in data and isinstance(data['ids'], str):
             data['ids'] = data['ids'].split(',')
+        else:
+            data['ids'] = []
         ids = data['ids'] if data['ids'] else []
         search_service = Injector(AppModule).get(SearchService)
         result = search_service.get_all_in_index(index_name, ids=ids)
