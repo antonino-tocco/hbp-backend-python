@@ -1,11 +1,34 @@
 import math
 from flask import request, jsonify
 from injector import Injector
-from . import routes_api
+from icecream import ic
 from dependency import AppModule
 from services import SearchService
 from helpers.search_helper import parse_query_args
+from . import routes_api
 
+
+@routes_api.route('/search/<index_name>/all', methods=['POST', 'GET'])
+def get_all(index_name):
+    try:
+        ids = []
+        data = {}
+        if request.method == 'POST':
+            data = request.get_json()
+        else:
+            data = request.args.to_dict()
+        if isinstance(data['ids'], str):
+            data['ids'] = data['ids'].split(',')
+        ids = data['ids'] if data['ids'] else []
+        search_service = Injector(AppModule).get(SearchService)
+        result = search_service.get_all_in_index(index_name, ids=ids)
+        response = {
+            'items': [item['source'].to_dict() for item in result['hits']['hits']]
+        }
+        return response
+    except Exception as ex:
+        ic(f'Exception retrieving all from {index_name}')
+        raise ex
 
 @routes_api.route('/search/<index_name>', methods=['POST', 'GET'])
 @routes_api.route('/search/<index_name>/<page>', methods=['POST', 'GET'])
