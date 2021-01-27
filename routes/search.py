@@ -25,9 +25,9 @@ def get_all(index_name):
         ids = data['ids'] if data['ids'] else []
         search_service = Injector(AppModule).get(SearchService)
         result = search_service.get_all_in_index(index_name, ids=ids)
-        if result and 'hits' in result and 'hits' in result['hits']:
+        if result:
             response = {
-                'items': [item['source'].to_dict() for item in result['hits']['hits']]
+                'items': [item for item in result]
             }
         return response
     except Exception as ex:

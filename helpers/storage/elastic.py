@@ -37,11 +37,11 @@ class ElasticStorage(Storage):
             print(ex)
         return response
 
-    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=[], secondary_region=None, cell_type=None, species=None, sort_fields=['name']):
+    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword']):
         try:
             s = Search(using=self.es)
             s = s.index(index)
-            if ids is not None and len(ids) > 0:
+            if ids:
                 s = s.query('ids', values=ids)
             else:
                 s = s[start:start + hits_per_page]
@@ -55,8 +55,8 @@ class ElasticStorage(Storage):
                     s = s.filter('term', **{'species.keyword': species})
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
-                if sort_fields:
-                    s = s.sort(item for item in sort_fields)
+                #if sort_fields:
+                #    s = s.sort(','.join(sort_fields))
             return s.execute()
         except Exception as ex:
             raise ex

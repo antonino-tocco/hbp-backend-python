@@ -1,8 +1,8 @@
 import aiohttp
-from .provider import Provider
+from os.path import splitext
 from icecream import ic
-from functools import reduce
 from bs4 import BeautifulSoup
+from .provider import Provider
 
 BASE_URL = "http://modeldb.science/api/v1"
 MAX_REQUEST_RETRY = 5
@@ -26,7 +26,8 @@ class ModelDbProvider(Provider):
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
-                    for model_id in data:
+                    for i in range(20):
+                        model_id = data[i]
                         try:
                             model = await self.__get_single_item__(model_id)
                             if model is not None:
@@ -166,7 +167,7 @@ class ModelDbProvider(Provider):
         assert(id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
         file_tree_table = await ModelDbProvider.__scrape_model_page__(url, 'filetreetable')
-        results = []
+        results = {}
         if file_tree_table is not None:
             link_children = file_tree_table.findChildren('a', recursive=True)
             if link_children is not None and len(link_children) > 0:
@@ -178,18 +179,16 @@ class ModelDbProvider(Provider):
                             label = labels[0]
                             url = link.attrs['href'] if 'href' in link.attrs else None
                             if url is not None:
-                                url_splitted = url.split('.')
-                                is_mod_file = '.mod' in label or 'mod' in url_splitted[-1]
+                                url_splitted = splitext(url)
+                                is_mod_file = '.mod' in label or '.mod' in url_splitted[-1]
                                 ic(f'is mod file {label} - {url} - {is_mod_file} ')
                                 if is_mod_file:
                                     try:
                                         download_link_page = url if url.startswith('http') else 'https://senselab.med.yale.edu' + url
                                         link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
                                         if link_url is not None:
-                                            results.append({
-                                                'label': label,
-                                                'url': link_url
-                                            })
+                                            if link_url not in results:
+                                                results[link_url] = label
                                     except Exception as ex:
                                         ic(f"Exception on get model files {ex}")
                                         return results
