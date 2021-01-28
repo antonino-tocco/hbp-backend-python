@@ -55,8 +55,8 @@ class ElasticStorage(Storage):
                     s = s.filter('term', **{'species.keyword': species})
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
-                #if sort_fields:
-                #    s = s.sort(','.join(sort_fields))
+                if sort_fields:
+                    s = s.sort(*sort_fields)
             return s.execute()
         except Exception as ex:
             raise ex

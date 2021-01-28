@@ -201,9 +201,15 @@ class ModelDbProvider(Provider):
                                             model_results[link_url] = label
                                 except Exception as ex:
                                     ic(f"Exception on get model files {ex}")
-                                    return model_results
+                                    return list(map(lambda a: {
+                                        'label': model_results[a],
+                                        'url': a
+                                    }, model_results))
 
-        return model_results
+        return list(map(lambda a: {
+            'label': model_results[a],
+            'url': a
+        }, model_results))
 
     @staticmethod
     async def __get_model_download_link__(url):
