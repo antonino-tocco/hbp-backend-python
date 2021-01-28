@@ -16,3 +16,4 @@ icecream==2.0.0
 beautifulsoup4==4.9.3
 hbp-validation-framework==0.6.2
 jsbeautifier==1.13.4
+html5lib==1.1

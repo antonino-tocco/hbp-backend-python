@@ -1,4 +1,5 @@
 import aiohttp
+import html5lib
 from os.path import splitext
 from icecream import ic
 from bs4 import BeautifulSoup
@@ -33,10 +34,11 @@ class ModelDbProvider(Provider):
                             if model is not None:
                                 item = self.__map__item__(model)
                                 is_from_hippocampus = len(list(filter(lambda a: REGION_KEY in a.lower(),
-                                                                  item['source']['cell_types']))) > 0
+                                                                      item['source']['cell_types']))) > 0
                                 if not is_from_hippocampus:
                                     continue
-                            if 'cell_types' in item['source'] and item['source']['cell_types'] is not None and len(item['source']['cell_types']) > 1:
+                            if 'cell_types' in item['source'] and item['source']['cell_types'] is not None and len(
+                                    item['source']['cell_types']) > 1:
                                 print(f"More than 1 neurons {item['source']['id']}")
                                 more_than_one_neuron_items.append(item['source']['id'])
                             items.append(item)
@@ -71,7 +73,8 @@ class ModelDbProvider(Provider):
                 model_types = list(map(lambda a: a['object_name'], item['model_type']['value']))
             if 'model_concept' in item and 'value' in item['model_concept'] and len(item['model_concept']['value']) > 0:
                 model_concepts = list(map(lambda a: a['object_name'], item['model_concept']['value']))
-            if 'modeling_application' in item and 'value' in item['modeling_application'] and len(item['modeling_application']['value']) > 0:
+            if 'modeling_application' in item and 'value' in item['modeling_application'] and len(
+                    item['modeling_application']['value']) > 0:
                 modeling_applications = list(map(lambda a: a['object_name'], item['modeling_application']['value']))
             if 'notes' in item:
                 description = item['notes']['value']
@@ -137,86 +140,95 @@ class ModelDbProvider(Provider):
     async def __get_download_link__(id=None):
         assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
-        download_link_anchor = await ModelDbProvider.__scrape_model_page__(url, 'downloadmodelzip')
-        if download_link_anchor is not None:
-            download_link = download_link_anchor['href']
-            return download_link if download_link.startswith('http') \
-                else 'https://senselab.med.yale.edu' + download_link
+        results = await ModelDbProvider.__scrape_model_page__(url, '#downloadmodelzip')
+        if results:
+            download_link_anchor = results[0]
+            if download_link_anchor is not None:
+                download_link = download_link_anchor['href']
+                return download_link if download_link.startswith('http') \
+                    else 'https://senselab.med.yale.edu' + download_link
         return None
 
     @staticmethod
     async def __get_readme__(id=None):
-        assert(id is not None)
+        assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
-        file_tree_table = await ModelDbProvider.__scrape_model_page__(url, 'filetreetable')
+        file_tree_table = None
+        results = await ModelDbProvider.__scrape_model_page__(url, '#filetreetable')
+        if results:
+            file_tree_table = results[0]
         if file_tree_table is not None:
-            link_children = file_tree_table.findChildren('a', recursive=True)
-            if link_children is not None and len(link_children) > 0:
-                for link in link_children:
-                    if link.contents is not None:
-                        contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
-                        if 'readme' in contents:
-                            readme_link = link.attrs['href']
-                            if readme_link is not None:
-                                return readme_link if readme_link.startswith('http') \
-                                    else 'https://senselab.med.yale.edu' + readme_link
+            link_children = file_tree_table.select(selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
+            for link in link_children:
+                if link.contents is not None:
+                    contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
+                    if 'readme' in contents:
+                        readme_link = link.attrs['href']
+                        if readme_link is not None:
+                            return readme_link if readme_link.startswith('http') \
+                                else 'https://senselab.med.yale.edu' + readme_link
         return None
 
     @staticmethod
     async def __get_model_files__(id=None):
-        assert(id is not None)
+        assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
-        file_tree_table = await ModelDbProvider.__scrape_model_page__(url, 'filetreetable')
-        results = {}
+        model_results = {}
+        file_tree_table = None
+        results = await ModelDbProvider.__scrape_model_page__(url, '#filetreetable')
+        if results:
+            file_tree_table = results[0]
         if file_tree_table is not None:
-            link_children = file_tree_table.findChildren('a', recursive=True)
-            if link_children is not None and len(link_children) > 0:
-                for link in link_children:
-                    if link.contents is not None:
-                        contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
-                        labels = list(filter(lambda x: isinstance(x, str), contents))
-                        if labels is not None and len(labels) >= 1:
-                            label = labels[0]
-                            url = link.attrs['href'] if 'href' in link.attrs else None
-                            if url is not None:
-                                url_splitted = splitext(url)
-                                is_mod_file = '.mod' in label or '.mod' in url_splitted[-1]
-                                ic(f'is mod file {label} - {url} - {is_mod_file} ')
-                                if is_mod_file:
-                                    try:
-                                        download_link_page = url if url.startswith('http') else 'https://senselab.med.yale.edu' + url
-                                        link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
-                                        if link_url is not None:
-                                            if link_url not in results:
-                                                results[link_url] = label
-                                    except Exception as ex:
-                                        ic(f"Exception on get model files {ex}")
-                                        return results
+            link_children = file_tree_table.select(selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
+            for link in link_children:
+                if link.contents is not None:
+                    contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
+                    labels = list(filter(lambda x: isinstance(x, str), contents))
+                    if labels is not None and len(labels) >= 1:
+                        label = labels[0]
+                        url = link.attrs['href'] if 'href' in link.attrs else None
+                        if url is not None:
+                            url_splitted = splitext(url)
+                            is_mod_file = '.mod' in label or '.mod' in url_splitted[-1]
+                            ic(f'is mod file {label} - {url} - {is_mod_file} ')
+                            if is_mod_file:
+                                try:
+                                    download_link_page = url if url.startswith(
+                                        'http') else 'https://senselab.med.yale.edu' + url
+                                    link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
+                                    if link_url is not None:
+                                        if link_url not in model_results:
+                                            model_results[link_url] = label
+                                except Exception as ex:
+                                    ic(f"Exception on get model files {ex}")
+                                    return model_results
 
-        return results
+        return model_results
 
     @staticmethod
     async def __get_model_download_link__(url):
-        assert(url is not None)
-        download_button = await ModelDbProvider.__scrape_model_page__(url, 'downloadzip2')
-        if download_button is not None:
-            return download_button.attrs['href'] if download_button.attrs['href'].startswith('http') \
-                else 'https://senselab.med.yale.edu' + download_button.attrs['href']
+        assert (url is not None)
+        elements = await ModelDbProvider.__scrape_model_page__(url, '#downloadzip2')
+        if elements:
+            download_button = elements[0]
+            if download_button is not None:
+                return download_button.attrs['href'] if download_button.attrs['href'].startswith('http') \
+                    else 'https://senselab.med.yale.edu' + download_button.attrs['href']
         return None
 
     @staticmethod
-    async def __scrape_model_page__(url=None, resource_id=None):
+    async def __scrape_model_page__(url=None, selector=None):
         assert (url is not None)
-        assert (resource_id is not None)
+        assert (selector is not None)
         try:
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     page = await response.read()
-                    parsed_page = BeautifulSoup(page, features='html.parser')
-                    element = parsed_page.find(id=resource_id)
+                    parsed_page = BeautifulSoup(page, 'html5lib')
+                    elements = parsed_page.select(selector)
                     await session.close()
-                    return element
+                    return elements
         except Exception as ex:
             print(f'Exception on scraping {ex}')
         await session.close()
