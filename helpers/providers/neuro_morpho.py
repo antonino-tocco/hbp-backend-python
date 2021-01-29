@@ -1,8 +1,9 @@
+import math
 import aiohttp
+from icecream import ic
 from time import sleep
 from functools import reduce
 
-import math
 from .provider import Provider
 
 BASE_URL = "http://neuromorpho.org/api"
@@ -10,15 +11,17 @@ MAX_REQUEST_RETRY = 5
 
 
 def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
-    return list(filter(lambda value: (
-            reduce(lambda a, b: (a and b),
-                   [allowed in list(map(lambda x: x.strip().lower(), value.split(','))) for allowed in
-                    allowed_values] if exact else [allowed in value for allowed in allowed_values], True) and
-            reduce(lambda a, b: (a and b),
-                   [not_allowed not in list(map(lambda x: x.strip().lower(), value.split(','))) for not_allowed in
-                    not_allowed_values] if exact else [not_allowed not in value for not_allowed in not_allowed_values],
-                   True)
-    ), values))
+    if values:
+        return list(filter(lambda value: (
+                reduce(lambda a, b: (a and b),
+                       [allowed in list(map(lambda x: x.strip().lower(), value.split(','))) for allowed in
+                        allowed_values] if exact else [allowed in value for allowed in allowed_values], True) and
+                reduce(lambda a, b: (a and b),
+                       [not_allowed not in list(map(lambda x: x.strip().lower(), value.split(','))) for not_allowed in
+                        not_allowed_values] if exact else [not_allowed not in value for not_allowed in not_allowed_values],
+                       True)
+        ), values))
+    return []
 
 
 class NeuroMorphoProvider(Provider):
@@ -86,6 +89,7 @@ class NeuroMorphoProvider(Provider):
                 fetched = True
             return all_items
         except Exception as ex:
+            ic(f'Exception on all_items ${ex}')
             raise ex
 
     def map_datasets(self, items=[]):
@@ -102,16 +106,16 @@ class NeuroMorphoProvider(Provider):
                 print(f'Fetch url {url} Retry {num_retry}')
                 async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
                     print(f'Response status for url {url} {response.status}')
+                    items = []
+                    total_pages = 1
                     if response is not None and response.status == 200:
                         data = await response.json()
-                        items = []
-                        total_pages = 1
                         if data is not None and '_embedded' in data:
                             items = self.map_datasets(data['_embedded']['neuronResources'])
                             items = await self.__filter_items__(items)
                             total_pages = data['page']['totalPages']
                             await session.close()
-                        return (items, total_pages)
+                    return (items, total_pages)
         except Exception as ex:
             print(f"exception retrieving values {ex}")
             if num_retry < MAX_REQUEST_RETRY:
