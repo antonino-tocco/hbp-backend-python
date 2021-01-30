@@ -24,11 +24,12 @@ class ElasticStorage(Storage):
         except Exception as ex:
             print(ex)
 
-    def get_terms_aggregation(self, fields=[]):
+    def get_terms_aggregation(self, index_name, fields=[]):
         response = {}
         try:
             for (key, value) in fields:
                 es_search = Search(using=self.es)
+                es_search = es_search.index(index_name)
                 es_search.aggs.bucket(key, A('terms', field=f'{key}.{value}'))
                 results = es_search.execute()
                 values = [item['key'] for item in results.aggregations[key].buckets]

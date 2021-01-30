@@ -99,6 +99,7 @@ class ModelDbProvider(Provider):
                     'papers': papers,
                     'readme_link': item['readme_link'] if 'readme_link' in item else None,
                     'model_files': item['model_files'] if 'model_files' in item else None,
+                    'type': 'single',
                     'source': self.source
                 }
             }
