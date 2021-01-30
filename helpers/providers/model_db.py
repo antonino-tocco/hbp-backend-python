@@ -66,7 +66,9 @@ class ModelDbProvider(Provider):
             if 'neurons' in item and 'value' in item['neurons'] and len(item['neurons']['value']) > 0:
                 cell_types = list(map(lambda a: a['object_name'], item['neurons']['value']))
             if 'model_paper' in item and 'value' in item['model_paper'] and len(item['model_paper']['value']) > 0:
-                papers = list(map(lambda a: a['object_name'], item['model_paper']['value']))
+                papers = list(map(lambda a: {
+                    'label': a['object_name']
+                }, item['model_paper']['value']))
             if 'currents' in item and 'value' in item['currents'] and len(item['currents']['value']) > 0:
                 channels = list(map(lambda a: a['object_name'], item['currents']['value']))
             if 'model_type' in item and 'value' in item['model_type'] and len(item['model_type']['value']) > 0:
@@ -129,6 +131,9 @@ class ModelDbProvider(Provider):
             download_link = await ModelDbProvider.__get_download_link__(id)
             readme_link = await ModelDbProvider.__get_readme__(id)
             model_files = await ModelDbProvider.__get_model_files__(id)
+            papers_refs = await ModelDbProvider.__get_papers_refs__(id)
+            if papers_refs:
+                result['papers'] = papers_refs
             result['download_link'] = download_link
             result['readme_link'] = readme_link
             result['model_files'] = model_files
@@ -210,6 +215,23 @@ class ModelDbProvider(Provider):
             'label': model_results[a],
             'url': a
         }, model_results))
+
+
+    @staticmethod
+    async def __get_papers_refs__(id=None):
+        assert (id is not None)
+        url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
+        papers_ref = None
+        results = await ModelDbProvider.__scrape_model_page__(url, '#reference')
+        if results:
+            reference = results[0]
+            if reference.select('small > a'):
+                paper_link = reference.select('small > a')[0]
+                papers_ref = [{
+                    'label': reference.contents[0].strip(),
+                    'url': paper_link.attrs['href'] if paper_link.attrs is not None and 'href' in paper_link.attrs else None
+                }]
+        return papers_ref
 
     @staticmethod
     async def __get_model_download_link__(url):

@@ -4,4 +4,4 @@ from .knowledge import KnowledgeProvider
 from .hippocampome import HippocampomeProvider
 
 enabled_dataset_providers = [NeuroMorphoProvider()]
-enabled_model_providers = [HippocampomeProvider(), ModelDbProvider()]
+enabled_model_providers = [ModelDbProvider(), HippocampomeProvider()]

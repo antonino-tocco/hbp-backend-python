@@ -1,4 +1,4 @@
-from functools import reduce
+import aiohttp
 from icecream import ic
 from .provider import Provider
 
@@ -41,13 +41,19 @@ class HippocampomeProvider(Provider):
     def __init__(self):
         super(HippocampomeProvider, self).__init__()
 
-    def search_models(self, start=0, hits_per_page=50):
-        markers_str = ' OR '.join([f'I±{marker}' for marker in MARKERS])
+    async def search_models(self, start=0, hits_per_page=50):
+        markers_str = ' OR '.join([f'D±{marker}' for marker in MARKERS])
         try:
             layers_repr = [f"{LAYERS[x]['key']}:{LAYERS[x]['layers']}" for x in LAYERS.keys()]
             morphologies_str = ' OR ' .join([f"{morphology}:{layer}" for morphology in MORPHOLOGIES for layer in layers_repr])
-            url = BASE_URL + f'Connection:(Presynaptic:(Markers:({markers_str}) AND Morphology:({morphologies_str}), Postsynaptic:(Markers:({markers_str}) AND Morphoplogy:({morphologies_str}))'
+            url = BASE_URL + f'Connection:(Presynaptic:(Morphology:({morphologies_str})) AND Postsynaptic:(Morphology:({morphologies_str})))'
             ic(f'url to call {url}')
+            async with aiohttp.ClientSession() as session:
+                response = await session.get(url)
+                if response is not None and response.status == 200:
+                    result = await response.json()
+
+                await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
 
