@@ -57,7 +57,6 @@ class HippocampomeProvider(Provider):
             morphologies_str = ' OR '.join(
                 [f"{morphology}:{layer}" for morphology in MORPHOLOGIES for layer in layers_repr])
             url = BASE_URL + f'Neuron:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
-            ic(f'url to call {url}')
             async with aiohttp.ClientSession() as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
@@ -78,7 +77,6 @@ class HippocampomeProvider(Provider):
             morphologies_str = ' OR '.join(
                 [f"{morphology}:{layer}" for morphology in MORPHOLOGIES for layer in layers_repr])
             url = BASE_URL + f'Connection:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
-            ic(f'url to call {url}')
             async with aiohttp.ClientSession() as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
