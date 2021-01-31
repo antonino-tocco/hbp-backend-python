@@ -46,8 +46,15 @@ class HippocampomeProvider(Provider):
         self.source = 'hippocampome'
 
     async def search_datasets(self, start=0, hits_per_page=50):
-        neurons = await self.__search_neurons__(start, hits_per_page)
-        connections = await self.__search_connections__(start, hits_per_page)
+        items = []
+        try:
+            neurons = await self.__search_neurons__(start, hits_per_page)
+            connections = await self.__search_connections__(start, hits_per_page)
+            items.extend(neurons)
+            items.extend(connections)
+        except Exception as ex:
+            ic(f'Exception on hippocampome')
+        return items
 
     async def __search_neurons__(self, start=0, hits_per_page=50):
         neurons = []
@@ -68,6 +75,8 @@ class HippocampomeProvider(Provider):
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
+
+        return neurons
 
     async def __search_connections__(self, start=0, hits_per_page=50):
         connections = []
