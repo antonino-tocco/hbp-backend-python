@@ -43,7 +43,7 @@ class HippocampomeProvider(Provider):
     def __init__(self):
         super(HippocampomeProvider, self).__init__()
         self.id_prefix = 'hippocampome'
-        self.source = 'hippocampome'
+        self.source = 'Hippocampome'
 
     async def search_datasets(self, start=0, hits_per_page=50):
         items = []
@@ -100,7 +100,8 @@ class HippocampomeProvider(Provider):
                             'source': {
                                 'presynaptic': presynaptic,
                                 'postsynaptic': postsynaptic,
-                                'type': 'connection'
+                                'type': 'connection',
+                                'source': self.source
                             }
                         })
 
