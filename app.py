@@ -1,15 +1,14 @@
-import asyncio
-import nest_asyncio
 import threading
+import nest_asyncio
+from crontab import CronTab
 from gevent.pywsgi import WSGIServer
-from time import sleep
 from flask import Flask
 from flask_cors import CORS
 from flask_injector import FlaskInjector
-from services import ImportService
+from dependency import injector
+from import_task import run_on_start
 
 from routes import routes_api
-from dependency import injector
 
 nest_asyncio.apply()
 
@@ -21,21 +20,7 @@ class HBPBackend(Flask):
 
 def create_app():
     app = HBPBackend(__name__)
-    num_retry = 0
-    max_retry = 5
-
-    def run_on_start(*args, **argv):
-        try:
-            import_service = injector.get(ImportService)
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(import_service.run_import_task())
-        except Exception as ex:
-            print(f"Exception importing data {ex}")
-            if num_retry < max_retry:
-                sleep(10)
-                run_on_start()
-
+    create_cron_tab()
     try:
         thread = threading.Thread(target=run_on_start)
         thread.start()
@@ -43,6 +28,13 @@ def create_app():
         print(f'Run exception')
         print(ex)
     return app
+
+
+def create_cron_tab():
+    cron = CronTab(user='root')
+    job = cron.new(command='python import_task.py')
+    job.hour.every(6)
+    cron.write()
 
 
 app = create_app()

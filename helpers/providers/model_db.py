@@ -224,15 +224,20 @@ class ModelDbProvider(Provider):
         assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
         papers_ref = None
-        results = await ModelDbProvider.__scrape_model_page__(url, '#reference')
-        if results:
-            reference = results[0]
-            if reference.select('small > a'):
-                paper_link = reference.select('small > a')[0]
-                papers_ref = [{
-                    'label': reference.contents[0].strip(),
-                    'url': paper_link.attrs['href'] if paper_link.attrs is not None and 'href' in paper_link.attrs else None
-                }]
+        try:
+            results = await ModelDbProvider.__scrape_model_page__(url, '#reference')
+            if results:
+                reference = results[0]
+                links = reference.select('small > a')
+                if links is not None and len(links) > 0:
+                    paper_link = links[0]
+                    if paper_link:
+                        papers_ref = [{
+                            'label': reference.contents[0].strip(),
+                            'url': paper_link.attrs['href'] if paper_link.attrs is not None and 'href' in paper_link.attrs else None
+                        }]
+        except Exception as ex:
+            ic(f'Exception on get papers {ex}')
         return papers_ref
 
     @staticmethod
