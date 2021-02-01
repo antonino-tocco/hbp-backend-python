@@ -1,7 +1,7 @@
 import aiohttp
 import html5lib
 from icecream import ic
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from .provider import Provider
 
 BASE_URL = 'http://hippocampome.org/php/search_engine_json.php?query_str='
@@ -126,8 +126,10 @@ class HippocampomeProvider(Provider):
                         if tables:
                             name = self.__extract_name__(tables)
                             icon = self.__extract_representantive_figure__(tables)
+                            papers = self.__extract_papers__(tables)
                             data['name'] = name
                             data['icon'] = icon
+                            data['papers'] = papers
         except Exception as ex:
             ic(f'Exception on do data scrape {ex}')
 
@@ -170,7 +172,8 @@ class HippocampomeProvider(Provider):
             ic(f'Exception on extract name {ex}')
         return None
 
-    def __extract_paper(self, tables=[]):
+    def __extract_papers__(self, tables=[]):
+        papers = []
         try:
             representantive_figure_table_index = -1
             for index, table in enumerate(tables):
@@ -185,14 +188,23 @@ class HippocampomeProvider(Provider):
                                     break
             if representantive_figure_table_index > -1 and len(tables) > representantive_figure_table_index + 1:
                 table = tables[representantive_figure_table_index + 1]
-                elements = table.select('tbody > tr > td')
+                elements = table.select('tbody > tr > td.table_neuron_page_2')
                 if elements:
-                    return None
+                    element = elements[0]
+                    contents = element.contents
+                    for index, content in enumerate(contents):
+                        if isinstance(content, Tag) and content.name == 'strong' and 'pmid' in [item.lower() for item in content.contents]:
+                            pmid_link = contents[index]
+                            if isinstance(pmid_link, Tag) and pmid_link.name == 'a':
+                                papers.append({
+                                    'label': pmid_link.contents[0],
+                                    'url': pmid_link.attrs['href']
+                                })
 
         except Exception as ex:
             ic(f'Exctract paper exception {ex}')
 
-
+        return papers
 
     def __extract_representantive_figure__(self, tables=[]):
         try:
