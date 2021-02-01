@@ -2,6 +2,7 @@ import aiohttp
 import html5lib
 from icecream import ic
 from bs4 import BeautifulSoup, Tag
+from functools import reduce
 from .provider import Provider
 
 BASE_URL = 'http://hippocampome.org/php/search_engine_json.php?query_str='
@@ -188,16 +189,17 @@ class HippocampomeProvider(Provider):
                                     break
             if representantive_figure_table_index > -1 and len(tables) > representantive_figure_table_index + 1:
                 table = tables[representantive_figure_table_index + 1]
-                elements = table.select('tbody > tr > td.table_neuron_page_2')
+                elements = table.select('tbody > tr > td.table_neuron_page2')
                 if elements:
                     element = elements[0]
                     contents = element.contents
                     for index, content in enumerate(contents):
-                        if isinstance(content, Tag) and content.name == 'strong' and 'pmid' in [item.lower() for item in content.contents]:
-                            pmid_link = contents[index]
+                        if isinstance(content, Tag) and content.name == 'strong' and reduce(lambda a, b: a or b, ['pmid' in item.lower() for item in content.contents], False):
+                            pmid_link = contents[index + 1]
                             if isinstance(pmid_link, Tag) and pmid_link.name == 'a':
+                                label = pmid_link.contents[1] if isinstance(pmid_link.contents[1], str) else pmid_link.contents[1].contents[0]
                                 papers.append({
-                                    'label': pmid_link.contents[0],
+                                    'label': label,
                                     'url': pmid_link.attrs['href']
                                 })
 
