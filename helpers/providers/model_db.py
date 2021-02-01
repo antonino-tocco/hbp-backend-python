@@ -104,7 +104,7 @@ class ModelDbProvider(Provider):
                 }
             }
         except Exception as ex:
-            print(f'Exception on map item {ex}')
+            ic(f'Exception on map item {ex}')
         return None
 
     @staticmethod
@@ -112,7 +112,6 @@ class ModelDbProvider(Provider):
         assert (id is not None)
         url = f"{BASE_URL}/models/{id}"
         data = None
-        print(f"Fetch url {url}")
         try:
             async with aiohttp.ClientSession() as session:
                 response = await session.get(url)
@@ -122,7 +121,9 @@ class ModelDbProvider(Provider):
                     return {**data, **additional_data}
             return None
         except Exception as ex:
-            print(ex)
+            ic(f"Exception on get model db single item {ex}")
+        return None
+
 
     @staticmethod
     async def __get_additional_data__(id=None):
