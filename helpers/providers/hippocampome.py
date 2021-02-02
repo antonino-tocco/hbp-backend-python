@@ -1,5 +1,6 @@
 import aiohttp
 import html5lib
+from time import sleep
 from icecream import ic
 from bs4 import BeautifulSoup, Tag
 from functools import reduce
@@ -72,11 +73,10 @@ class HippocampomeProvider(Provider):
                     for index in result:
                         neuron_data = await self.__scrape_data_page__(result[index]['source_id'], type='electrophysiology')
                         neurons.append(neuron_data)
-
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
-
+        sleep(20)
         return neurons
 
     async def __search_connections__(self, start=0, hits_per_page=50):
@@ -105,11 +105,11 @@ class HippocampomeProvider(Provider):
                                 'source': self.source
                             }
                         })
-
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
 
+        sleep(20)
         return connections
 
     async def __scrape_data_page__(self, id, type=None):
@@ -145,7 +145,7 @@ class HippocampomeProvider(Provider):
             'identifier': f'{id}',
             'source': data
         }
-
+        sleep(20)
         return neuron
 
     def map_models(self, items=[]):
