@@ -27,8 +27,7 @@ class ModelDbProvider(Provider):
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
-                    for i in range(20):
-                        model_id = data[i]
+                    for model_id in data:
                         try:
                             model = await self.__get_single_item__(model_id)
                             if model is not None:
@@ -48,6 +47,7 @@ class ModelDbProvider(Provider):
             return items
         except Exception as ex:
             print(ex)
+        return items
 
     def map_models(self, items=[]):
         pass

@@ -3,6 +3,7 @@ from helpers import ElasticStorage
 from services import SearchService, FilterService, ImportService, DownloadService
 from helpers import enabled_dataset_providers, enabled_model_providers
 
+
 class AppModule(Module):
     @singleton
     @provider
