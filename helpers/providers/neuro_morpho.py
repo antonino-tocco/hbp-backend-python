@@ -118,7 +118,8 @@ class NeuroMorphoProvider(Provider):
                             items = self.map_datasets(data['_embedded']['neuronResources'])
                             items = await self.__filter_items__(items)
                             total_pages = data['page']['totalPages']
-                            await session.close()
+                    sleep(20)
+                    await session.close()
                     return (items, total_pages)
         except Exception as ex:
             print(f"exception retrieving values {ex}")
