@@ -8,12 +8,15 @@ def parse_query_args(data=None):
         return data_type, query, region, cell_type, species
     if 'data_type' in data:
         data_type = data['data_type']
-    if 'query' in data:
-        query = data['query']
-    if 'region' in data:
-        region = data['region']
-    if 'cell_type' in data:
-        cell_type = data['cell_type']
-    if 'species' in data:
-        species = data['species']
+    filters = {}
+    if 'filters' in data and data['filters']:
+        filters = data['filters']
+        if 'query' in filters:
+            query = filters['query']
+        if 'region' in filters:
+            region = filters['region']
+        if 'cell_type' in filters:
+            cell_type = filters['cell_type']
+        if 'species' in filters:
+            species = filters['species']
     return data_type, query, region, cell_type, species

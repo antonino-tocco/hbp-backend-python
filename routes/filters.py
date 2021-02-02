@@ -1,4 +1,5 @@
 from injector import Injector
+from icecream import ic
 from dependency import AppModule
 from services import FilterService
 from . import routes_api
@@ -8,7 +9,7 @@ from . import routes_api
 def types(index_name):
     try:
         filter_service = Injector(AppModule).get(FilterService)
-        response = filter_service.filters(index_name, fields=[('type', 'keyword')])
+        response = filter_service.types(index_name)
         return response
     except Exception as ex:
         print(ex)
@@ -16,11 +17,12 @@ def types(index_name):
 
 
 @routes_api.route('/filters/<index_name>')
-def filters(index_name):
+@routes_api.route('/filters/<index_name>/<type>')
+def filters(index_name, type=None):
     try:
         filter_service = Injector(AppModule).get(FilterService)
-        response = filter_service.filters(index_name)
+        response = filter_service.filters(index_name, data_type=type)
         return response
     except Exception as ex:
-        print(ex)
+        ic(f'Exception on getting filters values {ex}')
         raise ex
