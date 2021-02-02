@@ -31,10 +31,11 @@ def create_app():
 
 
 def create_cron_tab():
-    cron = CronTab(user='root')
-    job = cron.new(command='python import_task.py')
-    job.hour.every(6)
-    cron.write()
+    #cron = CronTab(user='root')
+    #job = cron.new(command='python import_task.py')
+    #job.hour.every(6)
+    #cron.write()
+    pass
 
 
 app = create_app()
