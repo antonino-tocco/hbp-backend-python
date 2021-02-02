@@ -47,12 +47,12 @@ class NeuroMorphoProvider(Provider):
                             data = await response.json()
                             all_values.extend(data['fields'])
                             # ONLY FOR AVOID NEUROMORPHO ISSUE
-                            sleep(5)
+                            sleep(20)
                         await session.close()
             except Exception as ex:
                 print(f"Exception retrieving field values {ex}")
                 if num_retry < MAX_REQUEST_RETRY:
-                    sleep(5)
+                    sleep(20)
                     return await self.get_all_field_value(field_name, num_retry=num_retry + 1)
             num_page = num_page + 1
             fetched = True
@@ -90,7 +90,7 @@ class NeuroMorphoProvider(Provider):
                 num_page = num_page + 1
                 fetched = True
                 #ONLY FOR AVOID NEUROMORPHO ISSUE
-                sleep(5)
+                sleep(20)
             return all_items
         except Exception as ex:
             ic(f'Exception on all_items ${ex}')
@@ -123,7 +123,7 @@ class NeuroMorphoProvider(Provider):
         except Exception as ex:
             print(f"exception retrieving values {ex}")
             if num_retry < MAX_REQUEST_RETRY:
-                sleep(5)
+                sleep(20)
                 return await self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
             else:
                 return ([], 1)
