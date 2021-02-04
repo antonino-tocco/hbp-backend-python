@@ -247,7 +247,7 @@ class HippocampomeProvider(Provider):
                                 'http') else f'http://hippocampome.org/php/{image_url}'
                             if absolute_image_url:
                                 try:
-                                    local_image_file_path = download_image(absolute_image_url, self.source)
+                                    local_image_file_path = await download_image(absolute_image_url, self.source)
                                     image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
                                     return image_file_path
                                 except Exception as ex:
