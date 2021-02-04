@@ -1,5 +1,6 @@
 import threading
 import nest_asyncio
+import os
 from crontab import CronTab
 from gevent.pywsgi import WSGIServer
 from flask import Flask
@@ -20,7 +21,7 @@ class HBPBackend(Flask):
 
 
 def create_app():
-    app = HBPBackend(__name__)
+    app = HBPBackend(__name__, static_folder=os.getenv('STATIC_DIR'))
     create_cron_tab()
     try:
         thread = threading.Thread(target=run_on_start)
