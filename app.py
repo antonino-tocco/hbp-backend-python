@@ -21,7 +21,7 @@ class HBPBackend(Flask):
 
 
 def create_app():
-    app = HBPBackend(__name__, static_folder=os.getenv('STATIC_DIR'))
+    app = HBPBackend(__name__, static_url_path='/')
     create_cron_tab()
     try:
         thread = threading.Thread(target=run_on_start)
