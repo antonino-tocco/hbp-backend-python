@@ -248,7 +248,7 @@ class HippocampomeProvider(Provider):
                             if absolute_image_url:
                                 try:
                                     local_image_file_path = await download_image(absolute_image_url, self.source)
-                                    image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
+                                    image_file_path = f"{os.getenv('HOST')}{local_image_file_path}" if local_image_file_path is not None else None
                                     return image_file_path
                                 except Exception as ex:
                                     ic(f'Exception download local image version {ex} - {absolute_image_url}')
