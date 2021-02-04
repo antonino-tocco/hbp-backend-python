@@ -32,5 +32,5 @@ def download_image(url=None, source=None):
                 image_file.close()
                 return f"{image_dir}/{image_name}"
             except Exception as ex:
-                ic(f'Exception storing image file')
+                ic(f'Exception storing image file {ex}')
     return None

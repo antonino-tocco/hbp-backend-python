@@ -246,9 +246,12 @@ class HippocampomeProvider(Provider):
                             absolute_image_url = image_url if image_url.startswith(
                                 'http') else f'http://hippocampome.org/php/{image_url}'
                             if absolute_image_url:
-                                local_image_file_path = download_image(absolute_image_url)
-                                image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
-                                return image_file_path
+                                try:
+                                    local_image_file_path = download_image(absolute_image_url)
+                                    image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
+                                    return image_file_path
+                                except Exception as ex:
+                                    ic(f'Exception download local image version {ex} - {absolute_image_url}')
         except Exception as ex:
             ic(f'Exception on extract representative figure {ex}')
         return None

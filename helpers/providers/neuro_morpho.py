@@ -154,9 +154,12 @@ class NeuroMorphoProvider(Provider):
 
         image_file_path = None
 
-        if dataset['png_url']:
-            local_image_file_path = download_image(dataset['png_url'])
-            image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
+        try:
+            if dataset['png_url']:
+                local_image_file_path = download_image(dataset['png_url'])
+                image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
+        except Exception as ex:
+            ic(f'Exception download image {ex}')
 
         try:
             return {
