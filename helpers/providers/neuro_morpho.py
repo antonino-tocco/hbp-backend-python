@@ -98,9 +98,9 @@ class NeuroMorphoProvider(Provider):
             ic(f'Exception on all_items ${ex}')
             raise ex
 
-    def map_datasets(self, items=[]):
+    async def map_datasets(self, items=[]):
         try:
-            mapped_datasets = [self.__map_dataset__(x) for x in items]
+            mapped_datasets = [await self.__map_dataset__(x) for x in items]
             return mapped_datasets
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
@@ -117,7 +117,7 @@ class NeuroMorphoProvider(Provider):
                     if response is not None and response.status == 200:
                         data = await response.json()
                         if data is not None and '_embedded' in data:
-                            items = self.map_datasets(data['_embedded']['neuronResources'])
+                            items = await self.map_datasets(data['_embedded']['neuronResources'])
                             items = await self.__filter_items__(items)
                             total_pages = data['page']['totalPages']
                     sleep(SLEEP_TIME)
@@ -131,7 +131,7 @@ class NeuroMorphoProvider(Provider):
             else:
                 return ([], 1)
 
-    def __map_dataset__(self, dataset):
+    async def __map_dataset__(self, dataset):
         regions = dataset['brain_region']
         cell_types = dataset['cell_type']
         brain_region = ''

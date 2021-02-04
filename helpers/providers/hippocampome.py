@@ -136,7 +136,7 @@ class HippocampomeProvider(Provider):
                         tables = parsed_page.select('table.body_table > tbody > tr > td > table')
                         if tables:
                             name = self.__extract_name__(tables)
-                            icon = self.__extract_representantive_figure__(tables)
+                            icon = await self.__extract_representantive_figure__(tables)
                             papers = self.__extract_papers__(tables)
                             data['name'] = name
                             data['icon'] = icon
@@ -222,7 +222,7 @@ class HippocampomeProvider(Provider):
 
         return papers
 
-    def __extract_representantive_figure__(self, tables=[]):
+    async def __extract_representantive_figure__(self, tables=[]):
         try:
             representantive_figure_table_index = -1
             for index, table in enumerate(tables):
