@@ -44,8 +44,6 @@ services:
       - WAIT_LOOPS=50
     env_file:
       - backend.env
-    volumes:
-      - ./data/images:/usr/app/static/images
     ports:
       - 17895:5000
     depends_on:
