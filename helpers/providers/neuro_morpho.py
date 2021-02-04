@@ -1,9 +1,11 @@
 import math
 import aiohttp
+import os
 from icecream import ic
 from time import sleep
 from functools import reduce
-
+from constants import SLEEP_TIME
+from helpers.download_helper import download_image
 from .provider import Provider
 
 BASE_URL = "http://neuromorpho.org/api"
@@ -47,12 +49,12 @@ class NeuroMorphoProvider(Provider):
                             data = await response.json()
                             all_values.extend(data['fields'])
                             # ONLY FOR AVOID NEUROMORPHO ISSUE
-                            sleep(20)
+                            sleep(SLEEP_TIME)
                         await session.close()
             except Exception as ex:
                 print(f"Exception retrieving field values {ex}")
                 if num_retry < MAX_REQUEST_RETRY:
-                    sleep(20)
+                    sleep(SLEEP_TIME)
                     return await self.get_all_field_value(field_name, num_retry=num_retry + 1)
             num_page = num_page + 1
             fetched = True
@@ -90,7 +92,7 @@ class NeuroMorphoProvider(Provider):
                 num_page = num_page + 1
                 fetched = True
                 #ONLY FOR AVOID NEUROMORPHO ISSUE
-                sleep(20)
+                sleep(SLEEP_TIME)
             return all_items
         except Exception as ex:
             ic(f'Exception on all_items ${ex}')
@@ -118,13 +120,13 @@ class NeuroMorphoProvider(Provider):
                             items = self.map_datasets(data['_embedded']['neuronResources'])
                             items = await self.__filter_items__(items)
                             total_pages = data['page']['totalPages']
-                    sleep(20)
+                    sleep(SLEEP_TIME)
                     await session.close()
                     return (items, total_pages)
         except Exception as ex:
             print(f"exception retrieving values {ex}")
             if num_retry < MAX_REQUEST_RETRY:
-                sleep(20)
+                sleep(SLEEP_TIME)
                 return await self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
             else:
                 return ([], 1)
@@ -150,6 +152,12 @@ class NeuroMorphoProvider(Provider):
 
         storage_identfier = f"{self.id_prefix}-{dataset['neuron_id']}"
 
+        image_file_path = None
+
+        if dataset['png_url']:
+            local_image_file_path = download_image(dataset['png_url'])
+            image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
+
         try:
             return {
                 'identifier': storage_identfier,
@@ -165,7 +173,7 @@ class NeuroMorphoProvider(Provider):
                     'cell_type': primary_cell_type,
                     'secondary_cell_type': secondary_cell_type,
                     'species': dataset['species'],
-                    'icon': dataset['png_url'],
+                    'icon': image_file_path,
                     'link': dataset['_links']['self']['href'],
                     'original_format': dataset['original_format'],
                     'physical_integrity': dataset['physical_Integrity'],

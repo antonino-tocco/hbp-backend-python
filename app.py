@@ -7,6 +7,7 @@ from flask_cors import CORS
 from flask_injector import FlaskInjector
 from dependency import injector
 from import_task import run_on_start
+from helpers.download_helper import download_image
 
 from routes import routes_api
 

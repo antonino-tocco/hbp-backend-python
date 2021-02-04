@@ -1,9 +1,12 @@
+import os
 import aiohttp
 import html5lib
 from time import sleep
 from icecream import ic
 from bs4 import BeautifulSoup, Tag
 from functools import reduce
+from constants import SLEEP_TIME
+from helpers.download_helper import download_image
 from .provider import Provider
 
 BASE_URL = 'http://hippocampome.org/php/search_engine_json.php?query_str='
@@ -35,8 +38,14 @@ LAYERS = {
         'layers': '??????'
     }
 }
-MARKERS = ['CB','CR','PV','Mus2R','5HT-3','Gaba-a-alpha','mGluR1a','vGluT3','CCK','SOM','nNOS','PPTA','vGluT2','CGRP','mGluR2/3','mGluR5','Prox1','GABAa \delta',
-           'MUS1R','Mus3R','Mus4R','Cam','AMPAR 2/3','Disc1','BONG','p-CREB','Neuropilin2'
+MARKERS = ['CB', 'CR', 'PV', 'Mus2R', '5HT-3', 'Gaba-a-alpha', 'mGluR1a', 'vGluT3', 'CCK', 'SOM', 'nNOS', 'PPTA',
+           'vGluT2', 'CGRP', 'mGluR2/3', 'mGluR5', 'Prox1', 'GABAa \delta',
+           'MUS1R', 'Mus3R', 'Mus4R', 'Cam', 'AMPAR 2/3', 'Disc1', 'BONG', 'p-CREB', 'Neuropilin2', 'mGluR1', 'Caln',
+           'vGlut1', 'mGluR2', 'mGluR3', 'GABAa\alpha 2', 'GABAa\alpha 3', 'GABAa\alpha 4', 'GABAa\alpha 5',
+           'GABAa\alpha 6', 'GABAa\beta 1', 'GABAa\beta 2', 'GABAa\beta 3', 'GABAa\gamma 1', 'GABAa\gamma 2', 'mGluR5a',
+           'GlyT2', 'mGluR7a',
+           'mGluR8a', 'vAChT', 'AChE', 'Kv3.1', 'Cx36', 'AR-beta1', 'AR-beta2', 'TH', 'mGluR4', 'CXCR4', 'GABA-B1',
+           'GluA2', 'GluA1', 'GluA3', 'GluA4'
            ]
 
 
@@ -71,12 +80,13 @@ class HippocampomeProvider(Provider):
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
-                        neuron_data = await self.__scrape_data_page__(result[index]['source_id'], type='electrophysiology')
+                        neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
+                                                                      type='electrophysiology')
                         neurons.append(neuron_data)
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
-        sleep(20)
+        sleep(SLEEP_TIME)
         return neurons
 
     async def __search_connections__(self, start=0, hits_per_page=50):
@@ -109,11 +119,11 @@ class HippocampomeProvider(Provider):
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
 
-        sleep(20)
+        sleep(SLEEP_TIME)
         return connections
 
     async def __scrape_data_page__(self, id, type=None):
-        assert(id is not None)
+        assert (id is not None)
         data = {}
         url = f'http://hippocampome.org/php/neuron_page.php?id={id}'
         try:
@@ -145,7 +155,7 @@ class HippocampomeProvider(Provider):
             'identifier': f'{id}',
             'source': data
         }
-        sleep(20)
+        sleep(SLEEP_TIME)
         return neuron
 
     def map_models(self, items=[]):
@@ -194,10 +204,14 @@ class HippocampomeProvider(Provider):
                     element = elements[0]
                     contents = element.contents
                     for index, content in enumerate(contents):
-                        if isinstance(content, Tag) and content.name == 'strong' and reduce(lambda a, b: a or b, ['pmid' in item.lower() for item in content.contents], False):
+                        if isinstance(content, Tag) and content.name == 'strong' and reduce(lambda a, b: a or b,
+                                                                                            ['pmid' in item.lower() for
+                                                                                             item in content.contents],
+                                                                                            False):
                             pmid_link = contents[index + 1]
                             if isinstance(pmid_link, Tag) and pmid_link.name == 'a':
-                                label = pmid_link.contents[1] if isinstance(pmid_link.contents[1], str) else pmid_link.contents[1].contents[0]
+                                label = pmid_link.contents[1] if isinstance(pmid_link.contents[1], str) else \
+                                    pmid_link.contents[1].contents[0]
                                 papers.append({
                                     'label': label,
                                     'url': pmid_link.attrs['href']
@@ -221,7 +235,7 @@ class HippocampomeProvider(Provider):
                                 if isinstance(content, str) and content.strip().lower() == 'representative figure':
                                     representantive_figure_table_index = index
                                     break
-            if representantive_figure_table_index -1 and len(tables) > representantive_figure_table_index + 2:
+            if representantive_figure_table_index - 1 and len(tables) > representantive_figure_table_index + 2:
                 table = tables[representantive_figure_table_index + 2]
                 elements = table.select('tbody > tr > td')
                 if elements:
@@ -229,7 +243,12 @@ class HippocampomeProvider(Provider):
                         images = elem.select('img')
                         if images:
                             image_url = images[0].attrs['src']
-                            return image_url if image_url.startswith('http') else f'http://hippocampome.org/php/{image_url}'
+                            absolute_image_url = image_url if image_url.startswith(
+                                'http') else f'http://hippocampome.org/php/{image_url}'
+                            if absolute_image_url:
+                                local_image_file_path = download_image(absolute_image_url)
+                                image_file_path = f"{os.getenv('HOST')}/{local_image_file_path}" if local_image_file_path is not None else None
+                                return image_file_path
         except Exception as ex:
             ic(f'Exception on extract representative figure {ex}')
         return None
