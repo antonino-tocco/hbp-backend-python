@@ -7,21 +7,37 @@ default_fields = {
         'morphology': {
             'secondary_region': {
                 'label': 'region',
+                'type': 'multiple',
                 'values': ('secondary_region', 'keyword'),
             },
             'cell_type': {
                 'label': 'cell type',
+                'type': 'multiple',
                 'values': ('cell_type', 'keyword'),
             },
             'species': {
                 'label': 'species',
+                'type': 'multiple',
                 'values': ('species', 'keyword')
             }
         },
-        'electrophysiology': {},
+        'electrophysiology': {
+
+        },
         'connections': {}
     },
-    'model': {}
+    'model': {
+        'channels': {
+            'label': 'channels',
+            'type': 'suggestion',
+            'values': ('channels', 'keyword')
+        },
+        'receptors': {
+            'label': 'receptors',
+            'type': 'suggestion',
+            'values': ('receptors', 'keyword')
+        }
+    }
 }
 
 
@@ -58,6 +74,7 @@ class FilterService:
                 result[key] = {
                     'key': key,
                     'label': fields[key]['label'],
+                    'type': fields[key]['type'],
                     'values': response[key]
                 }
             return result

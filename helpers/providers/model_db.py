@@ -61,26 +61,26 @@ class ModelDbProvider(Provider):
         model_concepts = []
         modeling_applications = []
         papers = []
+        receptors = []
         description = ''
         try:
             if 'neurons' in item and 'value' in item['neurons'] and len(item['neurons']['value']) > 0:
-                cell_types = list(map(lambda a: a['object_name'], item['neurons']['value']))
+                cell_types = [a['object_name'] for a in item['neurons']['value']]
             if 'model_paper' in item and 'value' in item['model_paper'] and len(item['model_paper']['value']) > 0:
-                papers = list(map(lambda a: {
-                    'label': a['object_name']
-                }, item['model_paper']['value']))
+                papers = [a['object_name'] for a in item['model_paper']['value']]
             if 'currents' in item and 'value' in item['currents'] and len(item['currents']['value']) > 0:
-                channels = list(map(lambda a: a['object_name'], item['currents']['value']))
+                channels = [a['object_name'] for a in item['currents']['value']]
             if 'model_type' in item and 'value' in item['model_type'] and len(item['model_type']['value']) > 0:
-                model_types = list(map(lambda a: a['object_name'], item['model_type']['value']))
+                model_types = [a['object_name'] for a in item['model_type']['value']]
             if 'model_concept' in item and 'value' in item['model_concept'] and len(item['model_concept']['value']) > 0:
-                model_concepts = list(map(lambda a: a['object_name'], item['model_concept']['value']))
+                model_concepts = [a['object_name'] for a in item['model_concept']['value']]
             if 'modeling_application' in item and 'value' in item['modeling_application'] and len(
                     item['modeling_application']['value']) > 0:
-                modeling_applications = list(map(lambda a: a['object_name'], item['modeling_application']['value']))
+                modeling_applications = [a['object_name'] for a in item['modeling_application']['value']]
             if 'notes' in item:
                 description = item['notes']['value']
-
+            if 'receptors' in item and 'value' in item['receptors'] and len(item['receptors']['value']) > 0:
+                receptors = [a['object_name'] for a in item['receptors']['value']]
             return {
                 'identifier': storage_identifier,
                 'source': {
@@ -99,6 +99,7 @@ class ModelDbProvider(Provider):
                     'papers': papers,
                     'readme_link': item['readme_link'] if 'readme_link' in item else None,
                     'model_files': item['model_files'] if 'model_files' in item else None,
+                    'receptors': receptors,
                     'type': 'single',
                     'source': self.source
                 }
@@ -123,7 +124,6 @@ class ModelDbProvider(Provider):
         except Exception as ex:
             ic(f"Exception on get model db single item {ex}")
         return None
-
 
     @staticmethod
     async def __get_additional_data__(id=None):
