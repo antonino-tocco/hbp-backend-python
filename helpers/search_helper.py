@@ -15,8 +15,8 @@ def parse_query_args(data=None):
         filters = data['filters']
         if 'query' in filters:
             query = filters['query']
-        if 'region' in filters:
-            region = filters['region']
+        if 'secondary_region' in filters:
+            region = filters['secondary_region']
         if 'cell_type' in filters:
             cell_type = filters['cell_type']
         if 'species' in filters:
