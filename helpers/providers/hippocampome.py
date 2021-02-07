@@ -138,9 +138,11 @@ class HippocampomeProvider(Provider):
                             name = self.__extract_name__(tables)
                             icon = await self.__extract_representantive_figure__(tables)
                             papers = self.__extract_papers__(tables)
+                            markers = self.__extract_markers__(tables)
                             data['name'] = name
                             data['icon'] = icon
                             data['papers'] = papers
+                            data['markers'] = markers
         except Exception as ex:
             ic(f'Exception on do data scrape {ex}')
 
@@ -204,10 +206,8 @@ class HippocampomeProvider(Provider):
                     element = elements[0]
                     contents = element.contents
                     for index, content in enumerate(contents):
-                        if isinstance(content, Tag) and content.name == 'strong' and reduce(lambda a, b: a or b,
-                                                                                            ['pmid' in item.lower() for
-                                                                                             item in content.contents],
-                                                                                            False):
+                        if isinstance(content, Tag) and content.name == 'strong' and \
+                                reduce(lambda a, b: a or b, ['pmid' in item.lower() for item in content.contents], False):
                             pmid_link = contents[index + 1]
                             if isinstance(pmid_link, Tag) and pmid_link.name == 'a':
                                 label = pmid_link.contents[1] if isinstance(pmid_link.contents[1], str) else \
@@ -255,3 +255,59 @@ class HippocampomeProvider(Provider):
         except Exception as ex:
             ic(f'Exception on extract representative figure {ex}')
         return None
+
+    def __extract_markers__(self, tables=[]):
+        markers = []
+        try:
+            representantive_figure_table_index = -1
+            for index, table in enumerate(tables):
+                table_elements = table.select('tbody > tr > td')
+                if table_elements:
+                    for elem in table_elements:
+                        contents = elem.contents
+                        if contents:
+                            for content in contents:
+                                if isinstance(content, str) and content.strip().lower() == 'representative figure':
+                                    representantive_figure_table_index = index
+                                    break
+            #positive markers
+            if representantive_figure_table_index - 1 and len(tables) > representantive_figure_table_index + 4:
+                table = tables[representantive_figure_table_index + 4]
+                elements = table.select('tbody > tr > td.table_neuron_page2')
+                if elements:
+                    element = elements[0]
+                    contents = element.contents
+                    for content in contents:
+                        if isinstance(content, Tag) and content.name == 'a':
+                            if len(content.contents) > 0 and isinstance(content.contents[0], str):
+                                label = content.contents[0].strip()
+                                markers.append(label)
+            #negative markers
+            if representantive_figure_table_index - 1 and len(tables) > representantive_figure_table_index + 5:
+                table = tables[representantive_figure_table_index + 5]
+                elements = table.select('tbody > tr > td.table_neuron_page2')
+                if elements:
+                    element = elements[0]
+                    contents = element.contents
+                    for content in contents:
+                        if isinstance(content, Tag) and content.name == 'a':
+                            if len(content.contents) > 0 and isinstance(content.contents[0], str):
+                                label = content.contents[0].strip()
+                                markers.append(label)
+            #mixed expression
+            if representantive_figure_table_index - 1 and len(tables) > representantive_figure_table_index + 6:
+                table = tables[representantive_figure_table_index + 6]
+                elements = table.select('tbody > tr > td.table_neuron_page2')
+                if elements:
+                    element = elements[0]
+                    contents = element.contents
+                    for content in contents:
+                        if isinstance(content, Tag) and content.name == 'a':
+                            if len(content.contents) > 0 and isinstance(content.contents[0], str):
+                                label = content.contents[0].strip()
+                                markers.append(label)
+            return markers
+        except Exception as ex:
+            ic(f'Exception on extract representative figure {ex}')
+        return None
+
