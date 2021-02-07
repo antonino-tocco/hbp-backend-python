@@ -66,8 +66,12 @@ class ModelDbProvider(Provider):
         try:
             if 'neurons' in item and 'value' in item['neurons'] and len(item['neurons']['value']) > 0:
                 cell_types = [a['object_name'] for a in item['neurons']['value']]
-            if 'model_paper' in item and 'value' in item['model_paper'] and len(item['model_paper']['value']) > 0:
-                papers = [a['object_name'] for a in item['model_paper']['value']]
+            if 'papers' in item and len(item['papers']) > 0:
+                papers = item['papers']
+            elif 'model_paper' in item and 'value' in item['model_paper'] and len(item['model_paper']['value']) > 0:
+                papers = [{
+                    'label': a['object_name']
+                } for a in item['model_paper']['value']]
             if 'currents' in item and 'value' in item['currents'] and len(item['currents']['value']) > 0:
                 channels = [a['object_name'] for a in item['currents']['value']]
             if 'model_type' in item and 'value' in item['model_type'] and len(item['model_type']['value']) > 0:
@@ -165,7 +169,8 @@ class ModelDbProvider(Provider):
         if results:
             file_tree_table = results[0]
         if file_tree_table is not None:
-            link_children = file_tree_table.select(selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
+            link_children = file_tree_table.select(
+                selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
             for link in link_children:
                 if link.contents is not None:
                     contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
@@ -186,7 +191,8 @@ class ModelDbProvider(Provider):
         if results:
             file_tree_table = results[0]
         if file_tree_table is not None:
-            link_children = file_tree_table.select(selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
+            link_children = file_tree_table.select(
+                selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
             for link in link_children:
                 if link.contents is not None:
                     contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
@@ -218,7 +224,6 @@ class ModelDbProvider(Provider):
             'url': a
         }, model_results))
 
-
     @staticmethod
     async def __get_papers_refs__(id=None):
         assert (id is not None)
@@ -234,7 +239,8 @@ class ModelDbProvider(Provider):
                     if paper_link:
                         papers_ref = [{
                             'label': reference.contents[0].strip(),
-                            'url': paper_link.attrs['href'] if paper_link.attrs is not None and 'href' in paper_link.attrs else None
+                            'url': paper_link.attrs[
+                                'href'] if paper_link.attrs is not None and 'href' in paper_link.attrs else None
                         }]
         except Exception as ex:
             ic(f'Exception on get papers {ex}')
