@@ -4,6 +4,8 @@ def parse_query_args(data=None):
     region = ''
     cell_type = ''
     species = ''
+    channels = ''
+    receptors = ''
     if data is None:
         return data_type, query, region, cell_type, species
     if 'data_type' in data:
@@ -19,4 +21,8 @@ def parse_query_args(data=None):
             cell_type = filters['cell_type']
         if 'species' in filters:
             species = filters['species']
-    return data_type, query, region, cell_type, species
+        if 'channels' in filters:
+            channels = filters['channels']
+        if 'receptors' in filters:
+            receptors = filters['receptors']
+    return data_type, query, region, cell_type, species, channels, receptors

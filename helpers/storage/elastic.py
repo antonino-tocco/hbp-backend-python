@@ -40,7 +40,7 @@ class ElasticStorage(Storage):
             print(ex)
         return response
 
-    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword']):
+    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword'], channels=None, receptors=None):
         try:
             s = Search(using=self.es)
             s = s.index(index)
@@ -56,6 +56,10 @@ class ElasticStorage(Storage):
                     s = s.filter('term', **{'cell_type.keyword': cell_type})
                 if species is not None and species != '':
                     s = s.filter('term', **{'species.keyword': species})
+                if channels is not None and channels != '':
+                    s = s.filter('term', **{'channels.keyword': channels})
+                if receptors is not None and receptors != '':
+                    s = s.filter('term', **{'receptors.keyword': receptors})
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
                 if sort_fields:
