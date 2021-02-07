@@ -141,7 +141,7 @@ class NeuroMorphoProvider(Provider):
         if len(regions) > 0:
             brain_region = regions[0]
         if len(regions) > 1:
-            secondary_region = regions[1]
+            secondary_region = [regions[1]]
 
         if len(cell_types) > 0:
             primary_cell_type = cell_types[0]

@@ -139,10 +139,12 @@ class HippocampomeProvider(Provider):
                             icon = await self.__extract_representantive_figure__(tables)
                             papers = self.__extract_papers__(tables)
                             markers = self.__extract_markers__(tables)
+                            regions = self.__extract_regions__(tables)
                             data['name'] = name
                             data['icon'] = icon
                             data['papers'] = papers
                             data['markers'] = markers
+                            data['secondary_region'] = regions
         except Exception as ex:
             ic(f'Exception on do data scrape {ex}')
 
@@ -184,6 +186,25 @@ class HippocampomeProvider(Provider):
         except Exception as ex:
             ic(f'Exception on extract name {ex}')
         return None
+
+    def __extract_regions__(self, tables=[]):
+        regions = []
+        try:
+            if tables and len(tables) > 7:
+                region_tags = tables[7].select('.table_neuron_page2 > a > font')
+                if region_tags and len(region_tags) > 0:
+                    regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
+            if tables and len(tables) > 8:
+                region_tags = tables[8].select('.table_neuron_page2 > a > font')
+                if region_tags and len(region_tags) > 0:
+                    regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
+            if tables and len(tables) > 9:
+                region_tags = tables[9].select('.table_neuron_page2 > a > font')
+                if region_tags and len(region_tags) > 0:
+                    regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
+        except Exception as ex:
+            ic(f'Exception for regions {ex}')
+        return list(set(regions))
 
     def __extract_papers__(self, tables=[]):
         papers = []
@@ -306,7 +327,7 @@ class HippocampomeProvider(Provider):
                             if len(content.contents) > 0 and isinstance(content.contents[0], str):
                                 label = content.contents[0].strip()
                                 markers.append(label)
-            return markers
+            return list(set(markers))
         except Exception as ex:
             ic(f'Exception on extract representative figure {ex}')
         return None
