@@ -62,11 +62,16 @@ class FilterService:
             computed_fields = fields
             if fields is None:
                 fields = default_fields[index_name]
-                if fields is not None and data_type in fields:
-                    computed_fields = []
-                    fields = fields[data_type]
-                    for key in fields:
-                        computed_fields.append(fields[key]['values'])
+                if fields is not None:
+                    if data_type is not None and data_type in fields:
+                        computed_fields = []
+                        fields = fields[data_type]
+                        for key in fields:
+                            computed_fields.append(fields[key]['values'])
+                    else:
+                        computed_fields = []
+                        for key in fields:
+                            computed_fields.append(fields[key]['values'])
             response = self.storage.get_terms_aggregation(index_name, data_type, fields=computed_fields)
             result = {}
             for key in response:
