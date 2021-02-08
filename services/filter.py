@@ -28,7 +28,22 @@ default_fields = {
                 'values': ('secondary_region', 'keyword'),
             },
         },
-        'connections': {}
+        'connections': {
+            'pre': {
+                'secondary_region': {
+                    'label': 'region',
+                    'type': 'multiple',
+                    'values': ('secondary_region', 'keyword'),
+                },
+            },
+            'post': {
+                'secondary_region': {
+                    'label': 'region',
+                    'type': 'multiple',
+                    'values': ('secondary_region', 'keyword'),
+                },
+            }
+        }
     },
     'model': {
         'channels': {
