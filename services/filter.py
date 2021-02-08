@@ -22,7 +22,11 @@ default_fields = {
             }
         },
         'electrophysiology': {
-
+            'secondary_region': {
+                'label': 'region',
+                'type': 'multiple',
+                'values': ('secondary_region', 'keyword'),
+            },
         },
         'connections': {}
     },
