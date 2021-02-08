@@ -143,8 +143,8 @@ class HippocampomeProvider(Provider):
                             data['name'] = name
                             data['icon'] = icon
                             data['papers'] = papers
-                            data['markers'] = markers
-                            data['secondary_region'] = regions
+                            data['markers'] = list(set(filter(lambda a: a is not None and a != '', markers)))
+                            data['secondary_region'] = list(set(regions))
         except Exception as ex:
             ic(f'Exception on do data scrape {ex}')
 
