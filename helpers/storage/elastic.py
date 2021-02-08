@@ -50,16 +50,31 @@ class ElasticStorage(Storage):
                 s = s[start:start + hits_per_page]
                 if data_type is not None:
                     s = s.filter('term', **{'type.keyword': data_type})
-                if secondary_region is not None and secondary_region != '':
-                    s = s.filter('term', **{'secondary_region.keyword': secondary_region})
-                if cell_type is not None and cell_type != '':
-                    s = s.filter('term', **{'cell_type.keyword': cell_type})
-                if species is not None and species != '':
-                    s = s.filter('term', **{'species.keyword': species})
-                if channels is not None and channels != '':
-                    s = s.filter('term', **{'channels.keyword': channels})
-                if receptors is not None and receptors != '':
-                    s = s.filter('term', **{'receptors.keyword': receptors})
+                if secondary_region is not None:
+                    if isinstance(secondary_region, str):
+                        s = s.filter('term', **{'secondary_region.keyword': secondary_region})
+                    else:
+                        s = s.filter('terms', **{'secondary_region': secondary_region})
+                if cell_type is not None:
+                    if isinstance(cell_type, str):
+                        s = s.filter('term', **{'cell_type.keyword': cell_type})
+                    else:
+                        s = s.filter('terms', **{'cell_type': cell_type})
+                if species is not None:
+                    if isinstance(species, str):
+                        s = s.filter('term', **{'species.keyword': species})
+                    else:
+                        s = s.filter('terms', **{'species': species})
+                if channels is not None:
+                    if isinstance(channels, str):
+                        s = s.filter('term', **{'channels.keyword': channels})
+                    else:
+                        s = s.filter('terms', **{'channels': channels})
+                if receptors is not None:
+                    if isinstance(receptors, str):
+                        s = s.filter('term', **{'receptors.keyword': receptors})
+                    else:
+                        s = s.query('terms', **{'receptors': receptors})
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
                 if sort_fields:
