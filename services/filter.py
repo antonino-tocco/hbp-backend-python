@@ -83,17 +83,25 @@ class FilterService:
                 fields = default_fields[index_name]
                 if fields is not None:
                     if data_type is not None and data_type in fields:
-                        computed_fields = self.__extract_filter_values__(fields[data_type])
+                        computed_fields = self.__extract_filter_values__(fields[data_type], [])
                     else:
-                        computed_fields = self.__extract_filter_values__(fields)
+                        computed_fields = self.__extract_filter_values__(fields, [])
             response = self.storage.get_terms_aggregation(index_name, data_type, fields=computed_fields)
             result = {}
             for key in response:
+                prefix_key = key.split('.')[0]
+                computed_key = key.split('.')[-1]
+                if data_type is not None:
+                    filter_data = fields[data_type][prefix_key][computed_key] if prefix_key != computed_key else \
+                        fields[data_type][computed_key]
+                else:
+                    filter_data = fields[prefix_key][computed_key] if prefix_key != computed_key else \
+                        fields[computed_key]
                 ic(f'Key {key}')
                 result[key] = {
-                    'key': key,
-                    'label': fields[data_type][key]['label'],
-                    'type': fields[data_type][key]['type'],
+                    'key': computed_key,
+                    'label': filter_data['label'],
+                    'type': filter_data['type'],
                     'values': response[key]
                 }
             return result
@@ -101,7 +109,8 @@ class FilterService:
             ic(f'Exception getting filter {ex}')
             raise ex
 
-    def __extract_filter_values__(self, fields, filters=[]):
+    def __extract_filter_values__(self, fields, initial_filters=[]):
+        filters = initial_filters.copy()
         for key in fields:
             value = fields[key]
             if 'values' in value:
