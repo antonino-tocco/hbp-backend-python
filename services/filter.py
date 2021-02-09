@@ -29,18 +29,18 @@ default_fields = {
             },
         },
         'connection': {
-            'pre': {
+            'presynaptic': {
                 'secondary_region': {
                     'label': 'region',
                     'type': 'multiple',
-                    'values': ('pre.secondary_region', 'keyword'),
+                    'values': ('presynaptic.secondary_region', 'keyword'),
                 },
             },
-            'post': {
+            'postsynaptic': {
                 'secondary_region': {
                     'label': 'region',
                     'type': 'multiple',
-                    'values': ('post.secondary_region', 'keyword'),
+                    'values': ('postsynaptic.secondary_region', 'keyword'),
                 },
             }
         }
