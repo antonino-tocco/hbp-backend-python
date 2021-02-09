@@ -40,6 +40,35 @@ class ElasticStorage(Storage):
             print(ex)
         return response
 
+    def search_connections(self, start=0, hits_per_page=20, query='', pre=None, post=None):
+        try:
+            s = Search(using=self.es)
+            s = s.index('connection')
+            s = s[start: start + hits_per_page]
+            if query is not None and query != '':
+                s = s.query('multi_match', query=query, fields=['pren.name', 'pre.description', 'post.name', 'post.description'])
+            if pre:
+                for key in pre:
+                    values = pre[key]
+                    if isinstance(values, str):
+                        if values != '':
+                            s = s.filter('term', **{f'pre.{key}.keyword': values})
+                    elif values:
+                        s = s.filter('terms', **{f'pre.{key}.keyword': values})
+            if post:
+                for key in pre:
+                    values = pre[key]
+                    if isinstance(values, str):
+                        if values != '':
+                            s = s.filter('term', **{f'post.{key}.keyword': values})
+                    elif values:
+                        s = s.filter('terms', **{f'post.{key}.keyword': values})
+            return s.execute()
+        except Exception as ex:
+            raise ex
+
+
+
     def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword'], channels=None, receptors=None):
         try:
             s = Search(using=self.es)

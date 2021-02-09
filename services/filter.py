@@ -28,19 +28,19 @@ default_fields = {
                 'values': ('secondary_region', 'keyword'),
             },
         },
-        'connections': {
+        'connection': {
             'pre': {
                 'secondary_region': {
                     'label': 'region',
                     'type': 'multiple',
-                    'values': ('secondary_region', 'keyword'),
+                    'values': ('pre.secondary_region', 'keyword'),
                 },
             },
             'post': {
                 'secondary_region': {
                     'label': 'region',
                     'type': 'multiple',
-                    'values': ('secondary_region', 'keyword'),
+                    'values': ('post.secondary_region', 'keyword'),
                 },
             }
         }
@@ -83,16 +83,9 @@ class FilterService:
                 fields = default_fields[index_name]
                 if fields is not None:
                     if data_type is not None and data_type in fields:
-                        computed_fields = []
-                        fields = fields[data_type]
-                        for key in fields:
-                            if 'values' in fields[key]:
-                                computed_fields.append(fields[key]['values'])
+                        computed_fields = self.__extract_filter_values__(fields[data_type])
                     else:
-                        computed_fields = []
-                        for key in fields:
-                            if 'values' in fields[key]:
-                                computed_fields.append(fields[key]['values'])
+                        computed_fields = self.__extract_filter_values__(fields)
             response = self.storage.get_terms_aggregation(index_name, data_type, fields=computed_fields)
             result = {}
             for key in response:
@@ -107,3 +100,12 @@ class FilterService:
         except Exception as ex:
             ic(f'Exception getting filter {ex}')
             raise ex
+
+    def __extract_filter_values__(self, fields, filters=[]):
+        for key in fields:
+            value = fields[key]
+            if 'values' in value:
+                filters.append(value['values'])
+            else:
+                filters = self.__extract_filter_values__(value, filters)
+        return filters

@@ -26,3 +26,15 @@ def parse_query_args(data=None):
         if 'receptors' in filters:
             receptors = filters['receptors']
     return data_type, query, region, cell_type, species, channels, receptors
+
+def parse_connections_args(data=None):
+    pre = {}
+    post = {}
+    if data is None:
+        return pre, post
+    else:
+        if 'pre' in data:
+            pre = data['pre']
+        if 'post' in data:
+            post = data['post']
+    return pre, post

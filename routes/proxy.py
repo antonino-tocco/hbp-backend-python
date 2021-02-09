@@ -6,6 +6,7 @@ import requests
 
 @routes_api.route('/proxy', methods=['GET'])
 def proxy():
+    return None
     url = request.args.get('url')
     if url is None or url.strip() == "":
         return None
