@@ -92,8 +92,8 @@ class FilterService:
                 ic(f'Key {key}')
                 result[key] = {
                     'key': key,
-                    'label': fields[key]['label'],
-                    'type': fields[key]['type'],
+                    'label': fields[data_type][key]['label'],
+                    'type': fields[data_type][key]['type'],
                     'values': response[key]
                 }
             return result
