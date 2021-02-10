@@ -46,23 +46,24 @@ class ElasticStorage(Storage):
             s = s.index('connection')
             s = s[start: start + hits_per_page]
             if query is not None and query != '':
-                s = s.query('multi_match', query=query, fields=['pren.name', 'pre.description', 'post.name', 'post.description'])
+                s = s.query('multi_match', query=query, fields=['presynaptic.name', 'presynaptic.description',
+                                                                'postsynaptic.name', 'postsynaptic.description'])
             if pre:
                 for key in pre:
                     values = pre[key]
                     if isinstance(values, str):
                         if values != '':
-                            s = s.filter('term', **{f'pre.{key}.keyword': values})
+                            s = s.filter('term', **{f'presynaptic.{key}.keyword': values})
                     elif values:
-                        s = s.filter('terms', **{f'pre.{key}.keyword': values})
+                        s = s.filter('terms', **{f'presynaptic.{key}.keyword': values})
             if post:
                 for key in pre:
                     values = pre[key]
                     if isinstance(values, str):
                         if values != '':
-                            s = s.filter('term', **{f'post.{key}.keyword': values})
+                            s = s.filter('term', **{f'postsynaptic.{key}.keyword': values})
                     elif values:
-                        s = s.filter('terms', **{f'post.{key}.keyword': values})
+                        s = s.filter('terms', **{f'postsynaptic.{key}.keyword': values})
             return s.execute()
         except Exception as ex:
             raise ex
