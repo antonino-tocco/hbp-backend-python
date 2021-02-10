@@ -40,7 +40,7 @@ class ElasticStorage(Storage):
             print(ex)
         return response
 
-    def search_connections(self, start=0, hits_per_page=20, query='', pre=None, post=None):
+    def search_connections(self, start=0, hits_per_page=20, query='', presynaptic=None, postsynaptic=None):
         try:
             s = Search(using=self.es)
             s = s.index('connection')
@@ -48,17 +48,17 @@ class ElasticStorage(Storage):
             if query is not None and query != '':
                 s = s.query('multi_match', query=query, fields=['presynaptic.name', 'presynaptic.description',
                                                                 'postsynaptic.name', 'postsynaptic.description'])
-            if pre:
-                for key in pre:
-                    values = pre[key]
+            if presynaptic:
+                for key in presynaptic:
+                    values = presynaptic[key]
                     if isinstance(values, str):
                         if values != '':
                             s = s.filter('term', **{f'presynaptic.{key}.keyword': values})
                     elif values:
                         s = s.filter('terms', **{f'presynaptic.{key}.keyword': values})
-            if post:
-                for key in pre:
-                    values = pre[key]
+            if postsynaptic:
+                for key in presynaptic:
+                    values = presynaptic[key]
                     if isinstance(values, str):
                         if values != '':
                             s = s.filter('term', **{f'postsynaptic.{key}.keyword': values})
