@@ -101,22 +101,17 @@ class FilterService:
                         fields[computed_key]
                 ic(f'Key {key}')
                 if prefix_key != computed_key:
-                    if prefix_key in result:
-                        result[prefix_key][computed_key] = {
-                            'key': computed_key,
-                            'label': filter_data['label'],
-                            'type': filter_data['type'],
-                            'values': response[key]
-                        }
-                    else:
+                    if prefix_key not in result:
                         result[prefix_key] = {
-                            computed_key: {
-                                'key': computed_key,
-                                'label': filter_data['label'],
-                                'type': filter_data['type'],
-                                'values': response[key]
-                            }
+                            'label': prefix_key,
+                            'items': {}
                         }
+                    result[prefix_key]['items'][computed_key] = {
+                        'key': computed_key,
+                        'label': filter_data['label'],
+                        'type': filter_data['type'],
+                        'values': response[key]
+                    }
                 else:
                     result[key] = {
                         'key': computed_key,
