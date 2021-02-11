@@ -1,6 +1,4 @@
 import os
-from functools import reduce
-from injector import singleton
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
 from . import Storage
@@ -27,12 +25,13 @@ class ElasticStorage(Storage):
     def get_terms_aggregation(self, index_name, data_type=None, fields=[]):
         response = {}
         try:
-            for (key, value) in fields:
+            for (key, item) in fields:
                 es_search = Search(using=self.es)
                 es_search = es_search.index(index_name)
                 if data_type is not None:
                     es_search = es_search.filter('term', **{'type.keyword': data_type})
-                es_search.aggs.bucket(key, A('terms', field=f'{key}.{value}'))
+
+                es_search.aggs.bucket(key, A('terms', field=f'{key}.{item}'))
                 results = es_search.execute()
                 values = [item['key'] for item in results.aggregations[key].buckets]
                 response[key] = values

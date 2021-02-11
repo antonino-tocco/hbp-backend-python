@@ -31,17 +31,19 @@ default_fields = {
         'connection': {
             'presynaptic': {
                 'secondary_region': {
+                    'key': 'secondary_region',
                     'label': 'region',
                     'type': 'multiple',
-                    'values': ('presynaptic.secondary_region', 'keyword'),
-                },
+                    'values': ('presynaptic.secondary_region', 'keyword')
+                }
             },
             'postsynaptic': {
                 'secondary_region': {
+                    'key': 'secondary_region',
                     'label': 'region',
                     'type': 'multiple',
-                    'values': ('postsynaptic.secondary_region', 'keyword'),
-                },
+                    'values': ('postsynaptic.secondary_region', 'keyword')
+                }
             }
         }
     },
@@ -98,12 +100,30 @@ class FilterService:
                     filter_data = fields[prefix_key][computed_key] if prefix_key != computed_key else \
                         fields[computed_key]
                 ic(f'Key {key}')
-                result[key] = {
-                    'key': computed_key,
-                    'label': filter_data['label'],
-                    'type': filter_data['type'],
-                    'values': response[key]
-                }
+                if prefix_key != computed_key:
+                    if prefix_key in result:
+                        result[prefix_key][computed_key] = {
+                            'key': computed_key,
+                            'label': filter_data['label'],
+                            'type': filter_data['type'],
+                            'values': response[key]
+                        }
+                    else:
+                        result[prefix_key] = {
+                            computed_key: {
+                                'key': computed_key,
+                                'label': filter_data['label'],
+                                'type': filter_data['type'],
+                                'values': response[key]
+                            }
+                        }
+                else:
+                    result[key] = {
+                        'key': computed_key,
+                        'label': filter_data['label'],
+                        'type': filter_data['type'],
+                        'values': response[key]
+                    }
             return result
         except Exception as ex:
             ic(f'Exception getting filter {ex}')
