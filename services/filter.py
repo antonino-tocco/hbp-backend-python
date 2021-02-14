@@ -27,6 +27,12 @@ default_fields = {
                 'type': 'multiple',
                 'values': ('secondary_region', 'keyword'),
             },
+            'layers': {
+                'key': 'layers',
+                'label': 'layers',
+                'type': 'multiple',
+                'values': ('layers', 'keyword')
+            }
         },
         'connection': {
             'presynaptic': {
@@ -35,6 +41,12 @@ default_fields = {
                     'label': 'region',
                     'type': 'multiple',
                     'values': ('presynaptic.secondary_region', 'keyword')
+                },
+                'layers': {
+                    'key': 'layers',
+                    'label': 'layers',
+                    'type': 'multiple',
+                    'values': ('presynaptic.layers', 'keyword')
                 }
             },
             'postsynaptic': {
@@ -43,6 +55,12 @@ default_fields = {
                     'label': 'region',
                     'type': 'multiple',
                     'values': ('postsynaptic.secondary_region', 'keyword')
+                },
+                'layers': {
+                    'key': 'layers',
+                    'label': 'layers',
+                    'type': 'multiple',
+                    'values': ('presynaptic.layers', 'keyword')
                 }
             }
         }
