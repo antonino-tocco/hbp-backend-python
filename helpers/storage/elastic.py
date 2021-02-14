@@ -31,7 +31,10 @@ class ElasticStorage(Storage):
                 if data_type is not None:
                     es_search = es_search.filter('term', **{'type.keyword': data_type})
 
-                es_search.aggs.bucket(key, A('terms', field=f'{key}.{item}'))
+                if item is not None:
+                    es_search.aggs.bucket(key, A('terms', field=f'{key}.{item}'))
+                else:
+                    es_search.aggs.bucket(key, A('terms', field=f'{key}'))
                 results = es_search.execute()
                 values = [item['key'] for item in results.aggregations[key].buckets]
                 response[key] = values

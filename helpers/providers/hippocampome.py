@@ -1,6 +1,7 @@
 import os
 import aiohttp
 import html5lib
+from functools import reduce
 from time import sleep
 from icecream import ic
 from bs4 import BeautifulSoup, Tag
@@ -80,9 +81,10 @@ class HippocampomeProvider(Provider):
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
-                        neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
-                                                                      type='electrophysiology')
-                        neurons.append(neuron_data)
+                        if int(index) < 10:
+                            neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
+                                                                          type='electrophysiology')
+                            neurons.append(neuron_data)
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
@@ -102,19 +104,20 @@ class HippocampomeProvider(Provider):
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
-                        source_id = result[index]['source_id']
-                        destination_id = result[index]['destination_id']
-                        presynaptic = await self.__scrape_data_page__(source_id)
-                        postsynaptic = await self.__scrape_data_page__(destination_id)
-                        connections.append({
-                            'identifier': f'{self.id_prefix}-{source_id}-{destination_id}',
-                            'source': {
-                                'presynaptic': presynaptic['source'],
-                                'postsynaptic': postsynaptic['source'],
-                                'type': 'connection',
-                                'source': self.source
-                            }
-                        })
+                        if int(index) < 10:
+                            source_id = result[index]['source_id']
+                            destination_id = result[index]['destination_id']
+                            presynaptic = await self.__scrape_data_page__(source_id)
+                            postsynaptic = await self.__scrape_data_page__(destination_id)
+                            connections.append({
+                                'identifier': f'{self.id_prefix}-{source_id}-{destination_id}',
+                                'source': {
+                                    'presynaptic': presynaptic['source'],
+                                    'postsynaptic': postsynaptic['source'],
+                                    'type': 'connection',
+                                    'source': self.source
+                                }
+                            })
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
@@ -190,32 +193,32 @@ class HippocampomeProvider(Provider):
 
     def __extract_regions_and_layers__(self, tables=[]):
         regions = []
-        layers = {}
+        layers = []
         try:
             if tables and len(tables) > 7:
                 region_tags = tables[7].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
                     regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
+                    extracted_layers = reduce(lambda a, b: a + b,
+                                              [x for x in [[content for content in x.contents] for x in region_tags]])
+                    layers.extend(extracted_layers)
             if tables and len(tables) > 8:
                 region_tags = tables[8].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
                     regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
+                    extracted_layers = reduce(lambda a, b: a + b,
+                                              [x for x in [[content for content in x.contents] for x in region_tags]])
+                    layers.extend(extracted_layers)
             if tables and len(tables) > 9:
                 region_tags = tables[9].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
                     regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
-                    extracted_layers = [x for x in [[content for content in x.contents] for x in region_tags]]
-                    for compound_layer in extracted_layers:
-                        if compound_layer in layers:
-                            layers[compound_layer.split(':')[1].strip()]['regions'].append(compound_layer.split(':')[1])
-                        else:
-                            layers['value'] = compound_layer.split(':')[1].strip()
-                            layers[compound_layer.split(':')[1].strip()]['regions'] = [compound_layer.split(':')[1]]
-
+                    extracted_layers = reduce(lambda a, b: a + b, [x for x in [[content for content in x.contents] for x in region_tags]])
+                    layers.extend(extracted_layers)
 
         except Exception as ex:
             ic(f'Exception for regions {ex}')
-        return list(set(regions))
+        return list(set(regions)), list(set(layers))
 
     def __extract_papers__(self, tables=[]):
         papers = []
