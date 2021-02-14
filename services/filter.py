@@ -31,6 +31,7 @@ default_fields = {
                 'key': 'layers',
                 'label': 'layers',
                 'type': 'multiple',
+                'depends_on': 'secondary_region',
                 'values': ('layers', 'keyword')
             }
         },
@@ -46,6 +47,7 @@ default_fields = {
                     'key': 'layers',
                     'label': 'layers',
                     'type': 'multiple',
+                    'depends_on': 'presynaptic.secondary_region',
                     'values': ('presynaptic.layers', 'keyword')
                 }
             },
@@ -60,6 +62,7 @@ default_fields = {
                     'key': 'layers',
                     'label': 'layers',
                     'type': 'multiple',
+                    'depends_on': 'postsynaptic.secondary_region',
                     'values': ('presynaptic.layers', 'keyword')
                 }
             }
