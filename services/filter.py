@@ -63,7 +63,7 @@ default_fields = {
                     'label': 'layers',
                     'type': 'multiple',
                     'depends_on': 'postsynaptic.secondary_region',
-                    'values': ('presynaptic.layers', 'keyword')
+                    'values': ('postsynaptic.layers', 'keyword')
                 }
             }
         }

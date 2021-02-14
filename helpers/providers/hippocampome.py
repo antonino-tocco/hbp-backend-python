@@ -190,7 +190,7 @@ class HippocampomeProvider(Provider):
 
     def __extract_regions_and_layers__(self, tables=[]):
         regions = []
-        layers = []
+        layers = {}
         try:
             if tables and len(tables) > 7:
                 region_tags = tables[7].select('.table_neuron_page2 > a > font')
@@ -204,7 +204,15 @@ class HippocampomeProvider(Provider):
                 region_tags = tables[9].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
                     regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
-                    layers.extend(x for x in [[content for content in x.contents] for x in region_tags])
+                    extracted_layers = [x for x in [[content for content in x.contents] for x in region_tags]]
+                    for compound_layer in extracted_layers:
+                        if compound_layer in layers:
+                            layers[compound_layer.split(':')[1].strip()]['regions'].append(compound_layer.split(':')[1])
+                        else:
+                            layers['value'] = compound_layer.split(':')[1].strip()
+                            layers[compound_layer.split(':')[1].strip()]['regions'] = [compound_layer.split(':')[1]]
+
+
         except Exception as ex:
             ic(f'Exception for regions {ex}')
         return list(set(regions))
