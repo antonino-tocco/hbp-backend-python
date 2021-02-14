@@ -139,12 +139,13 @@ class HippocampomeProvider(Provider):
                             icon = await self.__extract_representantive_figure__(tables)
                             papers = self.__extract_papers__(tables)
                             markers = self.__extract_markers__(tables)
-                            regions = self.__extract_regions__(tables)
+                            regions, layers = self.__extract_regions_and_layers__(tables)
                             data['name'] = name
                             data['icon'] = icon
                             data['papers'] = papers
                             data['markers'] = list(set(filter(lambda a: a is not None and a != '', markers)))
                             data['secondary_region'] = list(set(regions))
+                            data['layers'] = list(set(layers))
         except Exception as ex:
             ic(f'Exception on do data scrape {ex}')
 
@@ -187,8 +188,9 @@ class HippocampomeProvider(Provider):
             ic(f'Exception on extract name {ex}')
         return None
 
-    def __extract_regions__(self, tables=[]):
+    def __extract_regions_and_layers__(self, tables=[]):
         regions = []
+        layers = []
         try:
             if tables and len(tables) > 7:
                 region_tags = tables[7].select('.table_neuron_page2 > a > font')
@@ -202,6 +204,7 @@ class HippocampomeProvider(Provider):
                 region_tags = tables[9].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
                     regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
+                    layers.extend(x for x in [[content for content in x.contents] for x in region_tags])
         except Exception as ex:
             ic(f'Exception for regions {ex}')
         return list(set(regions))
