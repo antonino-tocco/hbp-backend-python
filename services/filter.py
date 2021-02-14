@@ -131,6 +131,7 @@ class FilterService:
                         'key': computed_key,
                         'label': filter_data['label'],
                         'type': filter_data['type'],
+                        'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
                         'values': response[key]
                     }
                 else:
@@ -138,6 +139,7 @@ class FilterService:
                         'key': computed_key,
                         'label': filter_data['label'],
                         'type': filter_data['type'],
+                        'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
                         'values': response[key]
                     }
             return result
