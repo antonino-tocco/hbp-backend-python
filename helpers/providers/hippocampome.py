@@ -81,10 +81,9 @@ class HippocampomeProvider(Provider):
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
-                        if int(index) < 10:
-                            neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
-                                                                          type='electrophysiology')
-                            neurons.append(neuron_data)
+                        neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
+                                                                      type='electrophysiology')
+                        neurons.append(neuron_data)
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
@@ -104,20 +103,19 @@ class HippocampomeProvider(Provider):
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
-                        if int(index) < 10:
-                            source_id = result[index]['source_id']
-                            destination_id = result[index]['destination_id']
-                            presynaptic = await self.__scrape_data_page__(source_id)
-                            postsynaptic = await self.__scrape_data_page__(destination_id)
-                            connections.append({
-                                'identifier': f'{self.id_prefix}-{source_id}-{destination_id}',
-                                'source': {
-                                    'presynaptic': presynaptic['source'],
-                                    'postsynaptic': postsynaptic['source'],
-                                    'type': 'connection',
-                                    'source': self.source
-                                }
-                            })
+                        source_id = result[index]['source_id']
+                        destination_id = result[index]['destination_id']
+                        presynaptic = await self.__scrape_data_page__(source_id)
+                        postsynaptic = await self.__scrape_data_page__(destination_id)
+                        connections.append({
+                            'identifier': f'{self.id_prefix}-{source_id}-{destination_id}',
+                            'source': {
+                                'presynaptic': presynaptic['source'],
+                                'postsynaptic': postsynaptic['source'],
+                                'type': 'connection',
+                                'source': self.source
+                            }
+                        })
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
