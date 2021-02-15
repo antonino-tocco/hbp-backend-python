@@ -138,6 +138,7 @@ class FilterService:
                     if prefix_key not in result:
                         result[prefix_key] = {
                             'label': prefix_key,
+                            'order': fields[data_type][prefix_key]['order'] if data_type is not None else 0,
                             'items': {}
                         }
                     result[prefix_key]['items'][computed_key] = {
@@ -165,9 +166,10 @@ class FilterService:
     def __extract_filter_values__(self, fields, initial_filters=[]):
         filters = initial_filters.copy()
         for key in fields:
-            value = fields[key]
-            if 'values' in value:
-                filters.append(value['values'])
-            else:
-                filters = self.__extract_filter_values__(value, filters)
+            if key != 'order':
+                value = fields[key]
+                if 'values' in value:
+                    filters.append(value['values'])
+                else:
+                    filters = self.__extract_filter_values__(value, filters)
         return filters
