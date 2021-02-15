@@ -211,7 +211,7 @@ class HippocampomeProvider(Provider):
                 region_tags = tables[9].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
                     regions.extend(x[0] for x in [[content.split(':')[0].strip() for content in x.contents] for x in region_tags])
-                    extracted_layers = reduce(lambda a, b: a + b, [x for x in [[content for content in x.contents] for x in region_tags]])
+                    extracted_layers = reduce(lambda a, b: a + b, [x.strip() for x in [[content for content in x.contents] for x in region_tags]])
                     layers.extend(extracted_layers)
 
         except Exception as ex:

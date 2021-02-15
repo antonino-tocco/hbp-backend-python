@@ -38,9 +38,9 @@ class SearchService:
             print(ex)
             raise ex
 
-    def search_in_index(self, index_name, start=0, hits_per_page=20, data_type=None, query='', ids=[], secondary_region=None, cell_type=None, species=None, channels=None, receptors=None) -> []:
+    def search_in_index(self, index_name, start=0, hits_per_page=20, data_type=None, query='', ids=[], secondary_region=None, cell_type=None, species=None, layers=None, channels=None, receptors=None) -> []:
         try:
-            return self.storage.search(index_name, start, hits_per_page, data_type, query, ids, secondary_region, cell_type, species, channels=channels, receptors=receptors)
+            return self.storage.search(index_name, start, hits_per_page, data_type, query, ids, secondary_region, cell_type, species, layers=layers, channels=channels, receptors=receptors)
         except Exception as ex:
             print(ex)
             raise ex

@@ -72,7 +72,7 @@ class ElasticStorage(Storage):
 
 
 
-    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword'], channels=None, receptors=None):
+    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword'], layers=None, channels=None, receptors=None):
         try:
             s = Search(using=self.es)
             s = s.index(index)
@@ -106,6 +106,13 @@ class ElasticStorage(Storage):
                             s = s.filter('term', **{'channels.keyword': channels})
                     elif channels:
                         s = s.filter('terms', **{'channels.keyword': channels})
+                if layers is not None:
+                    if isinstance(layers, str):
+                        if layers != '':
+                            s = s.filter('term', **{'layers.keyword': layers})
+                    elif layers:
+                        s = s.filter('terms', **{'layers.keyword': layers})
+
                 if receptors is not None:
                     if isinstance(receptors, str):
                         if receptors != '':

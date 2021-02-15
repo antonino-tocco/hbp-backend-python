@@ -8,16 +8,19 @@ default_fields = {
             'secondary_region': {
                 'label': 'region',
                 'type': 'multiple',
+                'order': 2,
                 'values': ('secondary_region', 'keyword'),
             },
             'cell_type': {
                 'label': 'cell type',
                 'type': 'multiple',
+                'order': 3,
                 'values': ('cell_type', 'keyword'),
             },
             'species': {
                 'label': 'species',
                 'type': 'multiple',
+                'order': 1,
                 'values': ('species', 'keyword')
             }
         },
@@ -25,44 +28,52 @@ default_fields = {
             'secondary_region': {
                 'label': 'region',
                 'type': 'multiple',
+                'order': 1,
                 'values': ('secondary_region', 'keyword'),
             },
             'layers': {
                 'key': 'layers',
                 'label': 'layers',
                 'type': 'multiple',
-                'depends_on': 'secondary_region',
+                'order': 2,
+                'depends_on': ['secondary_region'],
                 'values': ('layers', 'keyword')
             }
         },
         'connection': {
             'presynaptic': {
+                'order': 1,
                 'secondary_region': {
                     'key': 'secondary_region',
                     'label': 'region',
                     'type': 'multiple',
+                    'order': 1,
                     'values': ('presynaptic.secondary_region', 'keyword')
                 },
                 'layers': {
                     'key': 'layers',
                     'label': 'layers',
                     'type': 'multiple',
-                    'depends_on': 'presynaptic.secondary_region',
+                    'order': 2,
+                    'depends_on': ['presynaptic.secondary_region'],
                     'values': ('presynaptic.layers', 'keyword')
                 }
             },
             'postsynaptic': {
+                'order': 2,
                 'secondary_region': {
                     'key': 'secondary_region',
                     'label': 'region',
                     'type': 'multiple',
+                    'order': 1,
                     'values': ('postsynaptic.secondary_region', 'keyword')
                 },
                 'layers': {
                     'key': 'layers',
                     'label': 'layers',
                     'type': 'multiple',
-                    'depends_on': 'postsynaptic.secondary_region',
+                    'order': 2,
+                    'depends_on': ['postsynaptic.secondary_region'],
                     'values': ('postsynaptic.layers', 'keyword')
                 }
             }
@@ -71,12 +82,14 @@ default_fields = {
     'model': {
         'channels': {
             'label': 'channels',
-            'type': 'suggestion',
+            'type': 'multiple',
+            'order': 1,
             'values': ('channels', 'keyword')
         },
         'receptors': {
             'label': 'receptors',
-            'type': 'suggestion',
+            'type': 'multiple',
+            'order': 1,
             'values': ('receptors', 'keyword')
         }
     }
@@ -131,6 +144,7 @@ class FilterService:
                         'key': computed_key,
                         'label': filter_data['label'],
                         'type': filter_data['type'],
+                        'order': filter_data['order'],
                         'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
                         'values': response[key]
                     }
@@ -139,6 +153,7 @@ class FilterService:
                         'key': computed_key,
                         'label': filter_data['label'],
                         'type': filter_data['type'],
+                        'order': filter_data['order'],
                         'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
                         'values': response[key]
                     }
