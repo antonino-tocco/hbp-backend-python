@@ -196,22 +196,22 @@ class HippocampomeProvider(Provider):
             if tables and len(tables) > 7:
                 region_tags = tables[7].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
-                    regions.extend(x[0].strip(' \n\t') for x in [[content.split(':')[0] for content in x.contents] for x in region_tags])
+                    regions.extend(x[0].strip(' \n\t') for x in [[content.split(':')[0] for content in region_tag.contents] for region_tag in region_tags])
                     extracted_layers = reduce(lambda a, b: a + b,
-                                              [x.strip(' \n\t') for x in [[content for content in x.contents] for x in region_tags]])
+                                              [x for x in [[content.strip(' \n\t') for content in region_tag.contents] for region_tag in region_tags]])
                     layers.extend(extracted_layers)
             if tables and len(tables) > 8:
                 region_tags = tables[8].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
-                    regions.extend(x[0].strip(' \n\t') for x in [[content.split(':')[0] for content in x.contents] for x in region_tags])
+                    regions.extend(x[0].strip(' \n\t') for x in [[content.split(':')[0] for content in region_tag.contents] for region_tag in region_tags])
                     extracted_layers = reduce(lambda a, b: a + b,
-                                              [x.strip(' \n\t') for x in [[content for content in x.contents] for x in region_tags]])
+                                              [x for x in [[content.strip(' \n\t') for content in region_tag.contents] for region_tag in region_tags]])
                     layers.extend(extracted_layers)
             if tables and len(tables) > 9:
                 region_tags = tables[9].select('.table_neuron_page2 > a > font')
                 if region_tags and len(region_tags) > 0:
-                    regions.extend(x[0].strip(' \n\t') for x in [[content.split(':')[0] for content in x.contents] for x in region_tags])
-                    extracted_layers = reduce(lambda a, b: a + b, [x.strip(' \n\t') for x in [[content for content in x.contents] for x in region_tags]])
+                    regions.extend(x[0].strip(' \n\t') for x in [[content.split(':')[0] for content in region_tag.contents] for region_tag in region_tags])
+                    extracted_layers = reduce(lambda a, b: a + b, [x for x in [[content.strip(' \n\t') for content in region_tag.contents] for region_tag in region_tags]])
                     layers.extend(extracted_layers)
 
         except Exception as ex:

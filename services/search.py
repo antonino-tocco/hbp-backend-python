@@ -31,9 +31,9 @@ class SearchService:
             print(ex)
             raise ex
 
-    def search_connections(self, start=0, hits_per_page=20, query='', pre=None, post=None):
+    def search_connections(self, start=0, hits_per_page=20, query='', presynaptic=None, postsynaptic=None):
         try:
-            return self.storage.search_connections(start, hits_per_page, query, pre, post)
+            return self.storage.search_connections(start, hits_per_page, query, presynaptic, postsynaptic)
         except Exception as ex:
             print(ex)
             raise ex

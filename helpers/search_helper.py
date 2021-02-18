@@ -30,14 +30,21 @@ def parse_query_args(data=None):
             layers = filters['layers']
     return data_type, query, region, cell_type, species, layers, channels, receptors
 
+
 def parse_connections_args(data=None):
-    pre = {}
-    post = {}
+    query = ''
+    presynaptic = {}
+    postsynaptic = {}
+    filters = {}
     if data is None:
-        return pre, post
+        return query, presynaptic, postsynaptic
     else:
-        if 'pre' in data:
-            pre = data['pre']
-        if 'post' in data:
-            post = data['post']
-    return pre, post
+        if 'filters' in data and data['filters']:
+            filters = data['filters']
+            if 'query' in filters:
+                query = filters
+            if 'presynaptic' in filters:
+                presynaptic = filters['presynaptic']
+            if 'postsynaptic' in filters:
+                postsynaptic = filters['postsynaptoc']
+    return query, presynaptic, postsynaptic

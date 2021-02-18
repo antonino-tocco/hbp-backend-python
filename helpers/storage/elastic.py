@@ -45,7 +45,8 @@ class ElasticStorage(Storage):
     def search_connections(self, start=0, hits_per_page=20, query='', presynaptic=None, postsynaptic=None):
         try:
             s = Search(using=self.es)
-            s = s.index('connection')
+            s = s.index('dataset')
+            s = s.filter('term', **{'type.keyword': 'connection'})
             s = s[start: start + hits_per_page]
             if query is not None and query != '':
                 s = s.query('multi_match', query=query, fields=['presynaptic.name', 'presynaptic.description',
