@@ -1,7 +1,6 @@
 import os
 import aiohttp
 import html5lib
-from functools import reduce
 from time import sleep
 from icecream import ic
 from bs4 import BeautifulSoup, Tag

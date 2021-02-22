@@ -1,6 +1,7 @@
 import math
 import aiohttp
 import os
+from bs4 import BeautifulSoup
 from icecream import ic
 from time import sleep
 from functools import reduce
@@ -16,10 +17,10 @@ def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
     if values:
         return list(filter(lambda value: (
                 reduce(lambda a, b: (a and b),
-                       [allowed in list(map(lambda x: x.strip().lower(), value.split(','))) for allowed in
+                       [allowed in list(map(lambda x: x.strip(' \n\t').lower(), value.split(','))) for allowed in
                         allowed_values] if exact else [allowed in value for allowed in allowed_values], True) and
                 reduce(lambda a, b: (a and b),
-                       [not_allowed not in list(map(lambda x: x.strip().lower(), value.split(','))) for not_allowed in
+                       [not_allowed not in list(map(lambda x: x.strip(' \n\t').lower(), value.split(','))) for not_allowed in
                         not_allowed_values] if exact else [not_allowed not in value for not_allowed in not_allowed_values],
                        True)
         ), values))
@@ -64,20 +65,20 @@ class NeuroMorphoProvider(Provider):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
         domain_allowed_values = filter_values(await self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
-        original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'],
-                                                       exact=False)
+        #original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'],
+        #                                               exact=False)
         attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'),
                                                   ['diameter', '3d', 'angles'])
         physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
                                                   ['dendrites complete'], ['no axon'])
         print(f"Domains {domain_allowed_values}")
-        print(f"Original format {original_format_allowed_values}")
+        #print(f"Original format {original_format_allowed_values}")
         print(f"Attributes {attributes_allowed_values}")
         print(f"Physical Integrity {physical_integrity_values}")
         params = {
             'brain_region': ['hippocampus'],
             'domain': domain_allowed_values,
-            'original_format': original_format_allowed_values,
+            #'original_format': original_format_allowed_values,
             'attributes': attributes_allowed_values,
             'Physical_Integrity': physical_integrity_values
         }
@@ -150,7 +151,7 @@ class NeuroMorphoProvider(Provider):
 
         original_format_ext = dataset['original_format'].split('.')[-1]
 
-        storage_identfier = f"{self.id_prefix}-{dataset['neuron_id']}"
+        storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
 
         image_file_path = None
 
@@ -161,11 +162,15 @@ class NeuroMorphoProvider(Provider):
         except Exception as ex:
             ic(f'Exception download image {ex}')
 
+        original_format_url = await self.__retrieve_original_format_file__(str(dataset['neuron_id']))
+
+        #f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+
         try:
             return {
-                'identifier': storage_identfier,
+                'identifier': storage_identifier,
                 'source': {
-                    'source_id': storage_identfier,
+                    'source_id': storage_identifier,
                     'id': str(dataset['neuron_id']),
                     'type': 'morphology',
                     'name': dataset['neuron_name'],
@@ -180,7 +185,7 @@ class NeuroMorphoProvider(Provider):
                     'link': dataset['_links']['self']['href'],
                     'original_format': dataset['original_format'],
                     'physical_integrity': dataset['physical_Integrity'],
-                    'download_link': f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+                    'download_link': original_format_url,
                     'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
                     'protocol': dataset['protocol'],
                     'morphologies': dataset['attributes'],
@@ -197,13 +202,38 @@ class NeuroMorphoProvider(Provider):
         filtered_items = []
         for item in items:
             try:
-                file_exists = await self.__check_if_file_exists__(item['source']['download_link'])
-                if file_exists:
-                    filtered_items.append(item)
+                if item['source']['download_link'] is not None and os.path.splitext(item['source']['download_link'])[-1] == 'asc':
+                    file_exists = await self.__check_if_file_exists__(item['source']['download_link'])
+                    if file_exists:
+                        filtered_items.append(item)
             except Exception as ex:
                 print(f"Exception {ex}")
                 raise ex
         return filtered_items
+
+    async def __retrieve_original_format_file__(self, neuron_id=None):
+        assert(neuron_id is not None)
+        try:
+            url = f'http://neuromorpho.org/neuron_info.jsp?neuron_id={neuron_id}'
+            async with aiohttp.ClientSession() as session:
+                response = await session.get(url)
+                if response is not None and response.status == 200:
+                    page = await response.read()
+                    if page:
+                        parsed_page = BeautifulSoup(page, 'html5lib')
+                        links = parsed_page.select('.info > table a')
+                        for link in links:
+                            link_contents = [x.strip(' \t\n').lower() for x in link.contents]
+                            for content in link_contents:
+                                if content == 'morphology file (original)':
+                                    if 'href' in link.attrs:
+                                        original_format_file = link.attrs['href'] if link.attrs['href'].startswith(
+                                            'http') else f"http://neuromorpho.org/{link.attrs['href']}"
+                                        return original_format_file
+                await session.close()
+        except Exception as ex:
+            ic(f'Exception retrieving original format file {ex}')
+        return None
 
     async def __check_if_file_exists__(self, url=None) -> bool:
         assert (url is not None)
