@@ -202,7 +202,7 @@ class NeuroMorphoProvider(Provider):
         filtered_items = []
         for item in items:
             try:
-                if item['source']['download_link'] is not None and os.path.splitext(item['source']['download_link'])[-1] == 'asc':
+                if item['source']['download_link'] is not None and os.path.splitext(item['source']['download_link'])[-1] == '.asc':
                     file_exists = await self.__check_if_file_exists__(item['source']['download_link'])
                     if file_exists:
                         filtered_items.append(item)
