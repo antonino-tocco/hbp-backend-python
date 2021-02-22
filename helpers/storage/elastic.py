@@ -60,8 +60,8 @@ class ElasticStorage(Storage):
                     elif values:
                         s = s.filter('terms', **{f'presynaptic.{key}.keyword': values})
             if postsynaptic:
-                for key in presynaptic:
-                    values = presynaptic[key]
+                for key in postsynaptic:
+                    values = postsynaptic[key]
                     if isinstance(values, str):
                         if values != '':
                             s = s.filter('term', **{f'postsynaptic.{key}.keyword': values})
@@ -70,8 +70,6 @@ class ElasticStorage(Storage):
             return s.execute()
         except Exception as ex:
             raise ex
-
-
 
     def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword'], layers=None, channels=None, receptors=None):
         try:
