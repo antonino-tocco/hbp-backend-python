@@ -58,7 +58,9 @@ class ElasticStorage(Storage):
                         if values != '':
                             s = s.filter('term', **{f'presynaptic.{key}.keyword': values})
                     elif values:
-                        s = s.filter('terms', **{f'presynaptic.{key}.keyword': values})
+                        if len(values) > 0:
+                            s = s.filter('terms', **{f'presynaptic.{key}.keyword': values})
+
             if postsynaptic:
                 for key in postsynaptic:
                     values = postsynaptic[key]
@@ -66,7 +68,8 @@ class ElasticStorage(Storage):
                         if values != '':
                             s = s.filter('term', **{f'postsynaptic.{key}.keyword': values})
                     elif values:
-                        s = s.filter('terms', **{f'postsynaptic.{key}.keyword': values})
+                        if len(values) > 0:
+                            s = s.filter('terms', **{f'postsynaptic.{key}.keyword': values})
             return s.execute()
         except Exception as ex:
             raise ex
@@ -86,38 +89,43 @@ class ElasticStorage(Storage):
                         if secondary_region != '':
                             s = s.filter('term', **{'secondary_region.keyword': secondary_region})
                     elif secondary_region:
-                        s = s.filter('terms', **{'secondary_region.keyword': secondary_region})
+                        if len(secondary_region) > 0:
+                            s = s.filter('terms', **{'secondary_region.keyword': secondary_region})
                 if cell_type is not None:
                     if isinstance(cell_type, str):
                         if cell_type != '':
                             s = s.filter('term', **{'cell_type.keyword': cell_type})
                     elif cell_type:
-                        s = s.filter('terms', **{'cell_type.keyword': cell_type})
+                        if len(cell_type) > 0:
+                            s = s.filter('terms', **{'cell_type.keyword': cell_type})
                 if species is not None:
                     if isinstance(species, str):
                         if species != '':
                             s = s.filter('term', **{'species.keyword': species})
                     elif species:
-                        s = s.filter('terms', **{'species.keyword': species})
+                        if len(species) > 0:
+                            s = s.filter('terms', **{'species.keyword': species})
                 if channels is not None:
                     if isinstance(channels, str):
                         if channels != '':
                             s = s.filter('term', **{'channels.keyword': channels})
                     elif channels:
-                        s = s.filter('terms', **{'channels.keyword': channels})
+                        if len(channels) > 0:
+                            s = s.filter('terms', **{'channels.keyword': channels})
                 if layers is not None:
                     if isinstance(layers, str):
                         if layers != '':
                             s = s.filter('term', **{'layers.keyword': layers})
                     elif layers:
-                        s = s.filter('terms', **{'layers.keyword': layers})
-
+                        if len(layers) > 0:
+                            s = s.filter('terms', **{'layers.keyword': layers})
                 if receptors is not None:
                     if isinstance(receptors, str):
                         if receptors != '':
                             s = s.filter('term', **{'receptors.keyword': receptors})
                     elif receptors:
-                        s = s.query('terms', **{'receptors.keyword': receptors})
+                        if len(receptors) > 0:
+                            s = s.query('terms', **{'receptors.keyword': receptors})
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
                 if sort_fields:
