@@ -102,6 +102,7 @@ class NeuroMorphoProvider(Provider):
     async def map_datasets(self, items=[]):
         try:
             mapped_datasets = [await self.__map_dataset__(x) for x in items]
+            mapped_datasets = filter(lambda a: a is not None, mapped_datasets)
             return mapped_datasets
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
@@ -155,46 +156,48 @@ class NeuroMorphoProvider(Provider):
 
         image_file_path = None
 
-        try:
-            if dataset['png_url']:
-                local_image_file_path = await download_image(dataset['png_url'], self.source)
-                image_file_path = f"{os.getenv('HOST')}{local_image_file_path}" if local_image_file_path is not None else None
-        except Exception as ex:
-            ic(f'Exception download image {ex}')
-
         original_format_url = await self.__retrieve_original_format_file__(str(dataset['neuron_id']))
+        if original_format_url is not None and os.path.splitext(original_format_url)[-1] == '.asc':
 
-        #f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+            try:
+                if dataset['png_url']:
+                    local_image_file_path = await download_image(dataset['png_url'], self.source)
+                    image_file_path = f"{os.getenv('HOST')}{local_image_file_path}" if local_image_file_path is not None else None
+            except Exception as ex:
+                ic(f'Exception download image {ex}')
 
-        try:
-            return {
-                'identifier': storage_identifier,
-                'source': {
-                    'source_id': storage_identifier,
-                    'id': str(dataset['neuron_id']),
-                    'type': 'morphology',
-                    'name': dataset['neuron_name'],
-                    'description': dataset['note'],
-                    'archive': dataset['archive'],
-                    'region': brain_region,
-                    'secondary_region': secondary_region,
-                    'cell_type': primary_cell_type,
-                    'secondary_cell_type': secondary_cell_type,
-                    'species': dataset['species'],
-                    'icon': image_file_path,
-                    'link': dataset['_links']['self']['href'],
-                    'original_format': dataset['original_format'],
-                    'physical_integrity': dataset['physical_Integrity'],
-                    'download_link': original_format_url,
-                    'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
-                    'protocol': dataset['protocol'],
-                    'morphologies': dataset['attributes'],
-                    'structural_domains': dataset['domain'],
-                    'source': self.source
+            #f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
+
+            try:
+                return {
+                    'identifier': storage_identifier,
+                    'source': {
+                        'source_id': storage_identifier,
+                        'id': str(dataset['neuron_id']),
+                        'type': 'morphology',
+                        'name': dataset['neuron_name'],
+                        'description': dataset['note'],
+                        'archive': dataset['archive'],
+                        'region': brain_region,
+                        'secondary_region': secondary_region,
+                        'cell_type': primary_cell_type,
+                        'secondary_cell_type': secondary_cell_type,
+                        'species': dataset['species'],
+                        'icon': image_file_path,
+                        'link': dataset['_links']['self']['href'],
+                        'original_format': dataset['original_format'],
+                        'physical_integrity': dataset['physical_Integrity'],
+                        'download_link': original_format_url,
+                        'page_link': f"http://neuromorpho.org/neuron_info.jsp?neuron_name={dataset['neuron_name']}",
+                        'protocol': dataset['protocol'],
+                        'morphologies': dataset['attributes'],
+                        'structural_domains': dataset['domain'],
+                        'source': self.source
+                    }
                 }
-            }
-        except Exception as ex:
-            raise ex
+            except Exception as ex:
+                raise ex
+        return None
 
     async def __filter_items__(self, items=[]):
         if items is None or len(items) == 0:
