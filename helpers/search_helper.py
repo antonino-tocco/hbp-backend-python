@@ -46,5 +46,5 @@ def parse_connections_args(data=None):
             if 'presynaptic' in filters:
                 presynaptic = filters['presynaptic']
             if 'postsynaptic' in filters:
-                postsynaptic = filters['postsynaptoc']
+                postsynaptic = filters['postsynaptic']
     return query, presynaptic, postsynaptic
