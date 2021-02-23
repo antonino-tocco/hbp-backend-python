@@ -102,7 +102,7 @@ class NeuroMorphoProvider(Provider):
     async def map_datasets(self, items=[]):
         try:
             mapped_datasets = [await self.__map_dataset__(x) for x in items]
-            mapped_datasets = filter(lambda a: a is not None, mapped_datasets)
+            mapped_datasets = list(filter(lambda a: a is not None, mapped_datasets))
             return mapped_datasets
         except Exception as ex:
             print(f"Exception on map datasets {ex}")
