@@ -150,14 +150,12 @@ class NeuroMorphoProvider(Provider):
         if len(cell_types) > 1:
             secondary_cell_type = cell_types[1]
 
-        original_format_ext = dataset['original_format'].split('.')[-1]
-
         storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
 
         image_file_path = None
 
         original_format_url = await self.__retrieve_original_format_file__(str(dataset['neuron_id']))
-        if original_format_url is not None and os.path.splitext(original_format_url)[-1] == '.asc':
+        if original_format_url is not None and os.path.splitext(original_format_url)[-1].lower() == '.asc':
 
             try:
                 if dataset['png_url']:
