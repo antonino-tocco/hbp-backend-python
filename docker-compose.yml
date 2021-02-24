@@ -50,8 +50,6 @@ services:
       - es01
     links:
       - es01
-    volumes:
-      - /mnt/facility-hub/storage/usr/app:/usr/app
   nginx:
     image: nginx:1.15-alpine
     container_name: nginx
