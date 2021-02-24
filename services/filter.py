@@ -102,6 +102,7 @@ class FilterService:
         self.storage = storage
 
     def types(self, index_name):
+        result = {}
         try:
             response = self.storage.get_terms_aggregation(index_name, fields=[('type', 'keyword')])
             return {
@@ -110,7 +111,7 @@ class FilterService:
             }
         except Exception as ex:
             ic(f'Exception getting data types {ex}')
-            raise ex
+        return result
 
     def filters(self, index_name, data_type=None, fields=None):
         result = {}
