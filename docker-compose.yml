@@ -11,7 +11,7 @@ services:
       - network.host=0.0.0.0
       - ES_JAVA_OPTS=-Xmx256m -Xms256m
     volumes:
-      - /mnt/facility-hub/storage/elasticsearch/data:data01
+      - /mnt/facility-hub/storage/elasticsearch/data:/usr/app/data01
     expose:
       - 9200
     ulimits:
