@@ -11,7 +11,7 @@ services:
       - network.host=0.0.0.0
       - ES_JAVA_OPTS=-Xmx256m -Xms256m
     volumes:
-      - data01:/usr/share/elasticsearch/data
+      - data01:/mnt/facility-hub/storage/elasticsearch/data
     expose:
       - 9200
     ulimits:
@@ -50,6 +50,8 @@ services:
       - es01
     links:
       - es01
+    volumes:
+      - data01:/mnt/facility-hub/storage/usr/app
   nginx:
     image: nginx:1.15-alpine
     container_name: nginx
