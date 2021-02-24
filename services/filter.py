@@ -113,6 +113,7 @@ class FilterService:
             raise ex
 
     def filters(self, index_name, data_type=None, fields=None):
+        result = {}
         try:
             computed_fields = fields
             if fields is None:
@@ -123,45 +124,44 @@ class FilterService:
                     else:
                         computed_fields = self.__extract_filter_values__(fields, [])
             response = self.storage.get_terms_aggregation(index_name, data_type, fields=computed_fields)
-            result = {}
             for key in response:
-                prefix_key = key.split('.')[0]
-                computed_key = key.split('.')[-1]
-                if data_type is not None:
-                    filter_data = fields[data_type][prefix_key][computed_key] if prefix_key != computed_key else \
-                        fields[data_type][computed_key]
-                else:
-                    filter_data = fields[prefix_key][computed_key] if prefix_key != computed_key else \
-                        fields[computed_key]
-                ic(f'Key {key}')
-                if prefix_key != computed_key:
-                    if prefix_key not in result:
-                        result[prefix_key] = {
-                            'label': prefix_key,
-                            'order': fields[data_type][prefix_key]['order'] if data_type is not None else 0,
-                            'items': {}
+                    prefix_key = key.split('.')[0]
+                    computed_key = key.split('.')[-1]
+                    if data_type is not None:
+                        filter_data = fields[data_type][prefix_key][computed_key] if prefix_key != computed_key else \
+                            fields[data_type][computed_key]
+                    else:
+                        filter_data = fields[prefix_key][computed_key] if prefix_key != computed_key else \
+                            fields[computed_key]
+                    ic(f'Key {key}')
+                    if prefix_key != computed_key:
+                        if prefix_key not in result:
+                            result[prefix_key] = {
+                                'label': prefix_key,
+                                'order': fields[data_type][prefix_key]['order'] if data_type is not None else 0,
+                                'items': {}
+                            }
+                        result[prefix_key]['items'][computed_key] = {
+                            'key': computed_key,
+                            'label': filter_data['label'],
+                            'type': filter_data['type'],
+                            'order': filter_data['order'],
+                            'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
+                            'values': response[key]
                         }
-                    result[prefix_key]['items'][computed_key] = {
-                        'key': computed_key,
-                        'label': filter_data['label'],
-                        'type': filter_data['type'],
-                        'order': filter_data['order'],
-                        'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
-                        'values': response[key]
-                    }
-                else:
-                    result[key] = {
-                        'key': computed_key,
-                        'label': filter_data['label'],
-                        'type': filter_data['type'],
-                        'order': filter_data['order'],
-                        'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
-                        'values': response[key]
-                    }
-            return result
+                    else:
+                        result[key] = {
+                            'key': computed_key,
+                            'label': filter_data['label'],
+                            'type': filter_data['type'],
+                            'order': filter_data['order'],
+                            'depends_on': filter_data['depends_on'] if 'depends_on' in filter_data else [],
+                            'values': response[key]
+                        }
         except Exception as ex:
             ic(f'Exception getting filter {ex}')
             raise ex
+        return result
 
     def __extract_filter_values__(self, fields, initial_filters=[]):
         filters = initial_filters.copy()
