@@ -17,7 +17,7 @@ def download_all(index_name):
         else:
             data = request.args.to_dict()
         search_service = Injector(AppModule).get(SearchService)
-        query, region, cell_type, species = parse_query_args(data)
+        data_type, query, region, cell_type, species, layers, channels, receptors = parse_query_args(data)
         results = search_service.get_all_in_index(index_name, query=query, secondary_region=region, cell_type=cell_type, species=species)
         if results is not None and len(results) > 0:
             loop = asyncio.get_event_loop()
