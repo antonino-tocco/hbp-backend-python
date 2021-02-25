@@ -18,7 +18,7 @@ def download_all(index_name):
             data = request.args.to_dict()
         search_service = Injector(AppModule).get(SearchService)
         data_type, query, region, cell_type, species, layers, channels, receptors = parse_query_args(data)
-        results = search_service.get_all_in_index(index_name, query=query, secondary_region=region, cell_type=cell_type, species=species)
+        results = search_service.get_all_in_index(index_name, query=query, data_type=data_type, secondary_region=region, cell_type=cell_type, species=species)
         if results is not None and len(results) > 0:
             loop = asyncio.get_event_loop()
             file_urls = list(map(lambda x: x['download_link'], results))
