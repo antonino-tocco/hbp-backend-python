@@ -89,8 +89,20 @@ default_fields = {
         'receptors': {
             'label': 'receptors',
             'type': 'multiple',
-            'order': 1,
+            'order': 2,
             'values': ('receptors', 'keyword')
+        },
+        'model_concepts': {
+            'label': 'model concepts',
+            'type': 'multiple',
+            'order': 3,
+            'values': ('model_concepts', 'keyword')
+        },
+        'implementers': {
+            'label': 'implementers',
+            'type': 'multiple',
+            'order': 4,
+            'values': ('implementers', 'keyword')
         }
     }
 }
