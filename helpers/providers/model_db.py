@@ -59,6 +59,7 @@ class ModelDbProvider(Provider):
         channels = []
         model_types = []
         model_concepts = []
+        implementers = []
         modeling_applications = []
         papers = []
         receptors = []
@@ -81,6 +82,8 @@ class ModelDbProvider(Provider):
             if 'modeling_application' in item and 'value' in item['modeling_application'] and len(
                     item['modeling_application']['value']) > 0:
                 modeling_applications = [a['object_name'] for a in item['modeling_application']['value']]
+            if 'implemented_by' in item and 'value' in item['implemented_by'] and len(item['implemented_by']['value']) > 0:
+                modeling_applications = [a['object_name'] for a in item['implemented_by']['value']]
             if 'notes' in item:
                 description = item['notes']['value']
             if 'receptors' in item and 'value' in item['receptors'] and len(item['receptors']['value']) > 0:
@@ -99,6 +102,7 @@ class ModelDbProvider(Provider):
                     'download_link': item['download_link'] if 'download_link' in item else None,
                     'model_types': model_types,
                     'model_concepts': model_concepts,
+                    'implementers': implementers,
                     'modeling_application': modeling_applications,
                     'papers': papers,
                     'readme_link': item['readme_link'] if 'readme_link' in item else None,
