@@ -83,7 +83,7 @@ class ModelDbProvider(Provider):
                     item['modeling_application']['value']) > 0:
                 modeling_applications = [a['object_name'] for a in item['modeling_application']['value']]
             if 'implemented_by' in item and 'value' in item['implemented_by'] and len(item['implemented_by']['value']) > 0:
-                modeling_applications = [a['object_name'] for a in item['implemented_by']['value']]
+                implementers = [a['object_name'] for a in item['implemented_by']['value']]
             if 'notes' in item:
                 description = item['notes']['value']
             if 'receptors' in item and 'value' in item['receptors'] and len(item['receptors']['value']) > 0:
