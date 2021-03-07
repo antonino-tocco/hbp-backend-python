@@ -1,12 +1,7 @@
 def parse_query_args(data=None):
     data_type = None
-    query = ''
-    region = ''
-    cell_type = ''
-    species = ''
-    layers = ''
-    channels = ''
-    receptors = ''
+    query, region, cell_type, species, layers, channels, receptors, implementers, model_concepts = \
+        '', '', '', '', '', '', '', '', ''
     if data is None:
         return data_type, query, region, cell_type, species
     if 'data_type' in data:
@@ -28,7 +23,11 @@ def parse_query_args(data=None):
             receptors = filters['receptors']
         if 'layers' in filters:
             layers = filters['layers']
-    return data_type, query, region, cell_type, species, layers, channels, receptors
+        if 'implementers' in filters:
+            implementers = filters['implementers']
+        if 'model_concepts' in filters:
+            model_concepts = filters['model_concepts']
+    return data_type, query, region, cell_type, species, layers, channels, receptors, implementers, model_concepts
 
 
 def parse_connections_args(data=None):

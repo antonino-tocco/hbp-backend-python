@@ -74,7 +74,9 @@ class ElasticStorage(Storage):
         except Exception as ex:
             raise ex
 
-    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', ids=None, secondary_region=None, cell_type=None, species=None, sort_fields=['name.keyword'], layers=None, channels=None, receptors=None):
+    def search(self, index, start=0, hits_per_page=20, data_type=None, query='', secondary_region=None,
+               cell_type=None, species=None, layers=None, channels=None, receptors=None,
+               implementers=None, model_concepts=None, ids=None, sort_fields=['name.keyword']):
         try:
             s = Search(using=self.es)
             s = s.index(index)
@@ -126,6 +128,20 @@ class ElasticStorage(Storage):
                     elif receptors:
                         if len(receptors) > 0:
                             s = s.query('terms', **{'receptors.keyword': receptors})
+                if model_concepts is not None:
+                    if isinstance(model_concepts, str):
+                        if model_concepts != '':
+                            s = s.filter('term', **{'model_concepts.keyword': model_concepts})
+                    elif model_concepts:
+                        if len(model_concepts) > 0:
+                            s = s.query('terms', **{'model_concepts.keyword': model_concepts})
+                if implementers is not None:
+                    if isinstance(implementers, str):
+                        if implementers != '':
+                            s = s.filter('term', **{'implementers.keyword': implementers})
+                    elif implementers:
+                        if len(implementers) > 0:
+                            s = s.query('terms', **{'implementers.keyword': implementers})
                 if query is not None and query != '':
                     s = s.query('multi_match', query=query, fields=['name', 'description'])
                 if sort_fields:

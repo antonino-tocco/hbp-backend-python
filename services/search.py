@@ -10,7 +10,7 @@ class SearchService:
         self.__name__ = "search_service"
         self.storage = storage
 
-    def get_all_in_index(self, index_name, data_type=None, query='', ids=[], secondary_region=None, cell_type=None, species=None) -> []:
+    def get_all_in_index(self, index_name, data_type=None, query='', secondary_region=None, cell_type=None, species=None, ids=[]) -> []:
         try:
             num_page = 0
             hits_per_page = 100
@@ -19,7 +19,7 @@ class SearchService:
             all_items = []
             while num_page < (total_pages - 1) or fetched is False:
                 start = num_page * hits_per_page
-                results = self.storage.search(index_name, start, hits_per_page, data_type, query, ids, secondary_region, cell_type, species)
+                results = self.storage.search(index_name, start, hits_per_page, data_type, query, secondary_region, cell_type, species, ids=ids)
                 total_items = results['hits']['total']['value']
                 total_pages = math.ceil(total_items / hits_per_page)
                 items = [item['_source'].to_dict() for item in results['hits']['hits']]
@@ -38,9 +38,9 @@ class SearchService:
             print(ex)
             raise ex
 
-    def search_in_index(self, index_name, start=0, hits_per_page=20, data_type=None, query='', ids=[], secondary_region=None, cell_type=None, species=None, layers=None, channels=None, receptors=None) -> []:
+    def search_in_index(self, index_name, start=0, hits_per_page=20, data_type=None, query='', secondary_region=None, cell_type=None, species=None, layers=None, channels=None, receptors=None, implementers=None, model_concepts=None, ids=[]) -> []:
         try:
-            return self.storage.search(index_name, start, hits_per_page, data_type, query, ids, secondary_region, cell_type, species, layers=layers, channels=channels, receptors=receptors)
+            return self.storage.search(index_name, start, hits_per_page, data_type, query, secondary_region, cell_type, species, layers=layers, channels=channels, receptors=receptors, implementers=implementers, model_concepts=model_concepts, ids=ids)
         except Exception as ex:
             print(ex)
             raise ex
