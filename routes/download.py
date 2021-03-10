@@ -1,12 +1,12 @@
 import asyncio
-from io import BytesIO
-from werkzeug.wsgi import FileWrapper
+import threading
 from flask import request, send_file, Response
 from . import routes_api
 from dependency import AppModule
 from injector import Injector
 from services import SearchService, DownloadService
 from helpers import parse_query_args, zip_generator
+
 
 @routes_api.route('/download/<index_name>/all', methods=['POST', 'GET'])
 def download_all(index_name):
@@ -45,7 +45,8 @@ def download(index_name):
         ids = data['ids']
         results = search_service.get_all_in_index(index_name, ids=ids)
         if results is not None and len(results) > 0:
-            loop = asyncio.get_event_loop()
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             file_urls = list(map(lambda x: x['download_link'], results))
             zip_file = loop.run_until_complete(DownloadService.download_files_as_zip(files_url=file_urls))
             return Response(zip_generator(zip_file), mimetype='application/zip', headers={'Content-disposition':
