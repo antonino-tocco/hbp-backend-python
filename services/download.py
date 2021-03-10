@@ -7,7 +7,7 @@ class DownloadService:
         super(DownloadService, self).__init__()
 
     @staticmethod
-    def __download__(zip_file=None, url=None):
+    async def __download__(zip_file=None, url=None):
         assert(zip_file is not None)
         assert(url is not None)
         try:
