@@ -20,7 +20,8 @@ def download_all(index_name):
         data_type, query, region, cell_type, species, layers, channels, receptors, implementers, model_concepts = parse_query_args(data)
         results = search_service.get_all_in_index(index_name, query=query, data_type=data_type, secondary_region=region, cell_type=cell_type, species=species)
         if results is not None and len(results) > 0:
-            loop = asyncio.get_event_loop()
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
             file_urls = list(map(lambda x: x['download_link'], results))
             zip_file = loop.run_until_complete(DownloadService.download_files_as_zip(files_url=file_urls))
             return Response(zip_generator(zip_file), mimetype='application/zip', headers={'Content-disposition':
