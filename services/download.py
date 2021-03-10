@@ -28,6 +28,7 @@ class DownloadService:
         try:
             for url in files_url:
                 thread = threading.Thread(target=DownloadService.__download__, args=(zip_file, url))
+                thread.start()
                 thread.join()
             return zip_file
         except Exception as ex:
