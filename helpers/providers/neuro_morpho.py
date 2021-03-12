@@ -1,6 +1,7 @@
 import math
 import aiohttp
 import os
+import json
 from bs4 import BeautifulSoup
 from icecream import ic
 from time import sleep
@@ -11,6 +12,18 @@ from .provider import Provider
 
 BASE_URL = "http://neuromorpho.org/api"
 MAX_REQUEST_RETRY = 5
+
+config = {}
+dir_path = os.getcwd()
+try:
+    with open(f'{dir_path}/config/neuro_morpho.json') as json_file:
+        config = json.load(json_file)
+except Exception as ex:
+    ic(f'Exception on loading file {ex}')
+
+domains = config['domains'] if 'domains' in config else {}
+attributes = config['attributes'] if 'attributes' in config else []
+physical_integrities = config['physical_integrities'] if 'physical_integrities' in config else []
 
 
 def filter_values(values, allowed_values=[], not_allowed_values=[], exact=True):
@@ -64,13 +77,13 @@ class NeuroMorphoProvider(Provider):
     async def search_datasets(self, start=0, hits_per_page=50):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
-        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), ['dendrites', 'soma', 'axon'])
+        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), domains['allowed'] or [], domains['not_allowed'] or [])
         #original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'],
         #                                               exact=False)
         attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'),
-                                                  ['diameter', '3d', 'angles'])
+                                                  attributes['allowed'] or [], attributes['not_allowed'] or [])
         physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
-                                                  ['dendrites complete'], ['no axon'])
+                                                  physical_integrities['allowed'] or [], physical_integrities['not_allowed'] or [])
         print(f"Domains {domain_allowed_values}")
         #print(f"Original format {original_format_allowed_values}")
         print(f"Attributes {attributes_allowed_values}")

@@ -1,6 +1,6 @@
 import os
 import aiohttp
-import html5lib
+import json
 from time import sleep
 from icecream import ic
 from bs4 import BeautifulSoup, Tag
@@ -11,43 +11,17 @@ from .provider import Provider
 
 BASE_URL = 'http://hippocampome.org/php/search_engine_json.php?query_str='
 
-MORPHOLOGIES = ['Axons', 'Soma', 'Dendrites']
-LAYERS = {
-    'DG': {
-        'key': 'DG',
-        'layers': '????'
-    },
-    'CA3': {
-        'key': 'CA3',
-        'layers': '?????'
-    },
-    'CA2': {
-        'key': 'CA2',
-        'layers': '????'
-    },
-    'CA1': {
-        'key': 'CA1',
-        'layers': '????'
-    },
-    'SUB': {
-        'key': 'SUB',
-        'layers': '???'
-    },
-    'EC': {
-        'key': 'EC',
-        'layers': '??????'
-    }
-}
-MARKERS = ['CB', 'CR', 'PV', 'Mus2R', '5HT-3', 'Gaba-a-alpha', 'mGluR1a', 'vGluT3', 'CCK', 'SOM', 'nNOS', 'PPTA',
-           'vGluT2', 'CGRP', 'mGluR2/3', 'mGluR5', 'Prox1', 'GABAa \delta',
-           'MUS1R', 'Mus3R', 'Mus4R', 'Cam', 'AMPAR 2/3', 'Disc1', 'BONG', 'p-CREB', 'Neuropilin2', 'mGluR1', 'Caln',
-           'vGlut1', 'mGluR2', 'mGluR3', 'GABAa\alpha 2', 'GABAa\alpha 3', 'GABAa\alpha 4', 'GABAa\alpha 5',
-           'GABAa\alpha 6', 'GABAa\beta 1', 'GABAa\beta 2', 'GABAa\beta 3', 'GABAa\gamma 1', 'GABAa\gamma 2', 'mGluR5a',
-           'GlyT2', 'mGluR7a',
-           'mGluR8a', 'vAChT', 'AChE', 'Kv3.1', 'Cx36', 'AR-beta1', 'AR-beta2', 'TH', 'mGluR4', 'CXCR4', 'GABA-B1',
-           'GluA2', 'GluA1', 'GluA3', 'GluA4'
-           ]
+config = {}
+dir_path = os.getcwd()
+try:
+    with open(f'{dir_path}/config/hippocampome.json') as json_file:
+        config = json.load(json_file)
+except Exception as ex:
+    ic(f'Exception on loading file {ex}')
 
+search_layers = config['layers'] if 'layers' in config else {}
+search_markers = config['markers'] if 'markers' in config else []
+search_morphologies = config['morphologies'] if 'morphologies' in config else []
 
 class HippocampomeProvider(Provider):
 
@@ -69,11 +43,11 @@ class HippocampomeProvider(Provider):
 
     async def __search_neurons__(self, start=0, hits_per_page=50):
         neurons = []
-        markers_str = ' OR '.join([f'D±:{marker} OR I±:{marker}' for marker in MARKERS])
+        markers_str = ' OR '.join([f'D±:{marker} OR I±:{marker}' for marker in search_markers])
         try:
-            layers_repr = [f"{LAYERS[x]['key']}:{LAYERS[x]['layers']}" for x in LAYERS.keys()]
+            layers_repr = [f"{search_layers[x]['key']}:{search_layers[x]['layers']}" for x in search_layers.keys()]
             morphologies_str = ' OR '.join(
-                [f"{morphology}:{layer}" for morphology in MORPHOLOGIES for layer in layers_repr])
+                [f"{morphology}:{layer}" for morphology in search_morphologies for layer in layers_repr])
             url = BASE_URL + f'Neuron:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
             async with aiohttp.ClientSession() as session:
                 response = await session.get(url)
@@ -91,11 +65,11 @@ class HippocampomeProvider(Provider):
 
     async def __search_connections__(self, start=0, hits_per_page=50):
         connections = []
-        markers_str = ' OR '.join([f'D±:{marker} OR I±:{marker}' for marker in MARKERS])
+        markers_str = ' OR '.join([f'D±:{marker} OR I±:{marker}' for marker in search_markers])
         try:
-            layers_repr = [f"{LAYERS[x]['key']}:{LAYERS[x]['layers']}" for x in LAYERS.keys()]
+            layers_repr = [f"{search_layers[x]['key']}:{search_layers[x]['layers']}" for x in search_layers.keys()]
             morphologies_str = ' OR '.join(
-                [f"{morphology}:{layer}" for morphology in MORPHOLOGIES for layer in layers_repr])
+                [f"{morphology}:{layer}" for morphology in search_morphologies for layer in layers_repr])
             url = BASE_URL + f'Connection:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
             async with aiohttp.ClientSession() as session:
                 response = await session.get(url)

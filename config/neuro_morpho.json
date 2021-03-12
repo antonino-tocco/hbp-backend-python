@@ -1,0 +1,14 @@
+{
+  "domains": {
+    "allowed": ["dendrites", "soma", "axon"],
+    "not_allowed": []
+  },
+  "attributes": {
+    "allowed": ["diameter", "3d", "angles"],
+    "not_allowed": []
+  },
+  "physical_integrities": {
+    "allowed": ["dendrites complete"],
+    "not_allowed": ["no axon"]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "morphologies": ["Axons", "Soma", "Dendrites"],
+  "layers": {
+    "DG": {
+      "key": "DG",
+      "layers": "????"
+    },
+    "CA3": {
+      "key": "CA3",
+      "layers": "?????"
+    },
+    "CA2": {
+      "key": "CA2",
+      "layers": "????"
+    },
+    "CA1": {
+      "key": "CA1",
+      "layers": "????"
+    },
+    "SUB": {
+      "key": "SUB",
+      "layers": "???"
+    },
+    "EC": {
+      "key": "EC",
+      "layers": "??????"
+    }
+  },
+  "markers": ["CB", "CR", "PV", "Mus2R", "5HT-3", "Gaba-a-alpha", "mGluR1a", "vGluT3", "CCK", "SOM", "nNOS", "PPTA",
+           "vGluT2", "CGRP", "mGluR2/3", "mGluR5", "Prox1", "GABAa \\delta",
+           "MUS1R", "Mus3R", "Mus4R", "Cam", "AMPAR 2/3", "Disc1", "BONG", "p-CREB", "Neuropilin2", "mGluR1", "Caln",
+           "vGlut1", "mGluR2", "mGluR3", "GABAa\\alpha 2", "GABAa\\alpha 3", "GABAa\\alpha 4", "GABAa\\alpha 5",
+           "GABAa\\alpha 6", "GABAa\\beta 1", "GABAa\\beta 2", "GABAa\\beta 3", "GABAa\\gamma 1", "GABAa\\gamma 2", "mGluR5a",
+           "GlyT2", "mGluR7a",
+           "mGluR8a", "vAChT", "AChE", "Kv3.1", "Cx36", "AR-beta1", "AR-beta2", "TH", "mGluR4", "CXCR4", "GABA-B1",
+           "GluA2", "GluA1", "GluA3", "GluA4"
+           ]
+}
