@@ -10,5 +10,6 @@
   "physical_integrities": {
     "allowed": ["dendrites complete"],
     "not_allowed": ["no axon"]
-  }
+  },
+  "brain_regions": ["hippocampus"]
 }

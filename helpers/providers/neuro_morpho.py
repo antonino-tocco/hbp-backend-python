@@ -89,7 +89,7 @@ class NeuroMorphoProvider(Provider):
         print(f"Attributes {attributes_allowed_values}")
         print(f"Physical Integrity {physical_integrity_values}")
         params = {
-            'brain_region': ['hippocampus'],
+            'brain_region': config['brain_regions'] if 'brain_regions' in config else ['hippocampus'],
             'domain': domain_allowed_values,
             #'original_format': original_format_allowed_values,
             'attributes': attributes_allowed_values,
