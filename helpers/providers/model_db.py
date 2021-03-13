@@ -1,3 +1,5 @@
+import os
+import json
 import aiohttp
 import html5lib
 from os.path import splitext
@@ -8,7 +10,15 @@ from .provider import Provider
 BASE_URL = "http://modeldb.science/api/v1"
 MAX_REQUEST_RETRY = 5
 
-REGION_KEY = 'hippocampus'
+config = {}
+dir_path = os.getcwd()
+try:
+    with open(f'{dir_path}/config/model_db.json') as json_file:
+        config = json.load(json_file)
+except Exception as ex:
+    ic(f'Exception on loading file {ex}')
+
+region_key = config['region_key'] if 'region_key' in config else 'hippocampus'
 
 
 class ModelDbProvider(Provider):
@@ -32,7 +42,7 @@ class ModelDbProvider(Provider):
                             model = await self.__get_single_item__(model_id)
                             if model is not None:
                                 item = self.__map__item__(model)
-                                is_from_hippocampus = len(list(filter(lambda a: REGION_KEY in a.lower(),
+                                is_from_hippocampus = len(list(filter(lambda a: region_key in a.lower(),
                                                                       item['source']['cell_types']))) > 0
                                 if not is_from_hippocampus:
                                     continue
