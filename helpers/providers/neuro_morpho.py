@@ -77,13 +77,13 @@ class NeuroMorphoProvider(Provider):
     async def search_datasets(self, start=0, hits_per_page=50):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
-        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), domains['allowed'] or [], domains['not_allowed'] or [])
+        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), domains['allowed'] if 'allowed' in domains else [], domains['not_allowed'] if 'not_allowed' in domains else [])
         #original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'],
         #                                               exact=False)
         attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'),
-                                                  attributes['allowed'] or [], attributes['not_allowed'] or [])
+                                                  attributes['allowed'] if 'allowed' in attributes else [], attributes['not_allowed'] if 'not_allowed' in attributes else [])
         physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
-                                                  physical_integrities['allowed'] or [], physical_integrities['not_allowed'] or [])
+                                                  physical_integrities['allowed'] if 'allowed' in physical_integrities else [], physical_integrities['not_allowed'] if 'not_allowed' in physical_integrities else [])
         print(f"Domains {domain_allowed_values}")
         #print(f"Original format {original_format_allowed_values}")
         print(f"Attributes {attributes_allowed_values}")
