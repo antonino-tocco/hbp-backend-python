@@ -166,21 +166,21 @@ class NeuroMorphoProvider(Provider):
         storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
 
         image_file_path = None
+        if 'neuron_id' in dataset:
+            original_format_url = await self.__retrieve_original_format_file__(str(dataset['neuron_id']))
+            if original_format_url is not None and os.path.splitext(original_format_url)[-1].lower() == '.asc':
 
-        original_format_url = await self.__retrieve_original_format_file__(str(dataset['neuron_id']))
-        if original_format_url is not None and os.path.splitext(original_format_url)[-1].lower() == '.asc':
+                try:
+                    if dataset['png_url']:
+                        local_image_file_path = await download_image(dataset['png_url'], self.source)
+                        image_file_path = f"{os.getenv('HOST')}{local_image_file_path}" if local_image_file_path is not None else None
+                except Exception as ex:
+                    ic(f'Exception download image {ex}')
 
-            try:
-                if dataset['png_url']:
-                    local_image_file_path = await download_image(dataset['png_url'], self.source)
-                    image_file_path = f"{os.getenv('HOST')}{local_image_file_path}" if local_image_file_path is not None else None
-            except Exception as ex:
-                ic(f'Exception download image {ex}')
+                #f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
 
-            #f"http://neuromorpho.org/dableFiles/{dataset['archive'].lower()}/Source-Version/{dataset['neuron_name']}.{original_format_ext}",
-
-            try:
-                return {
+                try:
+                    return {
                     'identifier': storage_identifier,
                     'source': {
                         'source_id': storage_identifier,
@@ -206,8 +206,8 @@ class NeuroMorphoProvider(Provider):
                         'source': self.source
                     }
                 }
-            except Exception as ex:
-                raise ex
+                except Exception as ex:
+                    raise ex
         return None
 
     async def __filter_items__(self, items=[]):
