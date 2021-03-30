@@ -143,7 +143,9 @@ class ElasticStorage(Storage):
                         if len(implementers) > 0:
                             s = s.query('terms', **{'implementers.keyword': implementers})
                 if query is not None and query != '':
-                    s = s.query('multi_match', query=query, fields=['name', 'description'])
+                    wildcard_query = f'*{query}*'
+                    q = Q('wildcard',  **{'name.keyword': wildcard_query}) | Q('wildcard',  **{'description.keyword': wildcard_query})
+                    s = s.query(q)
                 if sort_fields:
                     s = s.sort(*sort_fields)
             return s.execute()
