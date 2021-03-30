@@ -3,3 +3,5 @@ __pycache__/
 venv/
 backend.env
 data/certbot/
+images/
+static/images/

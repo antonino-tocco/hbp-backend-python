@@ -7,10 +7,10 @@ def parse_query_args(data=None):
     if 'data_type' in data:
         data_type = data['data_type']
     filters = {}
+    if 'query' in data:
+        query = data['query']
     if 'filters' in data and data['filters']:
         filters = data['filters']
-        if 'query' in filters:
-            query = filters['query']
         if 'secondary_region' in filters:
             region = filters['secondary_region']
         if 'cell_type' in filters:
