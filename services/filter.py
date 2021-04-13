@@ -80,6 +80,12 @@ default_fields = {
         }
     },
     'model': {
+        'cell_types': {
+          'label': 'cell types',
+          'type': 'multiple',
+          'order': 1,
+          'values': ('cell_types', 'keyword')
+        },
         'channels': {
             'label': 'channels',
             'type': 'multiple',
