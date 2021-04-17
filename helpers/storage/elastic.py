@@ -1,4 +1,5 @@
 import os
+from functools import reduce
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
 from . import Storage
@@ -143,11 +144,19 @@ class ElasticStorage(Storage):
                         if len(implementers) > 0:
                             s = s.query('terms', **{'implementers.keyword': implementers})
                 if query is not None and query != '':
-                    wildcard_query = f'*{query}*'
-                    q = Q('wildcard',  **{'name.keyword': wildcard_query}) | Q('wildcard',  **{'description.keyword': wildcard_query})
-                    s = s.query(q)
+                    splitted_query = list(map(lambda x: x.strip(' \n\t'), query.split('|')))
+                    wildcard_queries = [f"*{query}*" for query in splitted_query]
+                    all_queries = [Q('wildcard',  **{'name.keyword': wildcard_query}) |\
+                        Q('wildcard',  **{'description.keyword': wildcard_query}) |\
+                        Q('wildcard', **{'cell_type.keyword': wildcard_query}) |\
+                        Q('wildcard', **{'species.keyword': wildcard_query}) |\
+                        Q('wildcard', **{'channels.keyword': wildcard_query}) |\
+                        Q('wildcard', **{'layers.keyword': wildcard_query}) for wildcard_query in wildcard_queries]
+                    queries = Q('bool', should=all_queries, minimum_should_match=1)
+                    s = s.query(queries)
                 if sort_fields:
                     s = s.sort(*sort_fields)
-            return s.execute()
+            results = s.execute()
+            return results
         except Exception as ex:
             raise ex
