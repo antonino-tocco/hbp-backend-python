@@ -32,7 +32,8 @@ class InternalProvider(Provider):
                     'id': str(dataset['neuron_id']),
                     'type': 'morphology',
                     'name': dataset['neuron_name'],
-                    'download_link': dataset['download_link']
+                    'download_link': dataset['download_link'],
+                    'source': self.source
                 }
             }
         except Exception as ex:
