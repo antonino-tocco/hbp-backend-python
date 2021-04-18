@@ -23,6 +23,7 @@ search_layers = config['layers'] if 'layers' in config else {}
 search_markers = config['markers'] if 'markers' in config else []
 search_morphologies = config['morphologies'] if 'morphologies' in config else []
 
+
 class HippocampomeProvider(Provider):
 
     def __init__(self):
