@@ -151,6 +151,8 @@ class ElasticStorage(Storage):
                         Q('wildcard', **{'cell_type.keyword': wildcard_query}) |\
                         Q('wildcard', **{'species.keyword': wildcard_query}) |\
                         Q('wildcard', **{'channels.keyword': wildcard_query}) |\
+                        Q('wildcard', **{'model_concepts.keyword': wildcard_query}) |\
+                        Q('wildcard', **{'model_types.keyword': wildcard_query}) |\
                         Q('wildcard', **{'layers.keyword': wildcard_query}) for wildcard_query in wildcard_queries]
                     queries = Q('bool', should=all_queries, minimum_should_match=1)
                     s = s.query(queries)
