@@ -42,6 +42,8 @@ class InternalMorphologyProvider(Provider):
                     'name': dataset['neuron_name'],
                     'page_link': page_url,
                     'icon': image_url,
+                    'secondary_region': [secondary_region],
+                    'cell_type': cell_type,
                     'source': self.source
                 }
             }
