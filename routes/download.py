@@ -34,7 +34,7 @@ def download_all(index_name):
 def download(index_name):
     try:
         data = {}
-        if request.method == 'POSTS':
+        if request.method == 'POST':
             data = request.get_json()
         else:
             data = request.args.to_dict()
