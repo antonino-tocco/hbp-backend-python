@@ -7,10 +7,10 @@ base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal
 base_image_url = f'https://www.hippocampushub.eu//model/assets/images/exp-morph-images/'
 
 
-class InternalMorphologyProvider(Provider):
+class InternalElectrophysiologyProvider(Provider):
 
     def __init__(self):
-        super(InternalMorphologyProvider, self).__init__()
+        super(InternalElectrophysiologyProvider, self).__init__()
         self.id_prefix = 'internal'
         self.source = 'internal'
 
