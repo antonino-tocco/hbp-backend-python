@@ -3,7 +3,7 @@ import json
 from .provider import Provider
 
 
-base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal-morphology/'
+base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal-electrophysiology'
 base_image_url = f'https://www.hippocampushub.eu//model/assets/images/exp-morph-images/'
 
 
@@ -28,20 +28,19 @@ class InternalMorphologyProvider(Provider):
 
     def __map__item__(self, dataset):
         storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
-        secondary_region = dataset['secondary_region'] if 'secondary_region' in dataset else None
         cell_type = dataset['cell_type'] if 'cell_type' in dataset else None
         try:
-            page_url = f"{base_page_url}?instance={dataset['neuron_id']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
+            page_url = f"{base_page_url}?etype={cell_type}&etype_instance={dataset['neuron_id']}"
             image_url = f"{base_image_url}/{dataset['neuron_id']}.jpeg"
             return {
                 'identifier': storage_identifier,
                 'source': {
                     'source_id': storage_identifier,
                     'id': str(dataset['neuron_id']),
-                    'type': 'morphology',
+                    'type': 'electrophysiology',
                     'name': dataset['neuron_name'],
                     'page_link': page_url,
-                    'icon': image_url,
+                    #'icon': image_url,
                     'source': self.source
                 }
             }

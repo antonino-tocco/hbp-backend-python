@@ -1,3 +1,622 @@
-{
-
-}
+[
+  {
+    "neuron_id": "95810035",
+    "neuron_name": "95810035",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "95810036",
+    "neuron_name": "95810036",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "96711009",
+    "neuron_name": "96711009",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "97911000",
+    "neuron_name": "97911000",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "97911001",
+    "neuron_name": "97911001",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "97911002",
+    "neuron_name": "97911002",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "99111000",
+    "neuron_name": "99111000",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "99111001",
+    "neuron_name": "99111001",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "99111002",
+    "neuron_name": "99111002",
+    "cell_type": "bAC"
+  },
+  {
+    "neuron_id": "97428000",
+    "neuron_name": "97428000",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97428001",
+    "neuron_name": "97428001",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97428002",
+    "neuron_name": "97428002",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97428003",
+    "neuron_name": "97428003",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97509008",
+    "neuron_name": "97509008",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97509009",
+    "neuron_name": "97509009",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97509010",
+    "neuron_name": "97509010",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "97509011",
+    "neuron_name": "97509011",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205017",
+    "neuron_name": "98205017",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205018",
+    "neuron_name": "98205018",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205020",
+    "neuron_name": "98205020",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205021",
+    "neuron_name": "98205021",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205022",
+    "neuron_name": "98205022",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205024",
+    "neuron_name": "98205024",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "98205025",
+    "neuron_name": "98205025",
+    "cell_type": "cAC"
+  },
+  {
+    "neuron_id": "95808021",
+    "neuron_name": "95808021",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95808022",
+    "neuron_name": "95808022",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95808023",
+    "neuron_name": "95808023",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95808024",
+    "neuron_name": "95808024",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95808025",
+    "neuron_name": "95808025",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810006",
+    "neuron_name": "95810006",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810007",
+    "neuron_name": "95810007",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810008",
+    "neuron_name": "95810008",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810009",
+    "neuron_name": "95810009",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810010",
+    "neuron_name": "95810010",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810011",
+    "neuron_name": "95810011",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810012",
+    "neuron_name": "95810012",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810013",
+    "neuron_name": "95810013",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810014",
+    "neuron_name": "95810014",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810015",
+    "neuron_name": "95810015",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810016",
+    "neuron_name": "95810016",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810017",
+    "neuron_name": "95810017",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810018",
+    "neuron_name": "95810018",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810019",
+    "neuron_name": "95810019",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810020",
+    "neuron_name": "95810020",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810021",
+    "neuron_name": "95810021",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810022",
+    "neuron_name": "95810022",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810023",
+    "neuron_name": "95810023",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810024",
+    "neuron_name": "95810024",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810025",
+    "neuron_name": "95810025",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810026",
+    "neuron_name": "95810026",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810027",
+    "neuron_name": "95810027",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810028",
+    "neuron_name": "95810028",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810029",
+    "neuron_name": "95810029",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810030",
+    "neuron_name": "95810030",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810031",
+    "neuron_name": "95810031",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810032",
+    "neuron_name": "95810032",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810033",
+    "neuron_name": "95810033",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810034",
+    "neuron_name": "95810034",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810037",
+    "neuron_name": "95810037",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810038",
+    "neuron_name": "95810038",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810039",
+    "neuron_name": "95810039",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810040",
+    "neuron_name": "95810040",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810041",
+    "neuron_name": "95810041",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810042",
+    "neuron_name": "95810042",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810043",
+    "neuron_name": "95810043",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95810044",
+    "neuron_name": "95810044",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817003",
+    "neuron_name": "95817003",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817004",
+    "neuron_name": "95817004",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817005",
+    "neuron_name": "95817005",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817006",
+    "neuron_name": "95817006",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817007",
+    "neuron_name": "95817007",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817008",
+    "neuron_name": "95817008",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817009",
+    "neuron_name": "95817009",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95817010",
+    "neuron_name": "95817010",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822000",
+    "neuron_name": "95822000",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822001",
+    "neuron_name": "95822001",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822002",
+    "neuron_name": "95822002",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822003",
+    "neuron_name": "95822003",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822004",
+    "neuron_name": "95822004",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822005",
+    "neuron_name": "95822005",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822006",
+    "neuron_name": "95822006",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822007",
+    "neuron_name": "95822007",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822008",
+    "neuron_name": "95822008",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822009",
+    "neuron_name": "95822009",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822010",
+    "neuron_name": "95822010",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822011",
+    "neuron_name": "95822011",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822012",
+    "neuron_name": "95822012",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822013",
+    "neuron_name": "95822013",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822014",
+    "neuron_name": "95822014",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822015",
+    "neuron_name": "95822015",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822016",
+    "neuron_name": "95822016",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822017",
+    "neuron_name": "95822017",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822018",
+    "neuron_name": "95822018",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822019",
+    "neuron_name": "95822019",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822020",
+    "neuron_name": "95822020",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95822021",
+    "neuron_name": "95822021",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824000",
+    "neuron_name": "95824000",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824001",
+    "neuron_name": "95824001",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824002",
+    "neuron_name": "95824002",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824003",
+    "neuron_name": "95824003",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824004",
+    "neuron_name": "95824004",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824005",
+    "neuron_name": "95824005",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95824006",
+    "neuron_name": "95824006",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831000",
+    "neuron_name": "95831000",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831001",
+    "neuron_name": "95831001",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831002",
+    "neuron_name": "95831002",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831003",
+    "neuron_name": "95831003",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831004",
+    "neuron_name": "95831004",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831005",
+    "neuron_name": "95831005",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95831006",
+    "neuron_name": "95831006",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912000",
+    "neuron_name": "95912000",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912001",
+    "neuron_name": "95912001",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912002",
+    "neuron_name": "95912002",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912003",
+    "neuron_name": "95912003",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912004",
+    "neuron_name": "95912004",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912005",
+    "neuron_name": "95912005",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912006",
+    "neuron_name": "95912006",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95912007",
+    "neuron_name": "95912007",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95914000",
+    "neuron_name": "95914000",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95914001",
+    "neuron_name": "95914001",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95914002",
+    "neuron_name": "95914002",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95914003",
+    "neuron_name": "95914003",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95914004",
+    "neuron_name": "95914004",
+    "cell_type": "cACpyr"
+  },
+  {
+    "neuron_id": "95914005",
+    "neuron_name": "95914005",
+    "cell_type": "cACpyr"
+  }
+]
