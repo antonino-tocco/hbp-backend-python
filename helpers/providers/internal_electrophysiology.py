@@ -18,7 +18,7 @@ class InternalElectrophysiologyProvider(Provider):
         dir_path = os.getcwd()
         mapped_items = []
         try:
-            with open(f'{dir_path}/data/internal_morphology.json') as json_file:
+            with open(f'{dir_path}/data/internal_electrophysiology.json') as json_file:
                 items = json.load(json_file)
                 mapped_items = [self.__map__item__(item) for item in items]
             return mapped_items
