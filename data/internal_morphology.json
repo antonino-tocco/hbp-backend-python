@@ -2,215 +2,301 @@
   "neuron_id": "011127HP1",
   "neuron_name": "011127HP1",
   "secondary_region": "SLM",
-  "cell_type": "SLM_PPA"
+  "cell_type": "SLM_PPA",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "990827IN5HP3",
   "neuron_name": "990827IN5HP3",
   "secondary_region": "SR",
-  "cell_type": "SR_IS1"
+  "cell_type": "SR_IS1",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "990611HP2",
   "neuron_name": "990611HP2",
   "secondary_region": "SR",
-  "cell_type": "SR_SCA"
+  "cell_type": "SR_SCA",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "990728BHP2",
   "neuron_name": "990728BHP2",
   "secondary_region": "SR",
-  "cell_type": "SR_SCA"
+  "cell_type": "SR_SCA",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "970911C",
   "neuron_name": "970911C",
   "secondary_region": "SP",
-  "cell_type": "SP_AA"
+  "cell_type": "SP_AA",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "980513B",
   "neuron_name": "980513B",
   "secondary_region": "SP",
-  "cell_type": "SP_BS"
+  "cell_type": "SP_BS",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "031031AM1",
   "neuron_name": "031031AM1",
   "secondary_region": "SP",
-  "cell_type": "SP_CCKBC"
+  "cell_type": "SP_CCKBC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "010710HP2",
   "neuron_name": "010710HP2",
   "secondary_region": "SP",
-  "cell_type": "SP_Ivy"
+  "cell_type": "SP_Ivy",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "970717D",
   "neuron_name": "970717D",
   "secondary_region": "SP",
-  "cell_type": "SP_Ivy"
+  "cell_type": "SP_Ivy",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "050921AM2",
   "neuron_name": "050921AM2",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "051208AM2",
   "neuron_name": "051208AM2",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "060919AM2",
   "neuron_name": "060919AM2",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "980205AB",
   "neuron_name": "980205AB",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "990803",
   "neuron_name": "990803",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141017_a1-2_idA",
   "neuron_name": "mpg141017_a1-2_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141017_a1-2_idC",
   "neuron_name": "mpg141017_a1-2_idC",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141208_B_idA",
   "neuron_name": "mpg141208_B_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141209_A_idA",
   "neuron_name": "mpg141209_A_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141209_B_idA",
   "neuron_name": "mpg141209_B_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141215_A_idA",
   "neuron_name": "mpg141215_A_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141216_A_idA",
   "neuron_name": "mpg141216_A_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141216_A_idC",
   "neuron_name": "mpg141216_A_idC",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg141217_A_idB",
   "neuron_name": "mpg141217_A_idB",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "mpg150305_A_idB",
   "neuron_name": "mpg150305_A_idB",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140521_B0_Rat_idA",
   "neuron_name": "oh140521_B0_Rat_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140521_B0_Rat_idC",
   "neuron_name": "oh140521_B0_Rat_idC",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idA",
   "neuron_name": "oh140807_A0_idA",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idB",
   "neuron_name": "oh140807_A0_idB",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idC",
   "neuron_name": "oh140807_A0_idC",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idE",
   "neuron_name": "oh140807_A0_idE",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idF",
   "neuron_name": "oh140807_A0_idF",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idG",
   "neuron_name": "oh140807_A0_idG",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idH",
   "neuron_name": "oh140807_A0_idH",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "oh140807_A0_idJ",
   "neuron_name": "oh140807_A0_idJ",
   "secondary_region": "SP",
-  "cell_type": "SP_PC"
+  "cell_type": "SP_PC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "060314AM2",
   "neuron_name": "060314AM2",
   "secondary_region": "SP",
-  "cell_type": "SP_PVBC"
+  "cell_type": "SP_PVBC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "970627BHP1",
   "neuron_name": "970627BHP1",
   "secondary_region": "SP",
-  "cell_type": "SP_PVBC"
+  "cell_type": "SP_PVBC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "990111HP2",
   "neuron_name": "990111HP2",
   "secondary_region": "SP",
-  "cell_type": "SP_PVBC"
+  "cell_type": "SP_PVBC",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "980120A",
   "neuron_name": "980120A",
   "secondary_region": "SO",
-  "cell_type": "SO_BP"
+  "cell_type": "SO_BP",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "011023HP2",
   "neuron_name": "011023HP2",
   "secondary_region": "SO",
-  "cell_type": "SO_BS"
+  "cell_type": "SO_BS",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "011017HP2",
   "neuron_name": "011017HP2",
   "secondary_region": "SO",
-  "cell_type": "SO_OLM"
+  "cell_type": "SO_OLM",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "970428A1",
   "neuron_name": "970428A1",
   "secondary_region": "SO",
-  "cell_type": "SO_OLM"
+  "cell_type": "SO_OLM",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "970509HP2",
   "neuron_name": "970509HP2",
   "secondary_region": "SO",
-  "cell_type": "SO_Tri"
+  "cell_type": "SO_Tri",
+  "species": ["rat"],
+  "region": "hippocampus"
 }, {
   "neuron_id": "971114B",
   "neuron_name": "971114B",
   "secondary_region": "SO",
-  "cell_type": "SO_Tri"
+  "cell_type": "SO_Tri",
+  "species": ["rat"],
+  "region": "hippocampus"
 }]

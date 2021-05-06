@@ -28,6 +28,8 @@ class InternalMorphologyProvider(Provider):
 
     def __map__item__(self, dataset):
         storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
+        region = dataset['region'] if 'region' in dataset else 'hippocampus'
+        species = dataset['species'] if 'species' in dataset else ['rat']
         secondary_region = dataset['secondary_region'] if 'secondary_region' in dataset else None
         cell_type = dataset['cell_type'] if 'cell_type' in dataset else None
         try:
@@ -42,6 +44,8 @@ class InternalMorphologyProvider(Provider):
                     'name': dataset['neuron_name'],
                     'page_link': page_url,
                     'icon': image_url,
+                    'region': region,
+                    'species': species,
                     'secondary_region': [secondary_region],
                     'cell_type': cell_type,
                     'source': self.source
