@@ -148,12 +148,13 @@ class ElasticStorage(Storage):
                     wildcard_queries = [f"*{query}*" for query in splitted_query]
                     all_queries = [Q('query_string',  **{'query': f'name:{wildcard_query}'}) |\
                         Q('query_string',  **{'query': f'description:{wildcard_query}'}) |\
-                        Q('query_string', **{'query': f'cell_type:{wildcard_query}'}) |\
+                        Q('query_string', **{'query': f'cell_type:{wildcard_query}'}) | \
+                        Q('query_string', **{'query': f'secondary_region:{wildcard_query}'}) | \
                         Q('query_string', **{'query': f'species:{wildcard_query}'}) |\
                         Q('query_string', **{'query': f'channels:{wildcard_query}'}) |\
                         Q('query_string', **{'query': f'model_concepts:{wildcard_query}'}) |\
                         Q('query_string', **{'query': f'model_types:{wildcard_query}'}) |\
-                        Q('query_string', **{'query': f'layes:{wildcard_query}'}) for wildcard_query in wildcard_queries]
+                        Q('query_string', **{'query': f'layers:{wildcard_query}'}) for wildcard_query in wildcard_queries]
                     queries = Q('bool', should=all_queries, minimum_should_match=1)
                     s = s.query(queries)
                 if sort_fields:
