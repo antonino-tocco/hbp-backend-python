@@ -2,621 +2,745 @@
   {
     "neuron_id": "95810035",
     "neuron_name": "95810035",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "95810036",
     "neuron_name": "95810036",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "96711009",
     "neuron_name": "96711009",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "97911000",
     "neuron_name": "97911000",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "97911001",
     "neuron_name": "97911001",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "97911002",
     "neuron_name": "97911002",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "99111000",
     "neuron_name": "99111000",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "99111001",
     "neuron_name": "99111001",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "99111002",
     "neuron_name": "99111002",
+    "secondary_region": "CA1",
     "cell_type": "bAC"
   },
   {
     "neuron_id": "97428000",
     "neuron_name": "97428000",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97428001",
     "neuron_name": "97428001",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97428002",
     "neuron_name": "97428002",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97428003",
     "neuron_name": "97428003",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97509008",
     "neuron_name": "97509008",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97509009",
     "neuron_name": "97509009",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97509010",
     "neuron_name": "97509010",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "97509011",
     "neuron_name": "97509011",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205017",
     "neuron_name": "98205017",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205018",
     "neuron_name": "98205018",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205020",
     "neuron_name": "98205020",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205021",
     "neuron_name": "98205021",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205022",
     "neuron_name": "98205022",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205024",
     "neuron_name": "98205024",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "98205025",
     "neuron_name": "98205025",
+    "secondary_region": "CA1",
     "cell_type": "cAC"
   },
   {
     "neuron_id": "95808021",
     "neuron_name": "95808021",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95808022",
     "neuron_name": "95808022",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95808023",
     "neuron_name": "95808023",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95808024",
     "neuron_name": "95808024",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95808025",
     "neuron_name": "95808025",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810006",
     "neuron_name": "95810006",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810007",
     "neuron_name": "95810007",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810008",
     "neuron_name": "95810008",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810009",
     "neuron_name": "95810009",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810010",
     "neuron_name": "95810010",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810011",
     "neuron_name": "95810011",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810012",
     "neuron_name": "95810012",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810013",
     "neuron_name": "95810013",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810014",
     "neuron_name": "95810014",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810015",
     "neuron_name": "95810015",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810016",
     "neuron_name": "95810016",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810017",
     "neuron_name": "95810017",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810018",
     "neuron_name": "95810018",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810019",
     "neuron_name": "95810019",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810020",
     "neuron_name": "95810020",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810021",
     "neuron_name": "95810021",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810022",
     "neuron_name": "95810022",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810023",
     "neuron_name": "95810023",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810024",
     "neuron_name": "95810024",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810025",
     "neuron_name": "95810025",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810026",
     "neuron_name": "95810026",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810027",
     "neuron_name": "95810027",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810028",
     "neuron_name": "95810028",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810029",
     "neuron_name": "95810029",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810030",
     "neuron_name": "95810030",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810031",
     "neuron_name": "95810031",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810032",
     "neuron_name": "95810032",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810033",
     "neuron_name": "95810033",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810034",
     "neuron_name": "95810034",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810037",
     "neuron_name": "95810037",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810038",
     "neuron_name": "95810038",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810039",
     "neuron_name": "95810039",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810040",
     "neuron_name": "95810040",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810041",
     "neuron_name": "95810041",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810042",
     "neuron_name": "95810042",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810043",
     "neuron_name": "95810043",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95810044",
     "neuron_name": "95810044",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817003",
     "neuron_name": "95817003",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817004",
     "neuron_name": "95817004",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817005",
     "neuron_name": "95817005",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817006",
     "neuron_name": "95817006",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817007",
     "neuron_name": "95817007",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817008",
     "neuron_name": "95817008",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817009",
     "neuron_name": "95817009",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95817010",
     "neuron_name": "95817010",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822000",
     "neuron_name": "95822000",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822001",
     "neuron_name": "95822001",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822002",
     "neuron_name": "95822002",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822003",
     "neuron_name": "95822003",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822004",
     "neuron_name": "95822004",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822005",
     "neuron_name": "95822005",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822006",
     "neuron_name": "95822006",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822007",
     "neuron_name": "95822007",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822008",
     "neuron_name": "95822008",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822009",
     "neuron_name": "95822009",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822010",
     "neuron_name": "95822010",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822011",
     "neuron_name": "95822011",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822012",
     "neuron_name": "95822012",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822013",
     "neuron_name": "95822013",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822014",
     "neuron_name": "95822014",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822015",
     "neuron_name": "95822015",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822016",
     "neuron_name": "95822016",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822017",
     "neuron_name": "95822017",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822018",
     "neuron_name": "95822018",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822019",
     "neuron_name": "95822019",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822020",
     "neuron_name": "95822020",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95822021",
     "neuron_name": "95822021",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824000",
     "neuron_name": "95824000",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824001",
     "neuron_name": "95824001",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824002",
     "neuron_name": "95824002",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824003",
     "neuron_name": "95824003",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824004",
     "neuron_name": "95824004",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824005",
     "neuron_name": "95824005",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95824006",
     "neuron_name": "95824006",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831000",
     "neuron_name": "95831000",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831001",
     "neuron_name": "95831001",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831002",
     "neuron_name": "95831002",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831003",
     "neuron_name": "95831003",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831004",
     "neuron_name": "95831004",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831005",
     "neuron_name": "95831005",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95831006",
     "neuron_name": "95831006",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912000",
     "neuron_name": "95912000",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912001",
     "neuron_name": "95912001",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912002",
     "neuron_name": "95912002",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912003",
     "neuron_name": "95912003",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912004",
     "neuron_name": "95912004",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912005",
     "neuron_name": "95912005",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912006",
     "neuron_name": "95912006",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95912007",
     "neuron_name": "95912007",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95914000",
     "neuron_name": "95914000",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95914001",
     "neuron_name": "95914001",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95914002",
     "neuron_name": "95914002",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95914003",
     "neuron_name": "95914003",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95914004",
     "neuron_name": "95914004",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   },
   {
     "neuron_id": "95914005",
     "neuron_name": "95914005",
+    "secondary_region": "CA1",
     "cell_type": "cACpyr"
   }
 ]
