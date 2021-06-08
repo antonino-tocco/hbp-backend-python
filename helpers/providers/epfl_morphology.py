@@ -1,5 +1,7 @@
 import os
 import json
+import logging
+from icecream import ic
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
 from .provider import Provider
@@ -9,29 +11,30 @@ base_image_url = f'https://www.hippocampushub.eu/model/assets/images/exp-morph-i
 
 epfl_es_host = 'https://bbp.epfl.ch/nexus/v1/views/public/hippocampus-hub/'
 
-elasticsearch = Elasticsearch(hosts=[epfl_es_host])
 
-
-class InternalMorphologyProvider(Provider):
+class EpflMorphologyProvider(Provider):
 
     def __init__(self):
-        super(InternalMorphologyProvider, self).__init__()
+        super(EpflMorphologyProvider, self).__init__()
         self.id_prefix = 'internal'
         self.source = 'internal'
         self.index_name = ''
         self.es = Elasticsearch(hosts=[epfl_es_host])
 
     async def search_datasets(self, start=0, hits_per_page=50):
-        index_name = 'https%3A%2F%2Fbbp.epfl.ch%2Fneurosciencegraph%2Fdata%2Fviews%2Fes%2Fdataset'
-        es_search = Search(using=self.es)
-        es_search = es_search.index(index_name)
+        results = []
+        index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
+        s = Search(using=self.es)
+        s = s.index(index_name)
         try:
-            es_search.filter('term', **{'_deprectated.keyword': False})
-            es_search.filter('term', **{'type.keyword': 'NeuroMorphology'})
-            results = es_search.execute()
+            s = s.filter('term', **{'_deprecated': False})
+            #s = s.filter('bool', **{'@type': 'NeuronMorphology'})
+            s = s.filter('term', **{'@type': 'NeuronMorphology'})
+            s = s.extra(from_=0, size=1000)
+            results = s.execute()
             return results
         except Exception as ex:
-            print(ex)
+            ic(f'Exception make request {ex}')
         return results
 
     def __map__item__(self, dataset):
