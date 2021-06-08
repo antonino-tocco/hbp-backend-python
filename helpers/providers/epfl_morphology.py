@@ -1,30 +1,38 @@
 import os
 import json
+from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search, A, Q
 from .provider import Provider
-
 
 base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal-morphology/'
 base_image_url = f'https://www.hippocampushub.eu/model/assets/images/exp-morph-images/'
 
+epfl_es_host = 'https://bbp.epfl.ch/nexus/v1/views/public/hippocampus-hub/'
 
-class EpflMorphologyProvider(Provider):
+elasticsearch = Elasticsearch(hosts=[epfl_es_host])
+
+
+class InternalMorphologyProvider(Provider):
 
     def __init__(self):
-        super(EpflMorphologyProvider, self).__init__()
-        self.id_prefix = 'epfl'
-        self.source = 'epfl'
+        super(InternalMorphologyProvider, self).__init__()
+        self.id_prefix = 'internal'
+        self.source = 'internal'
+        self.index_name = ''
+        self.es = Elasticsearch(hosts=[epfl_es_host])
 
     async def search_datasets(self, start=0, hits_per_page=50):
-        dir_path = os.getcwd()
-        mapped_items = []
+        index_name = 'https%3A%2F%2Fbbp.epfl.ch%2Fneurosciencegraph%2Fdata%2Fviews%2Fes%2Fdataset'
+        es_search = Search(using=self.es)
+        es_search = es_search.index(index_name)
         try:
-            with open(f'{dir_path}/data/internal_morphology.json') as json_file:
-                items = json.load(json_file)
-                mapped_items = [self.__map__item__(item) for item in items]
-            return mapped_items
+            es_search.filter('term', **{'_deprectated.keyword': False})
+            es_search.filter('term', **{'type.keyword': 'NeuroMorphology'})
+            results = es_search.execute()
+            return results
         except Exception as ex:
             print(ex)
-        return mapped_items
+        return results
 
     def __map__item__(self, dataset):
         storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
