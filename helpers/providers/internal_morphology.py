@@ -11,8 +11,8 @@ class InternalMorphologyProvider(Provider):
 
     def __init__(self):
         super(InternalMorphologyProvider, self).__init__()
-        self.id_prefix = 'internal'
-        self.source = 'internal'
+        self.id_prefix = 'internal_morphology'
+        self.source = 'internal_morphology'
 
     async def search_datasets(self, start=0, hits_per_page=50):
         dir_path = os.getcwd()

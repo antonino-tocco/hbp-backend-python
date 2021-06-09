@@ -39,7 +39,7 @@ class EpflMorphologyProvider(Provider):
     def map_datasets(self, items=[]):
         try:
             all_items = [self.__map__item__(item) for item in items]
-            all_items = filter(lambda x: x is not None, all_items)
+            all_items = list(filter(lambda x: x is not None, all_items))
             return all_items
         except Exception as ex:
             ic(f'Exception mapping datasets {ex}')

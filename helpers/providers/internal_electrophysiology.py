@@ -11,8 +11,8 @@ class InternalElectrophysiologyProvider(Provider):
 
     def __init__(self):
         super(InternalElectrophysiologyProvider, self).__init__()
-        self.id_prefix = 'internal'
-        self.source = 'internal'
+        self.id_prefix = 'internal_electrophysiology'
+        self.source = 'internal_electrophysiology'
 
     async def search_datasets(self, start=0, hits_per_page=50):
         dir_path = os.getcwd()
