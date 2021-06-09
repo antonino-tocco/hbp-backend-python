@@ -16,43 +16,55 @@ class EpflMorphologyProvider(Provider):
 
     def __init__(self):
         super(EpflMorphologyProvider, self).__init__()
-        self.id_prefix = 'internal'
-        self.source = 'internal'
-        self.index_name = ''
+        self.id_prefix = 'epfl'
+        self.source = 'epfl'
+        self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         self.es = Elasticsearch(hosts=[epfl_es_host])
 
     async def search_datasets(self, start=0, hits_per_page=50):
         results = []
-        index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         s = Search(using=self.es)
-        s = s.index(index_name)
+        s = s.index(self.index_name)
         try:
             s = s.filter('term', **{'_deprecated': False})
             #s = s.filter('bool', **{'@type': 'NeuronMorphology'})
             s = s.filter('term', **{'@type': 'NeuronMorphology'})
             s = s.extra(from_=0, size=1000)
             results = s.execute()
-            return results
+            return self.map_datasets(results)
         except Exception as ex:
             ic(f'Exception make request {ex}')
         return results
 
+    def map_datasets(self, items=[]):
+        try:
+            all_items = [self.__map__item__(item) for item in items]
+            all_items = filter(lambda x: x is not None, all_items)
+            return all_items
+        except Exception as ex:
+            ic(f'Exception mapping datasets {ex}')
+            return []
+
     def __map__item__(self, dataset):
-        storage_identifier = f"{self.id_prefix}-{dataset['neuron_id']}"
+        storage_identifier = f"{self.id_prefix}-{dataset['@id']}"
         region = dataset['region'] if 'region' in dataset else 'hippocampus'
         species = dataset['species'] if 'species' in dataset else ['rat']
-        secondary_region = dataset['secondary_region'] if 'secondary_region' in dataset else None
-        cell_type = dataset['cell_type'] if 'cell_type' in dataset else None
+        secondary_region = None
+        cell_type = None
+        if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in dataset['brainLocation']['brainRegion']:
+            secondary_region = dataset['brainLocation']['brainRegion']['label']
+        if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
+            cell_type = dataset['annotation']['hasBody']['label']
         try:
-            page_url = f"{base_page_url}?instance={dataset['neuron_id']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
-            image_url = f"{base_image_url}/{dataset['neuron_id']}.jpeg"
+            page_url = f"{base_page_url}?instance={dataset['@id']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
+            image_url = f"{base_image_url}/{dataset['@id']}.jpeg"
             return {
                 'identifier': storage_identifier,
                 'source': {
                     'source_id': storage_identifier,
-                    'id': str(dataset['neuron_id']),
+                    'id': str(dataset['@id']),
                     'type': 'morphology',
-                    'name': dataset['neuron_name'],
+                    'name': dataset['name'],
                     'page_link': page_url,
                     'icon': image_url,
                     'region': region,
@@ -63,4 +75,5 @@ class EpflMorphologyProvider(Provider):
                 }
             }
         except Exception as ex:
+            ic(f'Exception mapping datasets {ex}')
             return None
