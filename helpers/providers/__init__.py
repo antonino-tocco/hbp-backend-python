@@ -1,4 +1,5 @@
 from .epfl_morphology import EpflMorphologyProvider
+from .epfl_electrophysiology import EpflElectrophysiologyProvider
 from .neuro_morpho import NeuroMorphoProvider
 from .model_db import ModelDbProvider
 from .knowledge import KnowledgeProvider

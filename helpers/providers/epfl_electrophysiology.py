@@ -12,10 +12,10 @@ base_image_url = f'https://www.hippocampushub.eu/model/assets/images/exp-morph-i
 epfl_es_host = 'https://bbp.epfl.ch/nexus/v1/views/public/hippocampus-hub/'
 
 
-class EpflElectroPhysiologyProvider(Provider):
+class EpflElectrophysiologyProvider(Provider):
 
     def __init__(self):
-        super(EpflElectroPhysiologyProvider, self).__init__()
+        super(EpflElectrophysiologyProvider, self).__init__()
         self.id_prefix = 'epfl_electrophysiology'
         self.source = 'epfl_electrophysiology'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
