@@ -12,10 +12,10 @@ base_image_url = f'https://www.hippocampushub.eu/model/assets/images/exp-morph-i
 epfl_es_host = 'https://bbp.epfl.ch/nexus/v1/views/public/hippocampus-hub/'
 
 
-class EpflMorphologyProvider(Provider):
+class EpflElectroPhysiologyProvider(Provider):
 
     def __init__(self):
-        super(EpflMorphologyProvider, self).__init__()
+        super(EpflElectroPhysiologyProvider, self).__init__()
         self.id_prefix = 'epfl'
         self.source = 'epfl'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
@@ -28,7 +28,7 @@ class EpflMorphologyProvider(Provider):
         try:
             s = s.filter('term', **{'_deprecated': False})
             #s = s.filter('bool', **{'@type': 'NeuronMorphology'})
-            s = s.filter('term', **{'@type': 'NeuronMorphology'})
+            s = s.filter('term', **{'@type': 'Trace'})
             s = s.extra(from_=0, size=1000)
             results = s.execute()
             return self.map_datasets(results)
@@ -51,9 +51,11 @@ class EpflMorphologyProvider(Provider):
         species = dataset['species'] if 'species' in dataset else ['rat']
         secondary_region = None
         cell_type = None
-        if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in dataset['brainLocation']['brainRegion']:
+        if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in \
+                dataset['brainLocation']['brainRegion']:
             secondary_region = dataset['brainLocation']['brainRegion']['label']
-        if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
+        if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation'][
+            'hasBody']:
             cell_type = dataset['annotation']['hasBody']['label']
         try:
             page_url = f"{base_page_url}?instance={dataset['name']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
