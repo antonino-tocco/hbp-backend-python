@@ -16,8 +16,8 @@ class EpflElectroPhysiologyProvider(Provider):
 
     def __init__(self):
         super(EpflElectroPhysiologyProvider, self).__init__()
-        self.id_prefix = 'epfl'
-        self.source = 'epfl'
+        self.id_prefix = 'epfl_electrophysiology'
+        self.source = 'epfl_electrophysiology'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         self.es = Elasticsearch(hosts=[epfl_es_host])
 
@@ -65,7 +65,7 @@ class EpflElectroPhysiologyProvider(Provider):
                 'source': {
                     'source_id': storage_identifier,
                     'id': str(dataset['@id']),
-                    'type': 'morphology',
+                    'type': 'electrophysiology',
                     'name': dataset['name'],
                     'page_link': page_url,
                     'icon': image_url,
