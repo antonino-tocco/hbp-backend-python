@@ -58,7 +58,10 @@ class NexusMorphologyProvider(Provider):
         try:
             page_url = f"{base_page_url}?instance={dataset['name']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
             image_url = f"{base_image_url}/{dataset['name']}.jpeg"
-            papers = [dataset['url']] if 'url' in dataset and dataset['url'] is not None else []
+            papers = [{
+                'label': dataset['url'],
+                'url': dataset['url']
+            }] if 'url' in dataset and dataset['url'] is not None else []
             return {
                 'identifier': storage_identifier,
                 'source': {
