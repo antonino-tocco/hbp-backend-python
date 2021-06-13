@@ -17,7 +17,7 @@ class EpflMorphologyProvider(Provider):
     def __init__(self):
         super(EpflMorphologyProvider, self).__init__()
         self.id_prefix = 'epfl'
-        self.source = 'epfl'
+        self.source = 'EPFL'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         self.es = Elasticsearch(hosts=[epfl_es_host])
 

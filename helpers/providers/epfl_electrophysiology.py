@@ -17,7 +17,7 @@ class EpflElectrophysiologyProvider(Provider):
     def __init__(self):
         super(EpflElectrophysiologyProvider, self).__init__()
         self.id_prefix = 'epfl_electrophysiology'
-        self.source = 'epfl_electrophysiology'
+        self.source = 'EPFL'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         self.es = Elasticsearch(hosts=[epfl_es_host])
 
@@ -58,7 +58,7 @@ class EpflElectrophysiologyProvider(Provider):
             'hasBody']:
             cell_type = dataset['annotation']['hasBody']['label']
         try:
-            page_url = f"{base_page_url}?instance={dataset['name']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
+            page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={secondary_region or ''}&etype={cell_type or ''}"
             image_url = f"{base_image_url}/{dataset['name']}.jpeg"
             return {
                 'identifier': storage_identifier,
