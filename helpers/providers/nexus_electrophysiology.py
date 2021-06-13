@@ -51,6 +51,7 @@ class NexusElectrophysiologyProvider(Provider):
         species = dataset['species'] if 'species' in dataset else ['rat']
         secondary_region = None
         cell_type = None
+        computed_secondary_region = None
         if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in \
                 dataset['brainLocation']['brainRegion']:
             secondary_region = dataset['brainLocation']['brainRegion']['label']
@@ -76,7 +77,8 @@ class NexusElectrophysiologyProvider(Provider):
                     'icon': image_url,
                     'region': region,
                     'species': species,
-                    'secondary_region': [secondary_region],
+                    'secondary_region': [computed_secondary_region] if computed_secondary_region is not None else [],
+                    'layers': [cell_type],
                     'cell_type': cell_type,
                     'papers': papers,
                     'source': self.source
