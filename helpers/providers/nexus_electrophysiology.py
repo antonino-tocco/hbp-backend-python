@@ -59,9 +59,12 @@ class NexusElectrophysiologyProvider(Provider):
             'hasBody']:
             cell_type = dataset['annotation']['hasBody']['label']
         try:
-            computed_secondary_region = secondary_region.split('_')[0] if secondary_region is not None else ''
+            computed_secondary_region = secondary_region.split('_')[0] if secondary_region is not None else None
+            if cell_type is None:
+                return None
             page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={cell_type or ''}"
-            image_url = dataset['image'][0]['@id'] if 'image' in dataset and dataset['image'] is not None and len(dataset['image']) > 0 else None
+            image_url = dataset['image'][0]['@id'] if 'image' in dataset and dataset['image'] is not None and \
+                                                      len(dataset['image']) > 0 else None
             papers = [{
                 'label': dataset['url'],
                 'url': dataset['url']
@@ -78,7 +81,7 @@ class NexusElectrophysiologyProvider(Provider):
                     'region': region,
                     'species': species,
                     'secondary_region': [computed_secondary_region] if computed_secondary_region is not None else [],
-                    'layers': [cell_type],
+                    'layers': [cell_type] if cell_type is not None else [],
                     'cell_type': cell_type,
                     'papers': papers,
                     'source': self.source
