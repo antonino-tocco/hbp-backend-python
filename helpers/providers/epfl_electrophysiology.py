@@ -6,7 +6,7 @@ from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
 from .provider import Provider
 
-base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal-morphology/'
+base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal-electrophysiology/'
 base_image_url = f'https://www.hippocampushub.eu/model/assets/images/exp-morph-images/'
 
 epfl_es_host = 'https://bbp.epfl.ch/nexus/v1/views/public/hippocampus-hub/'
