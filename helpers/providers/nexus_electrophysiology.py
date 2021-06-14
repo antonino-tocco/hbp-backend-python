@@ -51,20 +51,32 @@ class NexusElectrophysiologyProvider(Provider):
         species = dataset['species'] if 'species' in dataset else ['rat']
         secondary_region = None
         cell_type = None
+        image_url = None
         computed_secondary_region = None
-        if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in \
-                dataset['brainLocation']['brainRegion']:
-            secondary_region = dataset['brainLocation']['brainRegion']['label']
-        if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation'][
-            'hasBody']:
-            cell_type = dataset['annotation']['hasBody']['label']
+        download_link = None
         try:
+            if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in \
+                    dataset['brainLocation']['brainRegion']:
+                secondary_region = dataset['brainLocation']['brainRegion']['label']
+            if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
+                cell_type = dataset['annotation']['hasBody']['label']
+            if 'distribution' in dataset and dataset['distribution'] is not None\
+                    and dataset['distribution'] is list and len(dataset['distribution']) > 0:
+                distribution = dataset['distribution']
+                for download_url in distribution:
+                    url = download_url['contentUrl'] if 'contentUrl' in download_url and \
+                        'encodingFormat' in download_url and download_url['encodingFormat'] == 'application/abf' else None
+                    if url is not None:
+                        download_link = url
+                        break
+
             computed_secondary_region = secondary_region.split('_')[0] if secondary_region is not None else None
             if cell_type is None:
                 return None
             page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={cell_type or ''}"
-            image_url = dataset['image'][0]['@id'] if 'image' in dataset and dataset['image'] is not None and \
-                                                      len(dataset['image']) > 0 else None
+            if 'image' in dataset and dataset['image'] is not None\
+                    and dataset['image'] is list and len(dataset['image']) > 0:
+                    image_url = dataset['image'][0]['@id']
             papers = [{
                 'label': dataset['url'],
                 'url': dataset['url']
@@ -82,6 +94,7 @@ class NexusElectrophysiologyProvider(Provider):
                     'species': species,
                     'secondary_region': [computed_secondary_region] if computed_secondary_region is not None else [],
                     'layers': [cell_type] if cell_type is not None else [],
+                    'download_link': download_link,
                     'cell_type': cell_type,
                     'papers': papers,
                     'source': self.source
