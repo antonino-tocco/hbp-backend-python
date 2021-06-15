@@ -16,8 +16,8 @@ class NexusMorphologyProvider(Provider):
 
     def __init__(self):
         super(NexusMorphologyProvider, self).__init__()
-        self.id_prefix = 'epfl'
-        self.source = 'EPFL'
+        self.id_prefix = 'internal_morphologies'
+        self.source = 'INTERNAL'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         self.es = Elasticsearch(hosts=[nexus_es_host])
 

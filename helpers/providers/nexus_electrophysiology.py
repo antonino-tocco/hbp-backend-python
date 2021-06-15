@@ -16,8 +16,8 @@ class NexusElectrophysiologyProvider(Provider):
 
     def __init__(self):
         super(NexusElectrophysiologyProvider, self).__init__()
-        self.id_prefix = 'epfl_electrophysiology'
-        self.source = 'EPFL'
+        self.id_prefix = 'internal_electrophysiologies'
+        self.source = 'INTERNAL'
         self.index_name = 'https://bbp.epfl.ch/neurosciencegraph/data/views/es/dataset'
         self.es = Elasticsearch(hosts=[nexus_es_host])
 
@@ -40,6 +40,14 @@ class NexusElectrophysiologyProvider(Provider):
         try:
             all_items = [self.__map__item__(item) for item in items]
             all_items = list(filter(lambda x: x is not None, all_items))
+            # with open('electrophysiology.json', 'w') as file:
+            #     json_items = list(map(lambda x: {
+            #         'name': x['source']['name'] if 'name' in x['source'] else None,
+            #         'download_link': x['source']['download_link'] if 'download_link' in x['source'] else None
+            #     }, all_items))
+            #
+            #     file.write(json.dumps(json_items))
+            #     file.close()
             return all_items
         except Exception as ex:
             ic(f'Exception mapping datasets {ex}')
@@ -60,12 +68,12 @@ class NexusElectrophysiologyProvider(Provider):
                 secondary_region = dataset['brainLocation']['brainRegion']['label']
             if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
                 cell_type = dataset['annotation']['hasBody']['label']
-            if 'distribution' in dataset and dataset['distribution'] is not None\
-                    and dataset['distribution'] is list and len(dataset['distribution']) > 0:
+            if 'distribution' in dataset and dataset['distribution'] is not None:
                 distribution = dataset['distribution']
                 for download_url in distribution:
                     url = download_url['contentUrl'] if 'contentUrl' in download_url and \
-                        'encodingFormat' in download_url and download_url['encodingFormat'] == 'application/abf' else None
+                        'encodingFormat' in download_url and download_url['encodingFormat'] == 'application/abf' \
+                        else None
                     if url is not None:
                         download_link = url
                         break
