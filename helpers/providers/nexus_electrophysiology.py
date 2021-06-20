@@ -58,7 +58,7 @@ class NexusElectrophysiologyProvider(Provider):
         region = dataset['region'] if 'region' in dataset else 'hippocampus'
         species = dataset['species'] if 'species' in dataset else ['rat']
         secondary_region = None
-        cell_type = None
+        etype = None
         image_url = None
         computed_secondary_region = None
         download_link = None
@@ -67,7 +67,7 @@ class NexusElectrophysiologyProvider(Provider):
                     dataset['brainLocation']['brainRegion']:
                 secondary_region = dataset['brainLocation']['brainRegion']['label']
             if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
-                cell_type = dataset['annotation']['hasBody']['label']
+                etype = dataset['annotation']['hasBody']['label']
             if 'distribution' in dataset and dataset['distribution'] is not None:
                 distribution = dataset['distribution']
                 for download_url in distribution:
@@ -79,9 +79,9 @@ class NexusElectrophysiologyProvider(Provider):
                         break
 
             computed_secondary_region = secondary_region.split('_')[0] if secondary_region is not None else None
-            if cell_type is None:
+            if etype is None:
                 return None
-            page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={cell_type or ''}"
+            page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={etype or ''}"
             if 'image' in dataset and dataset['image'] is not None\
                     and dataset['image'] is list and len(dataset['image']) > 0:
                     image_url = dataset['image'][0]['@id']
@@ -101,9 +101,10 @@ class NexusElectrophysiologyProvider(Provider):
                     'region': region,
                     'species': species,
                     'secondary_region': [computed_secondary_region] if computed_secondary_region is not None else [],
-                    'layers': [cell_type] if cell_type is not None else [],
+                    'layers': [],
                     'download_link': download_link,
-                    'cell_type': cell_type,
+                    'cell_type': None,
+                    'etype': etype,
                     'papers': papers,
                     'source': self.source
                 }
