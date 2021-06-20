@@ -56,7 +56,7 @@ class NexusMorphologyProvider(Provider):
         if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
             cell_type = dataset['annotation']['hasBody']['label']
         try:
-            page_url = f"{base_page_url}?instance={dataset['name']}&layer={secondary_region or ''}&mtype={cell_type or ''}"
+            page_url = f"{base_page_url}?instance={dataset['name']}&layer={secondary_region or ''}&mtype={cell_type or ''}#data"
             image_url = f"{base_image_url}/{dataset['name']}.jpeg"
             papers = [{
                 'label': dataset['url'],

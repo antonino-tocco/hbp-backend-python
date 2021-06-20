@@ -81,7 +81,7 @@ class NexusElectrophysiologyProvider(Provider):
             computed_secondary_region = secondary_region.split('_')[0] if secondary_region is not None else None
             if etype is None:
                 return None
-            page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={etype or ''}"
+            page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={etype or ''}#data"
             if 'image' in dataset and dataset['image'] is not None\
                     and dataset['image'] is list and len(dataset['image']) > 0:
                     image_url = dataset['image'][0]['@id']
