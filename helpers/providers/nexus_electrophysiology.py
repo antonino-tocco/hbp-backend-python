@@ -36,9 +36,14 @@ class NexusElectrophysiologyProvider(Provider):
             ic(f'Exception make request {ex}')
         return results
 
-    def map_datasets(self, items=[]):
+    def map_datasets(self, response=None):
         try:
-            all_items = [self.__map__item__(item) for item in items]
+            _all_items = [item for item in response]
+            #json_response = json.dumps(response.to_dict())
+            #with open('electrophysiology.json', 'w') as file:
+            #    file.write(json_response)
+            #    file.close()
+            all_items = [self.__map__item__(item) for item in _all_items]
             all_items = list(filter(lambda x: x is not None, all_items))
             # with open('electrophysiology.json', 'w') as file:
             #     json_items = list(map(lambda x: {
