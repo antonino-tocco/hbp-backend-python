@@ -7,5 +7,5 @@ from .hippocampome import HippocampomeProvider
 from .internal_morphology import InternalMorphologyProvider
 from .internal_electrophysiology import InternalElectrophysiologyProvider
 
-enabled_dataset_providers = [NexusMorphologyProvider(), NexusElectrophysiologyProvider(), NeuroMorphoProvider(), HippocampomeProvider()]
+enabled_dataset_providers = [NexusMorphologyProvider(), NexusElectrophysiologyProvider(),  NeuroMorphoProvider(), HippocampomeProvider()]
 enabled_model_providers = [ModelDbProvider()]

@@ -1,5 +1,3 @@
-import os
-import json
 import logging
 from icecream import ic
 from elasticsearch import Elasticsearch
@@ -10,6 +8,8 @@ base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal
 base_image_url = f'https://www.hippocampushub.eu/model/assets/images/exp-morph-images/'
 
 nexus_es_host = 'https://bbp.epfl.ch/nexus/v1/views/public/hippocampus-hub/'
+
+logging.basicConfig(filename='es_search.log', level=logging.DEBUG)
 
 
 class NexusElectrophysiologyProvider(Provider):
@@ -29,7 +29,7 @@ class NexusElectrophysiologyProvider(Provider):
             s = s.filter('term', **{'_deprecated': False})
             #s = s.filter('bool', **{'@type': 'NeuronMorphology'})
             s = s.filter('term', **{'@type': 'Trace'})
-            s = s.filter('term', **{'distribution.encodingFormat': 'application/nwb'})
+            s = s.query(Q('nested', path='distribution', query=Q('bool', must=[Q('match', **{'distribution.encodingFormat':'application/nwb'})])))
             s = s.extra(from_=0, size=1000)
             results = s.execute()
             return self.map_datasets(results)
