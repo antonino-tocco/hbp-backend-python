@@ -68,6 +68,8 @@ class NexusElectrophysiologyProvider(Provider):
         image_url = None
         computed_secondary_region = None
         download_link = None
+        name = dataset['name']
+        metadata_url = f'https://object.cscs.ch/v1/AUTH_c0a333ecf7c045809321ce9d9ecdfdea/web-resources-bsp/data/NFE/MetadataHippocampusHub/{name}_metadata.json'
         try:
             if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in \
                     dataset['brainLocation']['brainRegion']:
@@ -112,7 +114,10 @@ class NexusElectrophysiologyProvider(Provider):
                     'cell_type': None,
                     'etype': etype,
                     'papers': papers,
-                    'source': self.source
+                    'source': self.source,
+                    'metadata': {
+                        'url': metadata_url
+                    }
                 }
             }
         except Exception as ex:
