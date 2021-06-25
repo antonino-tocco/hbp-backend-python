@@ -29,6 +29,7 @@ class NexusElectrophysiologyProvider(Provider):
             s = s.filter('term', **{'_deprecated': False})
             #s = s.filter('bool', **{'@type': 'NeuronMorphology'})
             s = s.filter('term', **{'@type': 'Trace'})
+            s = s.filter('term', **{'distribution.encodingFormat': 'application/nwb'})
             s = s.extra(from_=0, size=1000)
             results = s.execute()
             return self.map_datasets(results)
