@@ -11,7 +11,7 @@ def zip_generator(zip_file:zipstream.ZipFile):
         yield chunk
 
 
-async def download_image(url=None, source=None):
+async def download_image(url=None, source=None, ext=None):
     assert(url is not None)
     assert(source is not None)
     if url is None or url.strip() == "":
@@ -28,6 +28,8 @@ async def download_image(url=None, source=None):
             if not os.path.exists(image_dir_full_path):
                 os.makedirs(image_dir_full_path)
             image_file_name = f"{image_dir_full_path}/{image_name}"
+            if ext is not None:
+                image_file_name = f"{image_file_name}.{ext}"
             with open(image_file_name, 'wb') as image_file:
                 try:
                     image_file.write(buffer_image.getvalue())

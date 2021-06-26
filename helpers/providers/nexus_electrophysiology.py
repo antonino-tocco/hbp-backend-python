@@ -1,7 +1,9 @@
 import logging
+import urllib
 from icecream import ic
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
+from helpers.download_helper import download_image
 from .provider import Provider
 
 base_page_url = f'https://www.hippocampushub.eu/model/experimental-data/neuronal-electrophysiology/'
@@ -32,19 +34,19 @@ class NexusElectrophysiologyProvider(Provider):
             s = s.query(Q('nested', path='distribution', query=Q('bool', must=[Q('match', **{'distribution.encodingFormat':'application/nwb'})])))
             s = s.extra(from_=0, size=1000)
             results = s.execute()
-            return self.map_datasets(results)
+            return await self.map_datasets(results)
         except Exception as ex:
             ic(f'Exception make request {ex}')
         return results
 
-    def map_datasets(self, response=None):
+    async def map_datasets(self, response=None):
         try:
             _all_items = [item for item in response]
             #json_response = json.dumps(response.to_dict())
             #with open('electrophysiology.json', 'w') as file:
             #    file.write(json_response)
             #    file.close()
-            all_items = [self.__map__item__(item) for item in _all_items]
+            all_items = [await self.__map__item__(item) for item in _all_items]
             all_items = list(filter(lambda x: x is not None, all_items))
             # with open('electrophysiology.json', 'w') as file:
             #     json_items = list(map(lambda x: {
@@ -59,12 +61,13 @@ class NexusElectrophysiologyProvider(Provider):
             ic(f'Exception mapping datasets {ex}')
             return []
 
-    def __map__item__(self, dataset):
+    async def __map__item__(self, dataset):
         storage_identifier = f"{self.id_prefix}-{dataset['@id']}"
         region = dataset['region'] if 'region' in dataset else 'hippocampus'
         species = dataset['species'] if 'species' in dataset else ['rat']
         secondary_region = None
         etype = None
+        original_image_url = None
         image_url = None
         computed_secondary_region = None
         download_link = None
@@ -90,9 +93,10 @@ class NexusElectrophysiologyProvider(Provider):
             if etype is None:
                 return None
             page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={etype or ''}#data"
-            if 'image' in dataset and dataset['image'] is not None\
-                    and dataset['image'] is list and len(dataset['image']) > 0:
-                    image_url = dataset['image'][0]['@id']
+            if 'image' in dataset and dataset['image'] is not None:
+                    original_image_url = f"{dataset['image'][0]['@id']}"
+            if original_image_url is not None:
+                image_url = f"https://bbp.epfl.ch/nexus/v1/resources/public/hippocampus-hub/_/{urllib.parse.quote_plus(original_image_url)}"
             papers = [{
                 'label': dataset['url'],
                 'url': dataset['url']
