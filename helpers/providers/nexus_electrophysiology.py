@@ -94,9 +94,14 @@ class NexusElectrophysiologyProvider(Provider):
                 return None
             page_url = f"{base_page_url}?etype_instance={dataset['name']}&layer={computed_secondary_region or ''}&etype={etype or ''}#data"
             if 'image' in dataset and dataset['image'] is not None:
+                for image in dataset['image']:
+                    if image['about'] == 'nsg:ResponseTrace':
+                        original_image_url = f"{image['@id']}"
+                        break
+                if original_image_url is None:
                     original_image_url = f"{dataset['image'][0]['@id']}"
-            if original_image_url is not None:
-                image_url = f"https://bbp.epfl.ch/nexus/v1/resources/public/hippocampus-hub/_/{urllib.parse.quote_plus(original_image_url)}"
+                if original_image_url is not None:
+                    image_url = f"https://bbp.epfl.ch/nexus/v1/resources/public/hippocampus-hub/_/{urllib.parse.quote_plus(original_image_url)}"
             papers = [{
                 'label': dataset['url'],
                 'url': dataset['url']

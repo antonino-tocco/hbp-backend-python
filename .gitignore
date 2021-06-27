@@ -5,3 +5,4 @@ backend.env
 data/certbot/
 images/
 static/images/
+es_search.log
