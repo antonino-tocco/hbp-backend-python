@@ -53,7 +53,7 @@ class ElasticStorage(Storage):
                 if query is not None and query != '':
                     splitted_query = list(map(lambda x: x.strip(' \n\t'), query.split('|')))
                     wildcard_queries = [f"*{query}*" for query in splitted_query]
-                    all_queries = [Q('query_string',  **{'query': f'{item}.name:{wildcard_query}'}) |\
+                    all_queries = [[Q('query_string',  **{'query': f'{item}.name:{wildcard_query}'}) |\
                         Q('query_string',  **{'query': f'{item}.description:{wildcard_query}'}) |\
                         Q('query_string', **{'query': f'{item}.cell_type:{wildcard_query}'}) | \
                         Q('query_string', **{'query': f'{item}.secondary_region:{wildcard_query}'}) | \
@@ -61,9 +61,12 @@ class ElasticStorage(Storage):
                         Q('query_string', **{'query': f'{item}.channels:{wildcard_query}'}) |\
                         Q('query_string', **{'query': f'{item}.model_concepts:{wildcard_query}'}) |\
                         Q('query_string', **{'query': f'{item}.model_types:{wildcard_query}'}) |\
-                        Q('query_string', **{'query': f'{item}.layers:{wildcard_query}'}) for wildcard_query in wildcard_queries
+                        Q('query_string', **{'query': f'{item}.layers:{wildcard_query}'}) for wildcard_query in wildcard_queries]
                                    for item in ['presynaptic', 'postsynaptic']]
-                    queries = Q('bool', should=all_queries, minimum_should_match=1)
+                    flat_queries = []
+                    for queries in all_queries:
+                        flat_queries.extend(queries)
+                    queries = Q('bool', should=flat_queries, minimum_should_match=1)
                     s.query(queries)
             if presynaptic:
                 for key in presynaptic:
