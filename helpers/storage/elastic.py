@@ -1,4 +1,5 @@
 import os
+from icecream import ic
 from functools import reduce
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
@@ -64,6 +65,7 @@ class ElasticStorage(Storage):
                                 wildcard_queries]
                                for item in ['presynaptic', 'postsynaptic']]
                 flat_queries = [item for sublist in all_queries for item in sublist]
+                ic(f'Flat queries {len(flat_queries)}')
                 queries = Q('bool', should=flat_queries, minimum_should_match=1)
                 s.query(queries)
             if presynaptic:

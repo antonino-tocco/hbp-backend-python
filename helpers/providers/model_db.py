@@ -48,15 +48,15 @@ class ModelDbProvider(Provider):
                                     continue
                             if 'cell_types' in item['source'] and item['source']['cell_types'] is not None and len(
                                     item['source']['cell_types']) > 1:
-                                print(f"More than 1 neurons {item['source']['id']}")
+                                ic(f"More than 1 neurons {item['source']['id']}")
                                 more_than_one_neuron_items.append(item['source']['id'])
                             items.append(item)
                         except Exception as ex:
-                            print(f"Exception with model {model_id} {ex}")
+                            ic(f"Exception with model {model_id} {ex}")
                     await session.close()
             return items
         except Exception as ex:
-            print(ex)
+            ic(ex)
         return items
 
     def map_models(self, items=[]):
@@ -217,7 +217,7 @@ class ModelDbProvider(Provider):
                         if url is not None:
                             url_splitted = splitext(url)
                             is_mod_file = '.mod' in label or '.mod' in url_splitted[-1]
-                            ic(f'is mod file {label} - {url} - {is_mod_file} ')
+                            #ic(f'is mod file {label} - {url} - {is_mod_file} ')
                             if is_mod_file:
                                 try:
                                     download_link_page = url if url.startswith(
