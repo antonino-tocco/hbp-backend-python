@@ -62,12 +62,11 @@ class ElasticStorage(Storage):
                                 Q('query_string', **{'query': f'{item}.model_concepts:{wildcard_query}'}) | \
                                 Q('query_string', **{'query': f'{item}.model_types:{wildcard_query}'}) | \
                                 Q('query_string', **{'query': f'{item}.layers:{wildcard_query}'}) for wildcard_query in
-                                wildcard_queries]
-                               for item in ['presynaptic', 'postsynaptic']]
+                                wildcard_queries] for item in ['presynaptic', 'postsynaptic']]
                 flat_queries = [item for sublist in all_queries for item in sublist]
                 ic(f'Flat queries {len(flat_queries)}')
                 queries = Q('bool', should=flat_queries, minimum_should_match=1)
-                s.query(queries)
+                s = s.query(queries)
             if presynaptic:
                 for key in presynaptic:
                     values = presynaptic[key]
