@@ -38,10 +38,10 @@ def parse_connections_args(data=None):
     if data is None:
         return query, presynaptic, postsynaptic
     else:
+        if 'query' in data:
+            query = data['query']
         if 'filters' in data and data['filters']:
             filters = data['filters']
-            if 'query' in filters:
-                query = filters
             if 'presynaptic' in filters:
                 presynaptic = filters['presynaptic']
             if 'postsynaptic' in filters:
