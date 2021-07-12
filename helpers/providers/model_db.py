@@ -29,7 +29,7 @@ class ModelDbProvider(Provider):
 
     async def search_models(self, start=0, hits_per_page=50):
         url = f"{BASE_URL}/models?modeling_application=NEURON"
-        print(f"Fetch url {url}")
+        #ic(f"Fetch url {url}")
         try:
             items = []
             more_than_one_neuron_items = []

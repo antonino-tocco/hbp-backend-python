@@ -54,11 +54,11 @@ class NeuroMorphoProvider(Provider):
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
-            print(f'Fetch url {url} Retry {num_retry}')
+            #ic(f'Fetch url {url} Retry {num_retry}')
             try:
                 async with aiohttp.ClientSession() as session:
                     async with session.get(url, allow_redirects=True, timeout=30) as response:
-                        print(f'Response status for url {url} {response.status}')
+                        #ic(f'Response status for url {url} {response.status}')
                         if response is not None and response.status == 200:
                             data = await response.json()
                             all_values.extend(data['fields'])
@@ -124,9 +124,9 @@ class NeuroMorphoProvider(Provider):
     async def __make_search_request__(self, url, params, num_retry=0):
         try:
             async with aiohttp.ClientSession() as session:
-                print(f'Fetch url {url} Retry {num_retry}')
+                #ic(f'Fetch url {url} Retry {num_retry}')
                 async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
-                    print(f'Response status for url {url} {response.status}')
+                    #ic(f'Response status for url {url} {response.status}')
                     items = []
                     total_pages = 1
                     if response is not None and response.status == 200:
