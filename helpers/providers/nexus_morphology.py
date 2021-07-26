@@ -49,12 +49,19 @@ class NexusMorphologyProvider(Provider):
         storage_identifier = f"{self.id_prefix}-{dataset['@id']}"
         region = dataset['region'] if 'region' in dataset else 'hippocampus'
         species = dataset['species'] if 'species' in dataset else ['rat']
+        download_link = None
         secondary_region = None
         cell_type = None
         if 'brainLocation' in dataset and 'brainRegion' in dataset['brainLocation'] and 'label' in dataset['brainLocation']['brainRegion']:
             secondary_region = dataset['brainLocation']['brainRegion']['label']
         if 'annotation' in dataset and 'hasBody' in dataset['annotation'] and 'label' in dataset['annotation']['hasBody']:
             cell_type = dataset['annotation']['hasBody']['label']
+        if 'distribution' in dataset and len(dataset['distribution']) > 0:
+            for item in dataset['distribution']:
+                file_ext = os.path.splitext(item['name'])[1]
+                if file_ext == '.asc' or file_ext == '.swc':
+                    download_link = item['contentUrl']
+                    break
         try:
             page_url = f"{base_page_url}?instance={dataset['name']}&layer={secondary_region or ''}&mtype={cell_type or ''}#data"
             image_url = f"{base_image_url}/{dataset['name']}.jpeg"
@@ -73,6 +80,7 @@ class NexusMorphologyProvider(Provider):
                     'icon': image_url,
                     'region': region,
                     'species': species,
+                    'download_link': download_link,
                     'secondary_region': [secondary_region],
                     'cell_type': cell_type,
                     'papers': papers,

@@ -48,9 +48,9 @@ The Neuromorpho provider only return morphologies with .asc and swc file.
 
 ##HIPPOCAMPOME
 The Hippocampome provider have 3 values for filter:
-1.Morphologies
-2.Layers
-3.Markers
+1. Morphologies
+2. Layers
+3. Markers
 
 You can experiment with this values for found the correct combination.
 
