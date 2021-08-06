@@ -27,7 +27,7 @@ def download_all(index_name):
             return Response(zip_generator(zip_file), mimetype='application/zip', headers={'Content-disposition':
 			  'attachment; filename={}'.format('archive.zip')})
     except Exception as ex:
-        print(f"Exception send file {ex}")
+        ic(f"Exception send file {ex}")
         return f"Exception download all file {ex}"
 
 @routes_api.route('/download/<index_name>', methods=['POST', 'GET'])
@@ -55,5 +55,5 @@ def download(index_name):
                                                                                                   'archive.zip')})
         return results
     except Exception as ex:
-        print(ex)
+        ic(ex)
         return f"Exception download file {ex}"

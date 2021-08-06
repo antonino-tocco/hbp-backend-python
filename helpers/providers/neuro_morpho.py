@@ -66,7 +66,7 @@ class NeuroMorphoProvider(Provider):
                             sleep(SLEEP_TIME)
                         await session.close()
             except Exception as ex:
-                print(f"Exception retrieving field values {ex}")
+                ic(f"Exception retrieving field values {ex}")
                 if num_retry < MAX_REQUEST_RETRY:
                     sleep(SLEEP_TIME)
                     return await self.get_all_field_value(field_name, num_retry=num_retry + 1)
@@ -84,10 +84,10 @@ class NeuroMorphoProvider(Provider):
                                                   attributes['allowed'] if 'allowed' in attributes else [], attributes['not_allowed'] if 'not_allowed' in attributes else [])
         physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
                                                   physical_integrities['allowed'] if 'allowed' in physical_integrities else [], physical_integrities['not_allowed'] if 'not_allowed' in physical_integrities else [])
-        print(f"Domains {domain_allowed_values}")
-        #print(f"Original format {original_format_allowed_values}")
-        print(f"Attributes {attributes_allowed_values}")
-        print(f"Physical Integrity {physical_integrity_values}")
+        ic(f"Domains {domain_allowed_values}")
+        #ic(f"Original format {original_format_allowed_values}")
+        ic(f"Attributes {attributes_allowed_values}")
+        ic(f"Physical Integrity {physical_integrity_values}")
         params = {
             'brain_region': config['brain_regions'] if 'brain_regions' in config else ['hippocampus'],
             'domain': domain_allowed_values,
@@ -118,7 +118,7 @@ class NeuroMorphoProvider(Provider):
             mapped_datasets = list(filter(lambda a: a is not None, mapped_datasets))
             return mapped_datasets
         except Exception as ex:
-            print(f"Exception on map datasets {ex}")
+            ic(f"Exception on map datasets {ex}")
             raise ex
 
     async def __make_search_request__(self, url, params, num_retry=0):
@@ -139,7 +139,7 @@ class NeuroMorphoProvider(Provider):
                     await session.close()
                     return (items, total_pages)
         except Exception as ex:
-            print(f"exception retrieving values {ex}")
+            ic(f"exception retrieving values {ex}")
             if num_retry < MAX_REQUEST_RETRY:
                 sleep(SLEEP_TIME)
                 return await self.__make_search_request__(url, params=params, num_retry=num_retry + 1)
@@ -225,7 +225,7 @@ class NeuroMorphoProvider(Provider):
                     if file_exists:
                         filtered_items.append(item)
             except Exception as ex:
-                print(f"Exception {ex}")
+                ic(f"Exception {ex}")
                 raise ex
         return filtered_items
 

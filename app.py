@@ -7,13 +7,15 @@ from flask_injector import FlaskInjector
 from dependency import injector
 from import_task import run_on_start
 from flask_swagger import swagger
-
-from helpers.download_helper import download_image
+from flask_swagger_ui import get_swaggerui_blueprint
+from icecream import ic
 
 from routes import routes_api
 
 nest_asyncio.apply()
 
+SWAGGER_URL = '/openapi'
+SWAGGER_JSON = '/swagger.json'
 
 class HBPBackend(Flask):
     def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
@@ -27,8 +29,8 @@ def create_app():
         thread = threading.Thread(target=run_on_start)
         thread.start()
     except Exception as ex:
-        print(f'Run exception')
-        print(ex)
+        ic(f'Run exception')
+        ic(ex)
     return app
 
 
@@ -47,21 +49,36 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 FlaskInjector(app=app, injector=injector)
 
 
-@routes_api.route('/openapi', methods=['GET'])
+@routes_api.route('/swagger.json', methods=['GET'])
 def openapi():
-    return jsonify(swagger(app))
+    try:
+        return jsonify(swagger(app))
+    except Exception as ex:
+        ic(f'Run swagger exception {ex}')
+
+        
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    SWAGGER_JSON,
+    config={  # Swagger UI config overrides
+        'app_name': "HBP Backend"
+    },
+)
+
 
 
 app.register_blueprint(routes_api)
+app.register_blueprint(swaggerui_blueprint)
 
 try:
-    print(f'*******************')
-    print(f'RUN APP')
-    print(f'*******************')
+    ic(f'*******************')
+    ic(f'RUN APP')
+    ic(f'*******************')
     http_server = WSGIServer(('', 5000), app)
     http_server.serve_forever()
 
 except Exception as ex:
-    print(f'*******************')
-    print(f'RUN EXCEPTION {ex}')
-    print(f'*******************')
+    ic(f'*******************')
+    ic(f'RUN EXCEPTION {ex}')
+    ic(f'*******************')

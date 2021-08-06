@@ -23,7 +23,7 @@ class InternalMorphologyProvider(Provider):
                 mapped_items = [self.__map__item__(item) for item in items]
             return mapped_items
         except Exception as ex:
-            print(ex)
+            ic(ex)
         return mapped_items
 
     def __map__item__(self, dataset):

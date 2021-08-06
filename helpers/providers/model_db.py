@@ -285,6 +285,6 @@ class ModelDbProvider(Provider):
                     await session.close()
                     return elements
         except Exception as ex:
-            print(f'Exception on scraping {ex}')
+            ic(f'Exception on scraping {ex}')
         await session.close()
         return None

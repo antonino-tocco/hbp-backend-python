@@ -28,19 +28,19 @@ class SearchService:
                 fetched = True
             return all_items
         except Exception as ex:
-            print(ex)
+            ic(ex)
             raise ex
 
     def search_connections(self, start=0, hits_per_page=20, query='', presynaptic=None, postsynaptic=None):
         try:
             return self.storage.search_connections(start, hits_per_page, query, presynaptic, postsynaptic)
         except Exception as ex:
-            print(ex)
+            ic(ex)
             raise ex
 
     def search_in_index(self, index_name, start=0, hits_per_page=20, data_type=None, query='', secondary_region=None, cell_type=None, species=None, layers=None, channels=None, receptors=None, implementers=None, model_concepts=None, ids=[]) -> []:
         try:
             return self.storage.search(index_name, start, hits_per_page, data_type, query, secondary_region, cell_type, species, layers=layers, channels=channels, receptors=receptors, implementers=implementers, model_concepts=model_concepts, ids=ids)
         except Exception as ex:
-            print(ex)
+            ic(ex)
             raise ex

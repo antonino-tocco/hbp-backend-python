@@ -16,13 +16,13 @@ class ElasticStorage(Storage):
         try:
             self.es.index(index, id=identifier, body=obj)
         except Exception as ex:
-            print(f"Exception storing object {ex}")
+            ic(f"Exception storing object {ex}")
             
     def get_object(self, index, identifier):
         try:
             return self.es.get(index, id=identifier)
         except Exception as ex:
-            print(ex)
+            ic(ex)
 
     def get_terms_aggregation(self, index_name, data_type=None, fields=[]):
         response = {}
@@ -41,7 +41,7 @@ class ElasticStorage(Storage):
                 values = [item['key'] for item in results.aggregations[key].buckets]
                 response[key] = values
         except Exception as ex:
-            print(ex)
+            ic(ex)
         return response
 
     def search_connections(self, start=0, hits_per_page=20, query='', presynaptic=None, postsynaptic=None):

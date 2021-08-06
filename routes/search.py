@@ -27,7 +27,7 @@ def search_connections(index_name, page, hits_per_page, data):
         }
         return response
     except Exception as ex:
-        print(ex)
+        ic(ex)
         return {
             'total': 0,
             'total_page': 1,
@@ -57,7 +57,7 @@ def search_for_index(index_name, page, hits_per_page, data):
         }
         return response
     except Exception as ex:
-        print(ex)
+        ic(ex)
         return {
             'total': 0,
             'total_page': 1,
@@ -75,21 +75,24 @@ search_methods_map = {
 
 @routes_api.route('/search/<index_name>/all', methods=['POST', 'GET'])
 def get_all(index_name):
-    '''
+    """
     Search for all the resources in the storage
     ---
     tags:
-        - search
+      - search
     parameters:
         - in: body
-        - name: body
-        schema:
-          id: Payload
-          properties:
-            ids:
-              type: array
-              description: The ids of the resources to search
-    '''
+          name: body
+          schema:
+            id: Payload
+            properties:
+              ids:
+                type: array
+                description: The ids of the resources to search
+    responses:
+      200:
+        description: 'OK'
+    """
     try:
         ids = []
         data = {}
@@ -119,6 +122,25 @@ def get_all(index_name):
 @routes_api.route('/search/<index_name>/<page>', methods=['POST', 'GET'])
 @routes_api.route('/search/<index_name>/<page>/<hits_per_page>', methods=['POST', 'GET'])
 def search(index_name, page=0, hits_per_page=20):
+    """
+    Search for resources in storage
+     ---
+    tags:
+      - search
+    parameters:
+      - in: body
+      name: body
+      schema:
+        id: Payload
+        properties:
+          data_type:
+            type: string
+            description: The data type of data
+            example: dataset
+    responses:
+      200:
+        description: 'OK'
+    """
     try:
         data = {}
         if request.method == 'POST':

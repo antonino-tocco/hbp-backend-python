@@ -39,7 +39,7 @@ class KnowledgeProvider(Provider):
     #         if all_data is None:
     #             all_data = []
     #         while query.has_more_items():
-    #             print(f'Get items page')
+    #             ic(f'Get items page')
     #             data = query.next_page()
     #             all_data.extend(data)
     #         return self.map_datasets(all_data)

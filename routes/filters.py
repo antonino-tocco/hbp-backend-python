@@ -12,7 +12,7 @@ def types(index_name):
         response = filter_service.types(index_name)
         return response
     except Exception as ex:
-        print(ex)
+        ic(ex)
         raise ex
 
 

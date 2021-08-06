@@ -20,3 +20,4 @@ html5lib==1.1
 python-crontab==2.5.1
 pyjwt
 flask-swagger
+flask-swagger-ui
