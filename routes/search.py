@@ -75,6 +75,21 @@ search_methods_map = {
 
 @routes_api.route('/search/<index_name>/all', methods=['POST', 'GET'])
 def get_all(index_name):
+    '''
+    Search for all the resources in the storage
+    ---
+    tags:
+        - search
+    parameters:
+        - in: body
+        - name: body
+        schema:
+          id: Payload
+          properties:
+            ids:
+              type: array
+              description: The ids of the resources to search
+    '''
     try:
         ids = []
         data = {}
