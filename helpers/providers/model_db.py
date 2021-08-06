@@ -1,7 +1,6 @@
 import os
 import json
 import aiohttp
-import html5lib
 from os.path import splitext
 from icecream import ic
 from bs4 import BeautifulSoup

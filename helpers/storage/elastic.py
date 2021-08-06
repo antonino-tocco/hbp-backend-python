@@ -1,6 +1,5 @@
 import os
 from icecream import ic
-from functools import reduce
 from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search, A, Q
 from . import Storage

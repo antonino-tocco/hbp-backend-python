@@ -1,11 +1,12 @@
 import asyncio
-import threading
 from flask import request, send_file, Response
-from . import routes_api
+from icecream import ic
+
 from dependency import AppModule
 from injector import Injector
 from services import SearchService, DownloadService
 from helpers import parse_query_args, zip_generator
+from . import routes_api
 
 
 @routes_api.route('/download/<index_name>/all', methods=['POST', 'GET'])
