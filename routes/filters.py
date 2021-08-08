@@ -7,6 +7,19 @@ from . import routes_api
 
 @routes_api.route('/types/<index_name>')
 def types(index_name):
+    """
+    Get all data types from index_name
+    ---
+    tags:
+      - Get data types
+    parameters:
+      - in: path
+        name: index_name
+        type: string
+    responses:
+      200:
+        description: OK
+    """
     try:
         filter_service = Injector(AppModule).get(FilterService)
         response = filter_service.types(index_name)
@@ -19,6 +32,22 @@ def types(index_name):
 @routes_api.route('/filters/<index_name>')
 @routes_api.route('/filters/<index_name>/<type>')
 def filters(index_name, type=None):
+    """
+    Get all filters values for data_type
+    ---
+    tags:
+      - Get all filter values
+    parameters:
+      - in: path
+        name: index_name
+        type: string
+      - in: path
+        name: type
+        type: string
+    responses:
+      200:
+        description: OK
+    """
     try:
         filter_service = Injector(AppModule).get(FilterService)
         response = filter_service.filters(index_name, data_type=type)

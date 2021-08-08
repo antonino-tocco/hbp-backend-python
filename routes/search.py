@@ -73,22 +73,28 @@ search_methods_map = {
 }
 
 
-@routes_api.route('/search/<index_name>/all', methods=['POST', 'GET'])
+@routes_api.route('/search/<index_name>/all', methods=['POST'])
 def get_all(index_name):
     """
     Search for all the resources in the storage
     ---
     tags:
-      - search
+      - Search all
     parameters:
-        - in: body
-          name: body
-          schema:
-            id: Payload
-            properties:
-              ids:
-                type: array
-                description: The ids of the resources to search
+      - in: path
+        name: index_name
+        type: string
+        example: dataset
+      - in: body
+        name: body
+        schema:
+          id: SearchAllPayload
+          properties:
+            ids:
+              type: array
+              items:
+                type: string
+              description: The ids of the resources to search
     responses:
       200:
         description: 'OK'
@@ -118,25 +124,37 @@ def get_all(index_name):
         raise ex
 
 
-@routes_api.route('/search/<index_name>', methods=['POST', 'GET'])
-@routes_api.route('/search/<index_name>/<page>', methods=['POST', 'GET'])
-@routes_api.route('/search/<index_name>/<page>/<hits_per_page>', methods=['POST', 'GET'])
+@routes_api.route('/search/<index_name>', methods=['POST'])
+@routes_api.route('/search/<index_name>/<page>', methods=['POST'])
+@routes_api.route('/search/<index_name>/<page>/<hits_per_page>', methods=['POST'])
 def search(index_name, page=0, hits_per_page=20):
     """
     Search for resources in storage
-     ---
+    ---
     tags:
-      - search
+      - Paged search
     parameters:
+      - in: path
+        name: index_name
+        type: string
+        example: dataset
+      - in: path
+        name: page
+        type: number
+        example: 0
+      - in: path
+        name: hits_per_page
+        type: number
+        example: 20
       - in: body
-      name: body
-      schema:
-        id: Payload
-        properties:
-          data_type:
-            type: string
-            description: The data type of data
-            example: dataset
+        name: body
+        schema:
+          id: PagedSearchPayload
+          properties:
+            data_type:
+              type: string
+              description: The data type of data
+              example: morphology
     responses:
       200:
         description: 'OK'

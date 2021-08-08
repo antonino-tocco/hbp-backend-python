@@ -11,6 +11,15 @@ from . import routes_api
 
 @routes_api.route('/download/<index_name>/all', methods=['POST', 'GET'])
 def download_all(index_name):
+    """
+    Download all the files in index_name
+    ---
+    tags:
+    - Download all
+    responses:
+      200:
+        description: 'OK'
+    """
     try:
         data = {}
         if request.method == 'POST':
@@ -31,8 +40,18 @@ def download_all(index_name):
         ic(f"Exception send file {ex}")
         return f"Exception download all file {ex}"
 
+
 @routes_api.route('/download/<index_name>', methods=['POST', 'GET'])
 def download(index_name):
+    """
+    Download selected files in index_name
+    ---
+    tags:
+    - Download selected
+    responses:
+      200:
+        description: 'OK'
+    """
     try:
         data = {}
         if request.method == 'POST':
