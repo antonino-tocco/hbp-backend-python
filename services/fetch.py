@@ -9,9 +9,9 @@ class ImportService:
         self.storage = storage
 
     async def run_import_task(self):
-        ic(f"*****************")
-        ic(f"IMPORT DATA")
-        ic(f"*****************")
+        print(f"*****************")
+        print(f"IMPORT DATA")
+        print(f"*****************")
         try:
             for provider in self.enabled_dataset_providers:
                 ic(f"RUN SEARCH FROM PROVIDER {provider.source}")
@@ -27,7 +27,7 @@ class ImportService:
                     self.storage.store_object('model', model['identifier'], model['source'])
             return True
         except Exception as ex:
-            ic(f"*******************")
-            ic(f"IMPORT DATA EXCEPTION {ex}")
-            ic(f"*****************")
+            print(f"*******************")
+            print(f"IMPORT DATA EXCEPTION {ex}")
+            print(f"*****************")
             raise ex
