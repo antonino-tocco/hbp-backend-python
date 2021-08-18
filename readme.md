@@ -48,6 +48,7 @@ The external providers from which the backend retrieve data was:
 1. Neuromorpho
 2. Hippocampome
 3. ModelDB
+4. Internal
 
 ###NEUROMORPHO
 The most important key in Neuromorpho provider is the brain_regions.
@@ -80,7 +81,3 @@ Follow a list of available api divided by topics:
 3. FILTER APIS
 
 Swagger documentation for all apis is available on http:://{host}/openapi.
-
-
-
-####DOWNLOAD API
