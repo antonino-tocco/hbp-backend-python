@@ -5,11 +5,18 @@
 "HBP BACKEND" is a project developed using Flask for accomplish the goal to retrieve hippocampus data like morphologies, electrophysiologies
 and models and serve it by rest api. For this purpose the "HBP BACKEND" store the data retrieved from various sources like neuromorpho.org, hippocampome and ModelDB in an uniforme format.
 
-#SETUP
+##SETUP
 The project setup is very simple. All the project is Docker based and Docker is the only tool that you must manually install.
 
 After install docker you can run :
 `docker-compose up --build` for run the project.
+
+##ARCHITECTURE
+The architecture reflect the follow diagram.
+The Flask Backend fetch external data source and store data (transformed to use a uniform format) in elastic search.
+When the frontend request data, the backend retrieve previously stored in Elastic Search Storage and retrieve its.
+
+![architecture](architecture.jpg)
 
 ##COMPONENTS
 
