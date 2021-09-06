@@ -14,7 +14,7 @@ from routes import routes_api
 
 nest_asyncio.apply()
 
-SWAGGER_URL = '/openapi'
+SWAGGER_URL = '/apidocs'
 SWAGGER_JSON = '/swagger.json'
 
 class HBPBackend(Flask):

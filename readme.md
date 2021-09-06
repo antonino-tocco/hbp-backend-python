@@ -87,4 +87,4 @@ Follow a list of available api divided by topics:
 2. DOWNLOAD APIS
 3. FILTER APIS
 
-Swagger documentation for all apis is available on http:://{host}/openapi.
+Swagger documentation for all apis is available on http:://{host}/apidocs.

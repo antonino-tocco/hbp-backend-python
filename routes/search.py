@@ -94,7 +94,7 @@ def get_all(index_name):
               type: array
               items:
                 type: string
-              description: The ids of the resources to search
+                description: The ids of the resources to search
     responses:
       200:
         description: 'OK'
@@ -138,6 +138,7 @@ def search(index_name, page=0, hits_per_page=20):
         name: index_name
         type: string
         example: dataset
+        required: true
       - in: path
         name: page
         type: number
@@ -149,12 +150,52 @@ def search(index_name, page=0, hits_per_page=20):
       - in: body
         name: body
         schema:
-          id: PagedSearchPayload
+          id: SearchPayload
           properties:
             data_type:
               type: string
               description: The data type of data
               example: morphology
+            query:
+              type: string
+              description: The query for search
+              example: 'abcdefg'
+            filters:
+              type: object
+              properties:
+                secondary_region:
+                  type: string
+                  description: The secondary region of the hippocampus to search. (only for morphologies and electrophysiologies)
+                  example: CA1
+                cell_type:
+                  type: string
+                  description: The cell type to search
+                  example: principal cell
+                species:
+                  type: string
+                  description: The species to search
+                  example: rat, mouse
+                channels:
+                  type: string
+                  description: The channel to search. (only for models)
+                  example: I K
+                receptors:
+                  type: string
+                  description: The receptor to search. (only for models)
+                  example: AMPA
+                layers:
+                  type: string
+                  description: The layer to search. (only for models)
+                  example: CA1:SO
+                implementers:
+                  type: string
+                  description: The implementers of the model. (only for models)
+                  example: Migliore
+                model_concepts:
+                  type: string
+                  description: The model concept to search. (only for models)
+                  example: Detailed Neuronal Model
+
     responses:
       200:
         description: 'OK'
