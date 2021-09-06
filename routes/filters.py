@@ -16,6 +16,8 @@ def types(index_name):
       - in: path
         name: index_name
         type: string
+        example: dataset
+        required: true
     responses:
       200:
         description: OK
@@ -41,6 +43,8 @@ def filters(index_name, type=None):
       - in: path
         name: index_name
         type: string
+        example: dataset
+        required: true
       - in: path
         name: type
         type: string

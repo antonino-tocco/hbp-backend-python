@@ -20,6 +20,8 @@ def download_all(index_name):
       - in: path
         name: index_name
         type: string
+        example: dataset
+        required: true
       - in: body
         name: body
         schema:
@@ -97,6 +99,7 @@ def download(index_name):
         name: index_name
         type: string
         example: dataset
+        required: true
       - in: body
         schema:
           id: DownloadSelectedPayload

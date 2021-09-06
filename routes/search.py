@@ -85,6 +85,7 @@ def get_all(index_name):
         name: index_name
         type: string
         example: dataset
+        required: true
       - in: body
         name: body
         schema:
@@ -94,6 +95,7 @@ def get_all(index_name):
               type: array
               items:
                 type: string
+                example: abcdefg
                 description: The ids of the resources to search
     responses:
       200:
