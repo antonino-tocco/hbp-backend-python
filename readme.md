@@ -9,6 +9,7 @@ and models and serve it by rest api. For this purpose the "HBP BACKEND" store th
 The project setup is very simple. All the project is Docker based and Docker is the only tool that you must manually install.
 
 After install docker you can run :
+./init-letsencrypt.sh: this will install letsencrypt certificate
 `docker-compose up --build` for run the project.
 
 ##ARCHITECTURE
