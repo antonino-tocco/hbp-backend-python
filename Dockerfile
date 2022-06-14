@@ -6,15 +6,10 @@ WORKDIR /usr/app
 # copy the dependencies file to the working directory
 COPY requirements.txt .
 
-RUN apt update && \
-    apt install ca-certificates -y && \
-    update-ca-certificates
-
 # install dependencies
 RUN pip install -e https://github.com/HumanBrainProject/openid_http_client.git#egg=openid_http_client&subdirectory=openid_http_client
 RUN pip install -r requirements.txt
 
-RUN export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 # copy the content of the local src directory to the working directory
 COPY ./ .
 
