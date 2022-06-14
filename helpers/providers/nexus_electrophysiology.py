@@ -70,6 +70,7 @@ class NexusElectrophysiologyProvider(Provider):
         original_image_url = None
         image_url = None
         computed_secondary_region = None
+        download_file_name
         download_link = None
         name = dataset['name']
         metadata_url = f'https://object.cscs.ch/v1/AUTH_c0a333ecf7c045809321ce9d9ecdfdea/web-resources-bsp/data/NFE/MetadataHippocampusHub/{name}_metadata.json'
@@ -81,11 +82,12 @@ class NexusElectrophysiologyProvider(Provider):
                 etype = dataset['annotation']['hasBody']['label']
             if 'distribution' in dataset and dataset['distribution'] is not None:
                 distribution = dataset['distribution']
-                for download_url in distribution:
-                    url = download_url['contentUrl'] if 'contentUrl' in download_url and \
-                        'encodingFormat' in download_url and download_url['encodingFormat'] == 'application/abf' \
+                for item in distribution:
+                    url = item['contentUrl'] if 'contentUrl' in item and \
+                        'encodingFormat' in item and item['encodingFormat'] == 'application/abf' \
                         else None
                     if url is not None:
+                        download_file_name = item["name"]
                         download_link = url
                         break
 
@@ -119,6 +121,7 @@ class NexusElectrophysiologyProvider(Provider):
                     'species': species,
                     'secondary_region': [computed_secondary_region] if computed_secondary_region is not None else [],
                     'layers': [],
+                    'download_file_name': download_file_name,
                     'download_link': download_link,
                     'cell_type': None,
                     'etype': etype,
