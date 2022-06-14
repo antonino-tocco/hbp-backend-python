@@ -54,7 +54,7 @@ class NeuroMorphoProvider(Provider):
         all_values = []
         while num_page <= (total_pages - 1) or fetched is False:
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
-            #ic(f'Fetch url {url} Retry {num_retry}')
+            ic(f'Fetch url {url} Retry {num_retry}')
             try:
                 async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                     async with session.get(url, allow_redirects=True, timeout=30) as response:
