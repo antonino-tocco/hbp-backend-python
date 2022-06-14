@@ -62,9 +62,8 @@ class NexusMorphologyProvider(Provider):
             cell_type = dataset['annotation']['hasBody']['label']
         if 'distribution' in dataset and len(dataset['distribution']) > 0:
             for item in dataset['distribution']:
-                file_ext = os.path.splitext(item['name'])[1].lower()
-                ic(f'File ext {file_ext}')
-                if file_ext == '.asc' or file_ext == '.swc':
+                file_ext = os.path.splitext(item['name'])[1]
+                if file_ext.lower() == '.asc' or file_ext.lower() == '.swc':
                     # The download is allowed only from bbp.epfl.ch
                     download_file_name = item["name"]
                     download_link = item['contentUrl']
