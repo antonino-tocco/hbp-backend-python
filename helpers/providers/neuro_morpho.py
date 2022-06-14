@@ -1,7 +1,7 @@
 import math
+import aiohttp
 import os
 import json
-import aiohttp
 from bs4 import BeautifulSoup
 from icecream import ic
 from time import sleep
@@ -56,7 +56,7 @@ class NeuroMorphoProvider(Provider):
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             ic(f'Fetch url {url} Retry {num_retry}')
             try:
-                async with aiohttp.ClientSession() as session:
+                async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                     async with session.get(url, allow_redirects=True, timeout=30) as response:
                         #ic(f'Response status for url {url} {response.status}')
                         if response is not None and response.status == 200:
@@ -123,7 +123,7 @@ class NeuroMorphoProvider(Provider):
 
     async def __make_search_request__(self, url, params, num_retry=0):
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 ic(f'Fetch url {url} Retry {num_retry}')
                 async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
                     ic(f'Response status for url {url} {response.status}')
@@ -233,7 +233,7 @@ class NeuroMorphoProvider(Provider):
         assert(neuron_id is not None)
         try:
             url = f'http://neuromorpho.org/neuron_info.jsp?neuron_id={neuron_id}'
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     page = await response.read()
@@ -256,7 +256,7 @@ class NeuroMorphoProvider(Provider):
     async def __check_if_file_exists__(self, url=None) -> bool:
         assert (url is not None)
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 response = await session.get(url)
                 file_existed = response.status == 200
                 await session.close()
