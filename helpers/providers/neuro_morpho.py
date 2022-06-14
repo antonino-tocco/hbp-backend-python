@@ -99,7 +99,9 @@ class NeuroMorphoProvider(Provider):
             total_pages = 1
             all_items = []
             while num_page <= (total_pages - 1) or fetched is False:
-                url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
+                url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}" \
+                      f"&q=brain_region:{params['brain_region']}&q=domain:{params['domain']}" \
+                      f"&q=attributes:{params['attributes']}&q=Physical_Integrity:{params['Physical_Integrity']}"
                 items, total_pages = await self.__make_search_request__(url, params)
                 all_items.extend(items)
                 num_page = num_page + 1
@@ -123,7 +125,7 @@ class NeuroMorphoProvider(Provider):
     async def __make_search_request__(self, url, params, num_retry=0):
         try:
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
-                async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
+                async with session.get(url, allow_redirects=True, timeout=30) as response:
                     items = []
                     total_pages = 1
                     if response is not None and response.status == 200:
