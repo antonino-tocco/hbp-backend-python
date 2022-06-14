@@ -78,7 +78,7 @@ def download_all(index_name):
         if results is not None and len(results) > 0:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            file_urls = list(map(lambda x: x['download_link'], results))
+            file_urls = list(map(lambda x: (x.get('download_link'), x.get('download_filename', None)), results))
             zip_file = loop.run_until_complete(DownloadService.download_files_as_zip(files_url=file_urls))
             return Response(zip_generator(zip_file), mimetype='application/zip',
                             headers={'Content-disposition': 'attachment; filename={}'.format('archive.zip')})
@@ -130,7 +130,7 @@ def download(index_name):
         if results is not None and len(results) > 0:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            file_urls = list(map(lambda x: x['download_link'], results))
+            file_urls = list(map(lambda x: (x.get('download_link'), x.get('download_filename', None)), results))
             zip_file = loop.run_until_complete(DownloadService.download_files_as_zip(files_url=file_urls))
             return Response(zip_generator(zip_file), mimetype='application/zip', headers={'Content-disposition':
                 'attachment; filename={}'.format(

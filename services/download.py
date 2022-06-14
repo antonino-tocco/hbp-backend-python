@@ -11,8 +11,8 @@ class DownloadService:
     async def download_files_as_zip(files_url=[]):
         zip_file = zipstream.ZipFile()
         try:
-            for url in files_url:
-                file_name = url.split('/')[-1]
+            for (url, name) in files_url:
+                file_name = name if name is not None else url.split('/')[-1]
                 file_content = await DownloadService.__download_file__(url)
                 if file_content is not None:
                     tmp_file_name = f"/tmp/{file_name}"
