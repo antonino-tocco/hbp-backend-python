@@ -19,4 +19,5 @@ COPY ./ .
 
 # command to run on container start
 RUN chmod +x wait_to_start.sh
+RUN export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 CMD ["./wait_to_start.sh"]
