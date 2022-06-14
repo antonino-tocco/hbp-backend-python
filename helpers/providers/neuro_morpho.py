@@ -124,9 +124,9 @@ class NeuroMorphoProvider(Provider):
     async def __make_search_request__(self, url, params, num_retry=0):
         try:
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
-                #ic(f'Fetch url {url} Retry {num_retry}')
+                ic(f'Fetch url {url} Retry {num_retry}')
                 async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
-                    #ic(f'Response status for url {url} {response.status}')
+                    ic(f'Response status for url {url} {response.status}')
                     items = []
                     total_pages = 1
                     if response is not None and response.status == 200:
