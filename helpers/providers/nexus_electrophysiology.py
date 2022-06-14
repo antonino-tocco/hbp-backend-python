@@ -121,7 +121,7 @@ class NexusElectrophysiologyProvider(Provider):
                     'species': species,
                     'secondary_region': [computed_secondary_region] if computed_secondary_region is not None else [],
                     'layers': [],
-                    'download_file_name': download_file_name,
+                    'download_filename': download_file_name,
                     'download_link': download_link,
                     'cell_type': None,
                     'etype': etype,

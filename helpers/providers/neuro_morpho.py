@@ -124,6 +124,7 @@ class NeuroMorphoProvider(Provider):
 
     async def __make_search_request__(self, url, params, num_retry=0):
         try:
+            ic(f'Make search request {url}')
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 async with session.get(url, allow_redirects=True, timeout=30) as response:
                     items = []

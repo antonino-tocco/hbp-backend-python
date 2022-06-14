@@ -86,7 +86,7 @@ class NexusMorphologyProvider(Provider):
                     'icon': image_url,
                     'region': region,
                     'species': species,
-                    'download_file_name': download_file_name,
+                    'download_filename': download_file_name,
                     'download_link': download_link,
                     'secondary_region': [secondary_region],
                     'cell_type': cell_type,
