@@ -7,7 +7,7 @@ WORKDIR /usr/app
 COPY requirements.txt .
 
 RUN apt-get update  \
-    && apt-get install -y ca-certificates
+    && apt-get install -y --reinstall ca-certificates
 
 # install dependencies
 RUN pip install -e https://github.com/HumanBrainProject/openid_http_client.git#egg=openid_http_client&subdirectory=openid_http_client
