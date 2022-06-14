@@ -10,6 +10,9 @@ COPY requirements.txt .
 RUN pip install -e https://github.com/HumanBrainProject/openid_http_client.git#egg=openid_http_client&subdirectory=openid_http_client
 RUN pip install -r requirements.txt
 
+RUN pip install --upgrade certifi
+RUN update-ca-certificates
+
 # copy the content of the local src directory to the working directory
 COPY ./ .
 
