@@ -70,7 +70,7 @@ class NexusElectrophysiologyProvider(Provider):
         original_image_url = None
         image_url = None
         computed_secondary_region = None
-        download_file_name
+        download_file_name = None
         download_link = None
         name = dataset['name']
         metadata_url = f'https://object.cscs.ch/v1/AUTH_c0a333ecf7c045809321ce9d9ecdfdea/web-resources-bsp/data/NFE/MetadataHippocampusHub/{name}_metadata.json'
