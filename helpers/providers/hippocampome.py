@@ -52,6 +52,7 @@ class HippocampomeProvider(Provider):
             url = BASE_URL + f'Neuron:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 response = await session.get(url)
+                ic(f'Response status {response.status}')
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
