@@ -87,8 +87,8 @@ class NeuroMorphoProvider(Provider):
         #ic(f"Original format {original_format_allowed_values}")
         ic(f"Attributes {attributes_allowed_values}")
         ic(f"Physical Integrity {physical_integrity_values}")
+        brain_region = config['brain_regions'] if 'brain_regions' in config else ['hippocampus']
         params = {
-            'brain_region': config['brain_regions'] if 'brain_regions' in config else ['hippocampus'],
             'domain': domain_allowed_values,
             #'original_format': original_format_allowed_values,
             'attributes': attributes_allowed_values,
@@ -100,8 +100,7 @@ class NeuroMorphoProvider(Provider):
             all_items = []
             while num_page <= (total_pages - 1) or fetched is False:
                 url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}" \
-                      f"&q=brain_region:{','.join(params['brain_region'])}&q=domain:{','.join(params['domain'])}" \
-                      f"&q=attributes:{','.join(params['attributes'])}&q=Physical_Integrity:{','.join(params['Physical_Integrity'])}"
+                      f"&q=brain_region:{brain_region}"
                 items, total_pages = await self.__make_search_request__(url, params)
                 all_items.extend(items)
                 num_page = num_page + 1
@@ -126,9 +125,10 @@ class NeuroMorphoProvider(Provider):
         try:
             ic(f'Make search request {url}')
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
-                async with session.get(url, allow_redirects=True, timeout=30) as response:
+                async with session.post(url, params, allow_redirects=True, timeout=30) as response:
                     items = []
                     total_pages = 1
+                    ic(f'Response status for url {url} {response.status}')
                     if response is not None and response.status == 200:
                         data = await response.json()
                         if data is not None and '_embedded' in data:
