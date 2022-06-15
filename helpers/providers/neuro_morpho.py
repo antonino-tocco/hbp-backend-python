@@ -128,13 +128,14 @@ class NeuroMorphoProvider(Provider):
                 async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
                     items = []
                     total_pages = 1
-                    ic(f'Response status for url {url} {response.status} total_pages {total_pages}')
+                    ic(f'Response status for url {url} {response.status}')
                     if response is not None and response.status == 200:
                         data = await response.json()
                         if data is not None and '_embedded' in data:
                             items = await self.map_datasets(data['_embedded']['neuronResources'])
                             items = await self.__filter_items__(items)
                             total_pages = data['page']['totalPages']
+                            ic(f'Total pages {total_pages}')
                     sleep(SLEEP_TIME)
                     await session.close()
                     return (items, total_pages)
