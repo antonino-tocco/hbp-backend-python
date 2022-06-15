@@ -128,7 +128,7 @@ class NeuroMorphoProvider(Provider):
                 async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
                     items = []
                     total_pages = 1
-                    ic(f'Response status for url {url} {response.status}')
+                    ic(f'Response status for url {url} {response.status} total_pages {total_pages}')
                     if response is not None and response.status == 200:
                         data = await response.json()
                         if data is not None and '_embedded' in data:
