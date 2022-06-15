@@ -60,6 +60,7 @@ class HippocampomeProvider(Provider):
                         neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
                                                                       type='electrophysiology')
                         neurons.append(neuron_data)
+                    ic(f'Neurons length {len(neurons)}')
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
