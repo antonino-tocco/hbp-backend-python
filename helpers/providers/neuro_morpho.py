@@ -125,7 +125,7 @@ class NeuroMorphoProvider(Provider):
         try:
             ic(f'Make search request {url}')
             async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
-                async with session.post(url, params=params, allow_redirects=True, timeout=30) as response:
+                async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
                     items = []
                     total_pages = 1
                     ic(f'Response status for url {url} {response.status}')
