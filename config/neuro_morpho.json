@@ -2,8 +2,8 @@
   "domains": {
     "allowed": ["dendrites", "soma", "axon"],
     "not_allowed": [],
-    "unordered": ["Dendrites, Soma, Axon"],
-    "ordered": ["Dendrites, Axon, Soma"]
+    "unordered": ["Dendrites, Axon, Soma"],
+    "ordered": ["Dendrites, Soma, Axon"]
   },
   "attributes": {
     "allowed": ["diameter", "3d", "angles"],

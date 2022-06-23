@@ -99,6 +99,7 @@ class NeuroMorphoProvider(Provider):
             'attributes': attributes_allowed_values,
             'Physical_Integrity': physical_integrity_values
         }
+        ic(f"Params: {params}")
         try:
             fetched = False
             total_pages = 1
