@@ -85,6 +85,8 @@ class NeuroMorphoProvider(Provider):
         physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
                                                   physical_integrities['allowed'] if 'allowed' in physical_integrities else [], physical_integrities['not_allowed'] if 'not_allowed' in physical_integrities else [])
         ic(f"Domains {domain_allowed_values}")
+        if domain_allowed_values == domains["unordered"]:
+            domain_allowed_values = domains["ordered"]
         #ic(f"Original format {original_format_allowed_values}")
         ic(f"Attributes {attributes_allowed_values}")
         ic(f"Physical Integrity {physical_integrity_values}")
