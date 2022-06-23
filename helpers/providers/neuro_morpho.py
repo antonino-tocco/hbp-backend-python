@@ -84,10 +84,10 @@ class NeuroMorphoProvider(Provider):
                                                   attributes['allowed'] if 'allowed' in attributes else [], attributes['not_allowed'] if 'not_allowed' in attributes else [])
         physical_integrity_values = filter_values(await self.get_all_field_value('Physical_Integrity'),
                                                   physical_integrities['allowed'] if 'allowed' in physical_integrities else [], physical_integrities['not_allowed'] if 'not_allowed' in physical_integrities else [])
-        ic(f"Domains {domain_allowed_values} => Unordered {domains['unordered']} : Ordered: {domains['ordered']}")
+        #ic(f"Domains {domain_allowed_values} => Unordered {domains['unordered']} : Ordered: {domains['ordered']}")
         #ic(f"Original format {original_format_allowed_values}")
-        ic(f"Attributes {attributes_allowed_values}")
-        ic(f"Physical Integrity {physical_integrity_values}")
+        #ic(f"Attributes {attributes_allowed_values}")
+        #ic(f"Physical Integrity {physical_integrity_values}")
         brain_region = config['brain_regions'] if 'brain_regions' in config else ['hippocampus']
         params = {
             'brain_region': brain_region,
@@ -96,7 +96,6 @@ class NeuroMorphoProvider(Provider):
             'attributes': attributes_allowed_values,
             'Physical_Integrity': physical_integrity_values
         }
-        ic(f"Params: {params}")
         try:
             fetched = False
             total_pages = 1
