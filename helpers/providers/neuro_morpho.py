@@ -10,7 +10,7 @@ from constants import SLEEP_TIME
 from helpers.download_helper import download_image
 from .provider import Provider
 
-BASE_URL = "http://neuromorpho.org/api"
+BASE_URL = "https://neuromorpho.org/api"
 MAX_REQUEST_RETRY = 5
 
 config = {}
