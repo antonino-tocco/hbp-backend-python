@@ -76,7 +76,8 @@ class NeuroMorphoProvider(Provider):
     async def search_datasets(self, start=0, hits_per_page=50):
         num_page = math.floor(start / hits_per_page)
         size = hits_per_page
-        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), domains['allowed'] if 'allowed' in domains else [], domains['not_allowed'] if 'not_allowed' in domains else [])
+        domain_allowed_values = filter_values(await self.get_all_field_value('domain'), domains['allowed']
+            if 'allowed' in domains else [], domains['not_allowed'] if 'not_allowed' in domains else [])
         #original_format_allowed_values = filter_values(await self.get_all_field_value('original_format'), ['.asc'],
         #                                               exact=False)
         attributes_allowed_values = filter_values(await self.get_all_field_value('attributes'),
@@ -99,8 +100,7 @@ class NeuroMorphoProvider(Provider):
             total_pages = 1
             all_items = []
             while num_page <= (total_pages - 1) or fetched is False:
-                url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}" \
-                      f"&q=brain_region:{','.join(brain_region)}"
+                url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 items, total_pages = await self.__make_search_request__(url, params)
                 all_items.extend(items)
                 num_page = num_page + 1
