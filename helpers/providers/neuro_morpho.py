@@ -101,7 +101,7 @@ class NeuroMorphoProvider(Provider):
             total_pages = 1
             all_items = []
             while num_page <= (total_pages - 1) or fetched is False:
-                url = f"{SECURE_BASE_URL}/neuron/select?page={num_page}&size={size}"
+                url = f"{BASE_URL}/neuron/select?page={num_page}&size={size}"
                 items, total_pages = await self.__make_search_request__(url, params)
                 all_items.extend(items)
                 num_page = num_page + 1
