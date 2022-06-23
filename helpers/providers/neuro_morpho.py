@@ -65,7 +65,7 @@ class NeuroMorphoProvider(Provider):
                             sleep(SLEEP_TIME)
                         await session.close()
             except Exception as ex:
-                ic(f"Exception retrieving field values {ex}")
+                ic(f"Exception retrieving field values {ex} {url}")
                 if num_retry < MAX_REQUEST_RETRY:
                     sleep(SLEEP_TIME)
                     return await self.get_all_field_value(field_name, num_retry=num_retry + 1)
