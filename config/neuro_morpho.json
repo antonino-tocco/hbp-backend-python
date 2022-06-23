@@ -3,7 +3,7 @@
     "allowed": ["dendrites", "soma", "axon"],
     "not_allowed": [],
     "unordered": "Dendrites, Soma, Axon",
-    "order": "Dendrites, Axon, Soma"
+    "ordered": "Dendrites, Axon, Soma"
   },
   "attributes": {
     "allowed": ["diameter", "3d", "angles"],
