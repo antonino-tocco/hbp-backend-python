@@ -35,7 +35,7 @@ class HippocampomeProvider(Provider):
     async def search_datasets(self, start=0, hits_per_page=50):
         items = []
         try:
-            neurons = await self.__search_neurons__(start, hits_per_page)
+            #neurons = await self.__search_neurons__(start, hits_per_page)
             connections = await self.__search_connections__(start, hits_per_page)
             items.extend(neurons)
             items.extend(connections)
