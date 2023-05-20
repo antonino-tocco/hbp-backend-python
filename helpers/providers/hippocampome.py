@@ -78,9 +78,12 @@ class HippocampomeProvider(Provider):
             url = BASE_URL + f'Connection:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
             async with aiohttp.ClientSession(connector=create_connector()) as session:
                 response = await session.get(url)
+                ic(f'Response status {response.status}')
                 if response is not None and response.status == 200:
                     result = await response.json()
+                    ic(f'Result length {len(result)}')
                     for index in result:
+                        ic(f'Processing connection {index}')
                         source_id = result[index]['source_id']
                         destination_id = result[index]['destination_id']
                         presynaptic = await self.__scrape_data_page__(source_id)
