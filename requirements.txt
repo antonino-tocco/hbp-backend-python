@@ -7,9 +7,9 @@ attrs==20.3.0
 elasticsearch==7.10.1
 elasticsearch_dsl==7.3.0
 injector==0.18.4
-Flask==1.1.2
+Flask==2.1.2
 Flask-Cors==3.0.10
-Flask-Injector==0.12.3
+Flask-Injector==0.14.0
 gevent==20.12.1
 zipstream-new==1.1.8
 icecream==2.0.0
