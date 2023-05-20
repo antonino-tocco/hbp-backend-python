@@ -35,9 +35,12 @@ class ModelDbProvider(Provider):
             more_than_one_neuron_items = []
             async with aiohttp.ClientSession(connector=create_connector()) as session:
                 response = await session.get(url)
+                ic(f'Response status {response.status}')
                 if response is not None and response.status == 200:
                     data = await response.json()
-                    for model_id in data:
+                    ic(f'Response length {len(data)}')
+                    for index, model_id in enumerate(data):
+                        ic(f'Processing item {index} {model_id}')
                         try:
                             model = await self.__get_single_item__(model_id)
                             if model is not None:
@@ -54,6 +57,7 @@ class ModelDbProvider(Provider):
                         except Exception as ex:
                             ic(f"Exception with model {model_id} {ex}")
                     await session.close()
+                    ic(f'Items length {len(items)}')
             return items
         except Exception as ex:
             ic(ex)
