@@ -37,8 +37,8 @@ services:
     container_name: hbp_backend
     restart: on-failure
     environment:
-      - ELASTIC_SEARCH_URL=http://es01:9200
-      - WAIT_COMMAND=[ $$(curl --write-out %{http_code} --silent --output /dev/null http://es01:9200/_cat/health?h=st) = 200 ]
+      - ELASTIC_SEARCH_URL=http://hbp_es01:9200
+      - WAIT_COMMAND=[ $$(curl --write-out %{http_code} --silent --output /dev/null http://hbp_es01:9200/_cat/health?h=st) = 200 ]
       - WAIT_START_CMD=uwsgi uwsgi.ini --enable-threads
       - WAIT_SLEEP=10
       - WAIT_LOOPS=50
@@ -50,42 +50,42 @@ services:
       - hbp_es01
     links:
       - hbp_es01
-  nginx:
-    image: nginx:1.15-alpine
-    container_name: nginx
-    ports:
-      - 80:80
-      - 443:443
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    volumes:
-      - ./data/nginx:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    logging:
-      driver: "none"
-    depends_on:
-      - hbp_backend
-    links:
-      - hbp_backend
-  certbot:
-    image: certbot/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    depends_on:
-      - nginx
-    logging:
-      driver: "none"
+#  nginx:
+#    image: nginx:1.15-alpine
+#    container_name: nginx
+#    ports:
+#      - 80:80
+#      - 443:443
+#    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+#    volumes:
+#      - ./data/nginx:/etc/nginx/conf.d
+#      - ./data/certbot/conf:/etc/letsencrypt
+#      - ./data/certbot/www:/var/www/certbot
+#    logging:
+#      driver: "none"
+#    depends_on:
+#      - hbp_backend
+#    links:
+#      - hbp_backend
+#  certbot:
+#    image: certbot/certbot
+#    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+#    volumes:
+#      - ./data/certbot/conf:/etc/letsencrypt
+#      - ./data/certbot/www:/var/www/certbot
+#    depends_on:
+#      - nginx
+#    logging:
+#      driver: "none"
 
 
 volumes:
   data01:
     driver: local
-    driver_opts:
-        type: none
-        o: bind
-        device: /mnt/facility-hub-storage
+#    driver_opts:
+#        type: none
+#        o: bind
+#        device: /mnt/facility-hub-storage
 
 networks:
   default:
