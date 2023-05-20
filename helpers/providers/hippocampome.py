@@ -35,6 +35,7 @@ class HippocampomeProvider(Provider):
     async def search_datasets(self, start=0, hits_per_page=50):
         items = []
         try:
+            neurons = []
             #neurons = await self.__search_neurons__(start, hits_per_page)
             connections = await self.__search_connections__(start, hits_per_page)
             items.extend(neurons)
@@ -58,9 +59,12 @@ class HippocampomeProvider(Provider):
                     result = await response.json()
                     ic(f'Result length {len(result)}')
                     for index in result:
-                        neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
-                                                                      type='electrophysiology')
-                        neurons.append(neuron_data)
+                        try:
+                            neuron_data = await self.__scrape_data_page__(result[index]['source_id'],
+                                                                          type='electrophysiology')
+                            neurons.append(neuron_data)
+                        except Exception as ex:
+                            ic(f'Exception on neuron {index} {ex}')
                     ic(f'Neurons length {len(neurons)}')
                 await session.close()
         except Exception as ex:
@@ -84,19 +88,22 @@ class HippocampomeProvider(Provider):
                     ic(f'Result length {len(result)}')
                     for index in result:
                         ic(f'Processing connection {index}')
-                        source_id = result[index]['source_id']
-                        destination_id = result[index]['destination_id']
-                        presynaptic = await self.__scrape_data_page__(source_id)
-                        postsynaptic = await self.__scrape_data_page__(destination_id)
-                        connections.append({
-                            'identifier': f'{self.id_prefix}-{source_id}-{destination_id}',
-                            'source': {
-                                'presynaptic': presynaptic['source'],
-                                'postsynaptic': postsynaptic['source'],
-                                'type': 'connection',
-                                'source': self.source
-                            }
-                        })
+                        try:
+                            source_id = result[index]['source_id']
+                            destination_id = result[index]['destination_id']
+                            presynaptic = await self.__scrape_data_page__(source_id)
+                            postsynaptic = await self.__scrape_data_page__(destination_id)
+                            connections.append({
+                                'identifier': f'{self.id_prefix}-{source_id}-{destination_id}',
+                                'source': {
+                                    'presynaptic': presynaptic['source'],
+                                    'postsynaptic': postsynaptic['source'],
+                                    'type': 'connection',
+                                    'source': self.source
+                                }
+                            })
+                        except Exception as ex:
+                            ic(f'Exception on connection {index} {ex}')
                     ic(f'Connections length {len(connections)}')
                 await session.close()
         except Exception as ex:
