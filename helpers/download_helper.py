@@ -18,7 +18,7 @@ async def download_image(url=None, source=None, ext=None):
     if url is None or url.strip() == "":
         return None
     async with aiohttp.ClientSession(connector=create_connector()) as session:
-        response = await session.get(url, ssl=False)
+        response = await session.get(url)
         if response.status == 200:
             image_name = url.split('/')[-1]
             buffer_image = BytesIO(await response.read())

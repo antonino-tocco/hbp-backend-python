@@ -52,7 +52,7 @@ class HippocampomeProvider(Provider):
                 [f"{morphology}:{layer}" for morphology in search_morphologies for layer in layers_repr])
             url = BASE_URL + f'Neuron:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url, ssl=False)
+                response = await session.get(url)
                 ic(f'Response status {response.status}')
                 if response is not None and response.status == 200:
                     result = await response.json()
@@ -77,7 +77,7 @@ class HippocampomeProvider(Provider):
                 [f"{morphology}:{layer}" for morphology in search_morphologies for layer in layers_repr])
             url = BASE_URL + f'Connection:(Presynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})) AND Postsynaptic:(Markers:({markers_str}) OR Morphology:({morphologies_str})))'
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url, ssl=False)
+                response = await session.get(url)
                 if response is not None and response.status == 200:
                     result = await response.json()
                     for index in result:
@@ -107,7 +107,7 @@ class HippocampomeProvider(Provider):
         url = f'http://hippocampome.org/php/neuron_page.php?id={id}'
         try:
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url, ssl=False)
+                response = await session.get(url)
                 if response is not None and response.status == 200:
                     page = await response.read()
                     if page:
