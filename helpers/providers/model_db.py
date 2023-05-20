@@ -32,7 +32,7 @@ class ModelDbProvider(Provider):
         try:
             items = []
             more_than_one_neuron_items = []
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
@@ -131,7 +131,7 @@ class ModelDbProvider(Provider):
         url = f"{BASE_URL}/models/{id}"
         data = None
         try:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
@@ -275,7 +275,7 @@ class ModelDbProvider(Provider):
         assert (url is not None)
         assert (selector is not None)
         try:
-            async with aiohttp.ClientSession(verify_ssl=False) as session:
+            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     page = await response.read()

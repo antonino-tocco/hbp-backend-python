@@ -26,7 +26,7 @@ class DownloadService:
 
     @staticmethod
     async def __download_file__(url):
-        async with aiohttp.ClientSession(verify_ssl=False) as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
             response = await session.get(url)
             if response.status == 200:
                 return await response.read()
