@@ -1,6 +1,7 @@
 import aiohttp
 import zipstream
 import threading
+from helpers.create_connector import create_connector
 
 
 class DownloadService:
@@ -26,7 +27,7 @@ class DownloadService:
 
     @staticmethod
     async def __download_file__(url):
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+        async with aiohttp.ClientSession(connector=create_connector()) as session:
             response = await session.get(url)
             if response.status == 200:
                 return await response.read()

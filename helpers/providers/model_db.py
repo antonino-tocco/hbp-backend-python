@@ -4,6 +4,7 @@ import aiohttp
 from os.path import splitext
 from icecream import ic
 from bs4 import BeautifulSoup
+from helpers.create_connector import create_connector
 from .provider import Provider
 
 BASE_URL = "http://modeldb.science/api/v1"
@@ -32,7 +33,7 @@ class ModelDbProvider(Provider):
         try:
             items = []
             more_than_one_neuron_items = []
-            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+            async with aiohttp.ClientSession(connector=create_connector()) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
@@ -131,7 +132,7 @@ class ModelDbProvider(Provider):
         url = f"{BASE_URL}/models/{id}"
         data = None
         try:
-            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+            async with aiohttp.ClientSession(connector=create_connector()) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     data = await response.json()
@@ -275,7 +276,7 @@ class ModelDbProvider(Provider):
         assert (url is not None)
         assert (selector is not None)
         try:
-            async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+            async with aiohttp.ClientSession(connector=create_connector()) as session:
                 response = await session.get(url)
                 if response is not None and response.status == 200:
                     page = await response.read()

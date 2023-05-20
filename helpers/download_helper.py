@@ -1,10 +1,11 @@
 import os
 import aiohttp
 import zipstream
-from io import BytesIO
 import requests
+from io import BytesIO
 from icecream import ic
 
+from .create_connector import create_connector
 
 def zip_generator(zip_file:zipstream.ZipFile):
     for chunk in zip_file:
@@ -16,7 +17,7 @@ async def download_image(url=None, source=None, ext=None):
     assert(source is not None)
     if url is None or url.strip() == "":
         return None
-    async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False)) as session:
+    async with aiohttp.ClientSession(connector=create_connector()) as session:
         response = await session.get(url)
         if response.status == 200:
             image_name = url.split('/')[-1]
