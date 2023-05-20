@@ -2,6 +2,8 @@
 
 # INTRO
 
+FOR NEW VERSION DOWNLOAD SECLEVEL=1 ON /ETC/SSL/OPENSSL.CNF
+
 "HBP BACKEND" is a project developed using the Flask micro-web environment with the goal to retrieve hippocampus related data such as morphologies, electrophysiology traces/metadata and neural models and make them available through rest api calls. For this purpose the "HBP BACKEND" store the data retrieved from various sources (such as neuromorpho.org, hippocampome.org and ModelDB) in an uniform format.
 
 ## SETUP

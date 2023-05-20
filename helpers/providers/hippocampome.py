@@ -94,6 +94,7 @@ class HippocampomeProvider(Provider):
                                 'source': self.source
                             }
                         })
+                    ic(f'Connections length {len(connections)}')
                 await session.close()
         except Exception as ex:
             ic(f'Exception on creating query {ex}')
