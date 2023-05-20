@@ -34,7 +34,7 @@ class ModelDbProvider(Provider):
             items = []
             more_than_one_neuron_items = []
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url)
+                response = await session.get(url, ssl=False)
                 if response is not None and response.status == 200:
                     data = await response.json()
                     for model_id in data:
@@ -133,7 +133,7 @@ class ModelDbProvider(Provider):
         data = None
         try:
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url)
+                response = await session.get(url, ssl=False)
                 if response is not None and response.status == 200:
                     data = await response.json()
                     additional_data = await ModelDbProvider.__get_additional_data__(id)
@@ -277,7 +277,7 @@ class ModelDbProvider(Provider):
         assert (selector is not None)
         try:
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url)
+                response = await session.get(url, ssl=False)
                 if response is not None and response.status == 200:
                     page = await response.read()
                     parsed_page = BeautifulSoup(page, 'html5lib')

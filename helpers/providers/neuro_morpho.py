@@ -57,7 +57,7 @@ class NeuroMorphoProvider(Provider):
             url = f"{BASE_URL}/neuron/fields/{field_name}?page={num_page}&size={size}"
             try:
                 async with aiohttp.ClientSession(connector=create_connector()) as session:
-                    async with session.get(url, allow_redirects=True, timeout=30) as response:
+                    async with session.get(url, allow_redirects=True, timeout=30, ssl=False) as response:
                         #ic(f'Response status for url {url} {response.status}')
                         if response is not None and response.status == 200:
                             data = await response.json()
@@ -127,7 +127,7 @@ class NeuroMorphoProvider(Provider):
         try:
             ic(f'Make search request {url}')
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                async with session.post(url, json=params, allow_redirects=True, timeout=30) as response:
+                async with session.post(url, json=params, allow_redirects=True, timeout=30, ssl=False) as response:
                     items = []
                     total_pages = 1
                     ic(f'Response status for url {url} {response.status}')
@@ -237,7 +237,7 @@ class NeuroMorphoProvider(Provider):
         try:
             url = f'http://neuromorpho.org/neuron_info.jsp?neuron_id={neuron_id}'
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url)
+                response = await session.get(url, ssl=False)
                 if response is not None and response.status == 200:
                     page = await response.read()
                     if page:
@@ -260,7 +260,7 @@ class NeuroMorphoProvider(Provider):
         assert (url is not None)
         try:
             async with aiohttp.ClientSession(connector=create_connector()) as session:
-                response = await session.get(url)
+                response = await session.get(url, ssl=False)
                 file_existed = response.status == 200
                 await session.close()
                 return file_existed
