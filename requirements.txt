@@ -21,5 +21,5 @@ python-crontab==2.5.1
 pyjwt
 flask-swagger
 flask-swagger-ui
-ssl
+pyOpenSSL
 certifi
