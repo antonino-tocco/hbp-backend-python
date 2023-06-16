@@ -172,8 +172,8 @@ class NeuroMorphoProvider(Provider):
         if 'neuron_id' in dataset:
             original_format_url = await self.__retrieve_original_format_file__(str(dataset['neuron_id']))
             if original_format_url is not None and \
-                    (os.path.splitext(original_format_url)[-1].lower() == '.asc'\
-                    or os.path.splitext(original_format_url)[-1].lower() == '.swc'):
+                    (os.path.splitext(original_format_url)[-1].lower() == '.asc'
+                     or os.path.splitext(original_format_url)[-1].lower() == '.swc'):
 
                 try:
                     if dataset['png_url']:

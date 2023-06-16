@@ -13,6 +13,21 @@ RUN pip install -r requirements.txt
 # copy the content of the local src directory to the working directory
 COPY ./ .
 
+ADD import-task.sh /root/import-task.sh
+
+# Give execution rights on the cron scripts
+RUN chmod 0644 /root/import-task.sh
+
+#Install Cron
+RUN apt-get update
+RUN apt-get -y install cron
+
+# Add the cron job
+RUN crontab -l | { cat; echo "0 0 * * * bash /root/import-task.sh"; } | crontab -
+
+# Run the command on container startup
+CMD cron
+
 # command to run on container start
 RUN chmod +x wait_to_start.sh
 CMD ["./wait_to_start.sh"]
