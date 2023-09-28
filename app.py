@@ -53,8 +53,12 @@ FlaskInjector(app=app, injector=injector)
 def openapi():
     try:
         swagger_definitions = swagger(app)
-        swagger_definitions['title'] = 'HBP Backend'
+        swagger_definitions['title'] = 'The HippocampusHub API Documentation'
         swagger_definitions['version'] = '1.0.0'
+        swagger_definitions['info'] = {
+            'title': 'The HippocampusHub API Documentation',
+            'version': '1.0.0'
+        }
         return jsonify(swagger_definitions)
     except Exception as ex:
         ic(f'Run swagger exception {ex}')
