@@ -57,7 +57,8 @@ def openapi():
         swagger_definitions['version'] = '1.0.0'
         swagger_definitions['info'] = {
             'title': 'The HippocampusHub API Documentation',
-            'version': '1.0.0'
+            'version': '1.0.0',
+            'description': 'API documentation for the HippocampusHub portal. Visit https://www.hippocampushub.eu/ for a comprehensive view.'
         }
         return jsonify(swagger_definitions)
     except Exception as ex:
