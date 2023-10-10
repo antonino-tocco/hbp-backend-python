@@ -266,12 +266,12 @@ class ModelDbProvider(Provider):
     @staticmethod
     async def __get_model_download_link__(url):
         assert (url is not None)
-        elements = await ModelDbProvider.__scrape_model_page__(url, '#downloadzip2')
+        elements = await ModelDbProvider.__scrape_model_page__(url, '.fa-file-download')
         if elements:
-            download_button = elements[0]
+            download_button = elements[0].parent
             if download_button is not None:
                 return download_button.attrs['href'] if download_button.attrs['href'].startswith('http') \
-                    else 'https://senselab.med.yale.edu' + download_button.attrs['href']
+            else 'https://modeldb.science' + download_button.attrs['href']
         return None
 
     @staticmethod
@@ -291,6 +291,3 @@ class ModelDbProvider(Provider):
             ic(f'Exception on scraping {ex}')
         await session.close()
         return None
-
-
-if __name__ == '__main__':
