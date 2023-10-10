@@ -169,9 +169,9 @@ class ModelDbProvider(Provider):
     async def __get_download_link__(id=None):
         assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
-        results = await ModelDbProvider.__scrape_model_page__(url, '#downloadmodelzip')
+        results = await ModelDbProvider.__scrape_model_page__(url, 'i[title="Download zip"]')
         if results:
-            download_link_anchor = results[0]
+            download_link_anchor = results[0].parent
             if download_link_anchor is not None:
                 download_link = download_link_anchor['href']
                 return download_link if download_link.startswith('http') \
@@ -183,12 +183,12 @@ class ModelDbProvider(Provider):
         assert (id is not None)
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
         file_tree_table = None
-        results = await ModelDbProvider.__scrape_model_page__(url, '#filetreetable')
+        results = await ModelDbProvider.__scrape_model_page__(url, '.nav.thin')
         if results:
             file_tree_table = results[0]
         if file_tree_table is not None:
             link_children = file_tree_table.select(
-                selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
+                selector='li > a')
             for link in link_children:
                 if link.contents is not None:
                     contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
@@ -205,12 +205,12 @@ class ModelDbProvider(Provider):
         url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
         model_results = {}
         file_tree_table = None
-        results = await ModelDbProvider.__scrape_model_page__(url, '#filetreetable')
+        results = await ModelDbProvider.__scrape_model_page__(url, '.nav.thin')
         if results:
             file_tree_table = results[0]
         if file_tree_table is not None:
             link_children = file_tree_table.select(
-                selector='tr > td#filetree > div#filetreediv > table > tbody > tr > td > a')
+                selector='li > a')
             for link in link_children:
                 if link.contents is not None:
                     contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
