@@ -112,7 +112,7 @@ class ModelDbProvider(Provider):
                     'description': description,
                     'channels': channels,
                     'cell_types': cell_types,
-                    'page_link': f"https://senselab.med.yale.edu/modeldb/ShowModel?model={item['id']}#tabs-1",
+                    'page_link': f"https://modeldb.science/{id}?tab=1",
                     'download_link': item['download_link'] if 'download_link' in item else None,
                     'model_types': model_types,
                     'model_concepts': model_concepts,
@@ -168,10 +168,11 @@ class ModelDbProvider(Provider):
     @staticmethod
     async def __get_download_link__(id=None):
         assert (id is not None)
-        url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
+        url = f"https://modeldb.science/{id}?tab=1"
         results = await ModelDbProvider.__scrape_model_page__(url, 'i[title="Download zip"]')
         if results:
             download_link_anchor = results[0].parent
+            ic(f"Found download link {download_link_anchor}")
             if download_link_anchor is not None:
                 download_link = download_link_anchor['href']
                 return download_link if download_link.startswith('http') \
@@ -181,14 +182,16 @@ class ModelDbProvider(Provider):
     @staticmethod
     async def __get_readme__(id=None):
         assert (id is not None)
-        url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
+        url = f"https://modeldb.science/{id}?tab=2"
         file_tree_table = None
         results = await ModelDbProvider.__scrape_model_page__(url, '.nav.thin')
         if results:
             file_tree_table = results[0]
+            ic(f"Found nav thin")
         if file_tree_table is not None:
             link_children = file_tree_table.select(
                 selector='li > a')
+            ic(f"Found {len(link_children)} links in get_readme")
             for link in link_children:
                 if link.contents is not None:
                     contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
@@ -202,15 +205,17 @@ class ModelDbProvider(Provider):
     @staticmethod
     async def __get_model_files__(id=None):
         assert (id is not None)
-        url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-2"
+        url = f"https://modeldb.science/{id}?tab=2"
         model_results = {}
         file_tree_table = None
         results = await ModelDbProvider.__scrape_model_page__(url, '.nav.thin')
         if results:
             file_tree_table = results[0]
+            ic(f"Found nav thin")
         if file_tree_table is not None:
             link_children = file_tree_table.select(
                 selector='li > a')
+            ic(f"Found {len(link_children)} links in get files")
             for link in link_children:
                 if link.contents is not None:
                     contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
@@ -245,7 +250,7 @@ class ModelDbProvider(Provider):
     @staticmethod
     async def __get_papers_refs__(id=None):
         assert (id is not None)
-        url = f"https://senselab.med.yale.edu/modeldb/ShowModel?model={id}#tabs-1"
+        url = f"https://modeldb.science/{id}?tab=1"
         papers_ref = None
         try:
             results = await ModelDbProvider.__scrape_model_page__(url, '#reference')
