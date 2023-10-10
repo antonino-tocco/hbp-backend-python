@@ -4,6 +4,8 @@ import aiohttp
 from os.path import splitext
 from icecream import ic
 from bs4 import BeautifulSoup
+import unicodedata
+
 from helpers.create_connector import create_connector
 from .provider import Provider
 
@@ -172,11 +174,10 @@ class ModelDbProvider(Provider):
         results = await ModelDbProvider.__scrape_model_page__(url, 'i[title="Download zip"]')
         if results:
             download_link_anchor = results[0].parent
-            ic(f"Found download link {download_link_anchor}")
             if download_link_anchor is not None:
                 download_link = download_link_anchor['href']
                 return download_link if download_link.startswith('http') \
-                    else 'https://senselab.med.yale.edu' + download_link
+                    else 'https://modeldb.science' + download_link
         return None
 
     @staticmethod
@@ -187,19 +188,17 @@ class ModelDbProvider(Provider):
         results = await ModelDbProvider.__scrape_model_page__(url, '.nav.thin')
         if results:
             file_tree_table = results[0]
-            ic(f"Found nav thin")
         if file_tree_table is not None:
             link_children = file_tree_table.select(
                 selector='li > a')
-            ic(f"Found {len(link_children)} links in get_readme")
             for link in link_children:
-                if link.contents is not None:
-                    contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
-                    if 'readme' in contents:
+                if link.contents and len(link.contents) > 2:
+                    label = link.contents[2].strip()
+                    if "readme" in label.lower():
                         readme_link = link.attrs['href']
                         if readme_link is not None:
                             return readme_link if readme_link.startswith('http') \
-                                else 'https://senselab.med.yale.edu' + readme_link
+                                else 'https://modeldb.science' + readme_link
         return None
 
     @staticmethod
@@ -211,36 +210,31 @@ class ModelDbProvider(Provider):
         results = await ModelDbProvider.__scrape_model_page__(url, '.nav.thin')
         if results:
             file_tree_table = results[0]
-            ic(f"Found nav thin")
         if file_tree_table is not None:
             link_children = file_tree_table.select(
                 selector='li > a')
-            ic(f"Found {len(link_children)} links in get files")
             for link in link_children:
-                if link.contents is not None:
-                    contents = list(map(lambda x: x.lower() if isinstance(x, str) else None, link.contents))
-                    labels = list(filter(lambda x: isinstance(x, str), contents))
-                    if labels is not None and len(labels) >= 1:
-                        label = labels[0]
-                        url = link.attrs['href'] if 'href' in link.attrs else None
-                        if url is not None:
-                            url_splitted = splitext(url)
-                            is_mod_file = '.mod' in label or '.mod' in url_splitted[-1]
-                            #ic(f'is mod file {label} - {url} - {is_mod_file} ')
-                            if is_mod_file:
-                                try:
-                                    download_link_page = url if url.startswith(
-                                        'http') else 'https://senselab.med.yale.edu' + url
-                                    link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
-                                    if link_url is not None:
-                                        if link_url not in model_results:
-                                            model_results[link_url] = label
-                                except Exception as ex:
-                                    ic(f"Exception on get model files {ex}")
-                                    return list(map(lambda a: {
-                                        'label': model_results[a],
-                                        'url': a
-                                    }, model_results))
+                if link.contents and len(link.contents) > 2:
+                    label = link.contents[2].strip()
+                    url = link.attrs['href'] if 'href' in link.attrs else None
+                    if url is not None:
+                        url_splitted = splitext(url)
+                        is_mod_file = '.mod' in label or '.mod' in url_splitted[-1]
+                        print(f'is mod file {label} - {url} - {is_mod_file} ')
+                        if is_mod_file:
+                            try:
+                                download_link_page = url if url.startswith(
+                                    'http') else 'https://modeldb.science' + url
+                                link_url = await ModelDbProvider.__get_model_download_link__(download_link_page)
+                                if link_url is not None:
+                                    if link_url not in model_results:
+                                        model_results[link_url] = label
+                            except Exception as ex:
+                                ic(f"Exception on get model files {ex}")
+                                return list(map(lambda a: {
+                                    'label': model_results[a],
+                                    'url': a
+                                }, model_results))
 
         return list(map(lambda a: {
             'label': model_results[a],
@@ -297,3 +291,6 @@ class ModelDbProvider(Provider):
             ic(f'Exception on scraping {ex}')
         await session.close()
         return None
+
+
+if __name__ == '__main__':
